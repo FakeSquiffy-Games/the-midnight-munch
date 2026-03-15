@@ -19,6 +19,7 @@ func _ready() -> void:
 	NetworkManager.server_disconnected.connect(_on_server_disconnected)
 	host_btn.pressed.connect(_on_host_pressed)
 	join_btn.pressed.connect(_on_join_pressed)
+	start_btn.pressed.connect(_on_start_pressed)  
 
 func _on_host_pressed() -> void:
 	NetworkManager.stop_listening()

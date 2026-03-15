@@ -83,7 +83,6 @@ texture = ExtResource("6_trceg")
 offset = Vector2(0, 20)
 
 [node name="Parallax2D6" type="Parallax2D" parent="Background" unique_id=1549481196]
-scroll_scale = Vector2(1.05, 1.1)
 repeat_size = Vector2(2304, 0)
 repeat_times = 2
 
@@ -122,11 +121,17 @@ text = "Connected!"
 
 [node name="VirtualController" type="Control" parent="HUD" unique_id=1356958113]
 layout_mode = 3
-anchors_preset = 0
-offset_left = 878.0
-offset_top = 372.0
-offset_right = 1128.0
-offset_bottom = 622.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -280.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 0
+grow_vertical = 0
 mouse_filter = 2
 script = ExtResource("4_tbgi4")
 

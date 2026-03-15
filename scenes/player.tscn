@@ -104,7 +104,6 @@ shape = SubResource("RectangleShape2D_sh265")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2046957364]
 enabled = false
-zoom = Vector2(0.5, 0.5)
 
 [node name="NameLabel" type="Label" parent="." unique_id=916406045]
 offset_left = -32.0

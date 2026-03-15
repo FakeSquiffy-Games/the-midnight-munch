@@ -14,7 +14,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="Feeding Frenzy"
+config/name="The Midnight Munch"
 run/main_scene="uid://cxvvu242gk3pu"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -25,6 +25,8 @@ NetworkManager="*uid://cv42kgp6ed2gm"
 
 [display]
 
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/stretch/mode="viewport"
 window/stretch/aspect="keep_height"
 
