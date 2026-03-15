@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Feeding Frenzy"
-run/main_scene="uid://d1dflr10xkpo7"
+run/main_scene="uid://cxvvu242gk3pu"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 

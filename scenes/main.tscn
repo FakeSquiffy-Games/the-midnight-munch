@@ -164,53 +164,5 @@ offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LobbyUI" type="CanvasLayer" parent="." unique_id=25355185]
-
-[node name="Panel" type="Panel" parent="LobbyUI" unique_id=1589123724]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 22.0
-offset_right = -23.0
-offset_bottom = -25.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBox" type="VBoxContainer" parent="LobbyUI/Panel" unique_id=506690180]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Title" type="Label" parent="LobbyUI/Panel/VBox" unique_id=965955048]
-layout_mode = 2
-text = "LAN Multiplayer Test"
-
-[node name="MyIPLabel" type="Label" parent="LobbyUI/Panel/VBox" unique_id=1769078877]
-layout_mode = 2
-text = "Your IP: (tap Host)"
-
-[node name="HostBtn" type="Button" parent="LobbyUI/Panel/VBox" unique_id=181678416]
-layout_mode = 2
-text = "HOST GAME"
-
-[node name="HSeparator" type="HSeparator" parent="LobbyUI/Panel/VBox" unique_id=52487946]
-layout_mode = 2
-
-[node name="ServerList" type="ItemList" parent="LobbyUI/Panel/VBox" unique_id=156154233]
-custom_minimum_size = Vector2(400, 200)
-layout_mode = 2
-
-[node name="JoinBtn" type="Button" parent="LobbyUI/Panel/VBox" unique_id=1718535738]
-layout_mode = 2
-text = "JOIN GAME	"
-
-[node name="StatusLabel" type="Label" parent="LobbyUI/Panel/VBox" unique_id=1198327663]
-layout_mode = 2
-text = "Choose Host or Join"
-
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1042764332]
 color = Color(0, 0.15170373, 0.24780053, 1)
