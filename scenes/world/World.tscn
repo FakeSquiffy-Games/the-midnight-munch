@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dys4pr8w7k5cs"]
+
+[ext_resource type="Script" uid="uid://bny54fi18xsm1" path="res://scenes/world/World.gd" id="1_6eebf"]
+[ext_resource type="Script" uid="uid://crvwqejbc25kl" path="res://scenes/world/NPCSpawner.gd" id="2_gbddb"]
+[ext_resource type="Script" uid="uid://digjhnxhwxnr0" path="res://scenes/world/CollectibleSpawner.gd" id="3_qxiha"]
+
+[node name="World" type="Node2D" unique_id=1791530930]
+script = ExtResource("1_6eebf")
+
+[node name="NPCSpawner" type="Node" parent="." unique_id=904507801]
+script = ExtResource("2_gbddb")
+
+[node name="CollectibleSpawner" type="Node" parent="." unique_id=254830818]
+script = ExtResource("3_qxiha")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1611525323]
+_spawnable_scenes = PackedStringArray("uid://c3bsmdstw0ice")
+spawn_path = NodePath("..")

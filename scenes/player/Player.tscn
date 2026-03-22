@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://c3bsmdstw0ice"]
+
+[ext_resource type="Script" uid="uid://bi2fvxl88vd1f" path="res://scenes/player/Player.gd" id="1_wr5hl"]
+[ext_resource type="Script" uid="uid://bqracccb3021n" path="res://components/StatManager.gd" id="2_4kuee"]
+[ext_resource type="Script" uid="uid://cbqcdl6yaa0wc" path="res://components/PlayerController.gd" id="3_524rm"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_4kuee"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wr5hl"]
+size = Vector2(40, 30)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_4kuee"]
+
+[node name="Player" type="CharacterBody2D" unique_id=584666597]
+script = ExtResource("1_wr5hl")
+reconcile_threshold = null
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=314272504]
+position = Vector2(0, 1.1920929e-07)
+scale = Vector2(40, 30)
+texture = SubResource("PlaceholderTexture2D_4kuee")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1631624745]
+shape = SubResource("RectangleShape2D_wr5hl")
+
+[node name="components" type="Node" parent="." unique_id=654840410]
+
+[node name="StatManager" type="Node" parent="components" unique_id=1026652066]
+script = ExtResource("2_4kuee")
+
+[node name="PlayerController" type="Node" parent="components" unique_id=139439723]
+script = ExtResource("3_524rm")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1788138357]
+replication_config = SubResource("SceneReplicationConfig_4kuee")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=674588303]
+enabled = false
