@@ -29,6 +29,11 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	## Guard against processing after the player node has been freed
+	## or during the elimination cleanup window.
+	if not is_instance_valid(_player) or not is_instance_valid(_stat_manager):
+		return
+
 	if not _player.is_multiplayer_authority():
 		return
 
@@ -79,11 +84,14 @@ func _get_input_direction() -> Vector2:
 	return dir.normalized()
 
 
+## Replace _update_facing in PlayerController.gd
 func _update_facing(direction: Vector2) -> void:
 	if direction.x > 0.01:
 		_sprite.flip_h = false
+		(_player.get_node("components/MouthArea") as MouthArea).update_facing(true)
 	elif direction.x < -0.01:
 		_sprite.flip_h = true
+		(_player.get_node("components/MouthArea") as MouthArea).update_facing(false)
 
 
 # =========================================================

@@ -56,6 +56,8 @@ func _ready() -> void:
 	## Every peer notifies the server that their World scene is ready.
 	## rpc_id(1, ...) targets only the server (peer ID 1).
 	_notify_ready.rpc_id(1)
+	
+	add_to_group("world")
 
 
 # =========================================================

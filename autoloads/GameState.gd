@@ -67,6 +67,13 @@ func eliminate_player(peer_id: int) -> void:
 	print("GameState: Eliminated peer %d. Alive peers: %s." \
 		% [peer_id, str(alive_peers)])
 
+## Updates the XP record for a peer in player_states.
+## Called by CombatResolver after every XP mutation.
+## Server only — clients never write to GameState directly.
+func update_player_xp(peer_id: int, new_xp: float) -> void:
+	if player_states.has(peer_id):
+		player_states[peer_id].xp = new_xp
+		print("GameState: Updated XP for peer %d to %.1f." % [peer_id, new_xp])
 
 ## Resets all match state for a rematch.
 func reset() -> void:

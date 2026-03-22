@@ -31,17 +31,18 @@ var _peer_id: int = -1
 ## [peer_id]      — the local player's peer ID, used to filter signals
 ## [stat_manager] — reference to read initial stat values from
 func initialise(peer_id: int, stat_manager: StatManager) -> void:
+	#print("HUD.initialise: peer_id=%d, current_xp=%.1f, current_energy=%.1f" \
+		#% [peer_id, stat_manager.current_xp, stat_manager.current_energy])
 	_peer_id = peer_id
 
-	## Set initial bar ranges from StatManager.
-	xp_bar.max_value     = StatManager.XP_THRESHOLDS[StatManager.XP_THRESHOLDS.size() - 1]
 	energy_bar.max_value = stat_manager.max_energy
 
-	## Set initial values.
-	_update_xp(stat_manager.current_xp, stat_manager)
+	## Read initial values directly from StatManager rather than
+	## waiting for signals — the HUD may connect after the first
+	## emit fires, causing it to miss the initial state entirely.
+	_update_xp(stat_manager.current_xp)
 	_update_energy(stat_manager.current_energy, stat_manager.max_energy)
 
-	## Connect to SignalBus — filter by peer_id to ignore other players.
 	SignalBus.xp_changed.connect(_on_xp_changed)
 	SignalBus.energy_changed.connect(_on_energy_changed)
 
@@ -54,10 +55,7 @@ func initialise(peer_id: int, stat_manager: StatManager) -> void:
 func _on_xp_changed(peer_id: int, new_xp: float) -> void:
 	if peer_id != _peer_id:
 		return
-	## Derive a temporary StatManager-like context to calculate level.
-	## We read level from XP_THRESHOLDS directly since StatManager
-	## is not passed here — avoids a node reference in the signal.
-	_update_xp(new_xp, null)
+	_update_xp(new_xp)
 
 
 ## Fired by PlayerController on the server when energy changes.
@@ -73,17 +71,15 @@ func _on_energy_changed(peer_id: int, current: float, maximum: float) -> void:
 
 ## Updates the XP bar and level label.
 ## [stat_manager] may be null — level is derived from XP_THRESHOLDS directly.
-func _update_xp(new_xp: float, stat_manager: StatManager) -> void:
-	xp_bar.value = new_xp
-
-	## Derive level from XP_THRESHOLDS without needing a StatManager ref.
+func _update_xp(new_xp: float) -> void:
+	#print("HUD._update_xp: new_xp=%.1f, bar_min=%.1f, bar_max=%.1f, bar_value=%.1f, label=%s" \
+		#% [new_xp, xp_bar.min_value, xp_bar.max_value, xp_bar.value, level_label.text])
 	var derived_level := 0
 	for i in range(StatManager.XP_THRESHOLDS.size() - 1, -1, -1):
 		if new_xp >= StatManager.XP_THRESHOLDS[i]:
 			derived_level = i
 			break
 
-	## Show XP progress within the current level as a fraction.
 	var current_threshold := StatManager.XP_THRESHOLDS[derived_level]
 	var next_threshold    := StatManager.XP_THRESHOLDS[
 		min(derived_level + 1, StatManager.XP_THRESHOLDS.size() - 1)]
