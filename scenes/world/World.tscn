@@ -6,6 +6,7 @@
 
 [node name="World" type="Node2D" unique_id=1791530930]
 script = ExtResource("1_6eebf")
+PLAYER_MODELS = Array[String](["res://scenes/player/BlackSeadevilModel.tscn", "res://scenes/player/FangtoothModel.tscn", "res://scenes/player/BlackSeadevilModel.tscn", "res://scenes/player/BlackSeadevilModel.tscn"])
 
 [node name="NPCSpawner" type="Node" parent="." unique_id=904507801]
 script = ExtResource("2_gbddb")

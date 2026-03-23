@@ -2,28 +2,25 @@
 
 [ext_resource type="Script" uid="uid://bi2fvxl88vd1f" path="res://scenes/player/Player.gd" id="1_wr5hl"]
 [ext_resource type="Script" uid="uid://bqracccb3021n" path="res://components/StatManager.gd" id="2_4kuee"]
+[ext_resource type="PackedScene" uid="uid://otyph720djjr" path="res://scenes/player/BlackSeadevilModel.tscn" id="2_c3xxp"]
 [ext_resource type="Script" uid="uid://cbqcdl6yaa0wc" path="res://components/PlayerController.gd" id="3_524rm"]
-[ext_resource type="PackedScene" uid="uid://citqxsjde2com" path="res://components/MouthArea.tscn" id="4_tpg5x"]
-[ext_resource type="PackedScene" uid="uid://dkc4rjb647wor" path="res://components/BodyArea.tscn" id="5_c3xxp"]
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_4kuee"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wr5hl"]
-size = Vector2(40, 30)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_524rm"]
+radius = 43.0
+height = 86.0
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_4kuee"]
 
 [node name="Player" type="CharacterBody2D" unique_id=584666597]
 collision_layer = 4
 script = ExtResource("1_wr5hl")
+fish_model = ExtResource("2_c3xxp")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=314272504]
-position = Vector2(0, 1.1920929e-07)
-scale = Vector2(40, 30)
-texture = SubResource("PlaceholderTexture2D_4kuee")
+[node name="BlackSeadevilModel" parent="." unique_id=1937307870 instance=ExtResource("2_c3xxp")]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1631624745]
-shape = SubResource("RectangleShape2D_wr5hl")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1589416699]
+position = Vector2(4, 17)
+shape = SubResource("CapsuleShape2D_524rm")
 
 [node name="components" type="Node2D" parent="." unique_id=1883867421]
 
@@ -32,10 +29,6 @@ script = ExtResource("2_4kuee")
 
 [node name="PlayerController" type="Node" parent="components" unique_id=139439723]
 script = ExtResource("3_524rm")
-
-[node name="BodyArea" parent="components" unique_id=2147235516 instance=ExtResource("5_c3xxp")]
-
-[node name="MouthArea" parent="components" unique_id=1175388902 instance=ExtResource("4_tpg5x")]
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1788138357]
 replication_config = SubResource("SceneReplicationConfig_4kuee")

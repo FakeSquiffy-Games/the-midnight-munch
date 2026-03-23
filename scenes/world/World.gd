@@ -23,6 +23,8 @@ const SPAWN_POSITIONS: Array[Vector2] = [
 	Vector2(640, 540),
 ]
 
+@export var PLAYER_MODELS: Array[String]
+
 
 # =========================================================
 # NODE REFERENCES
@@ -103,6 +105,7 @@ func _spawn_all_players() -> void:
 			"peer_id":  peer_id,
 			"color":    PLAYER_COLORS[i % PLAYER_COLORS.size()],
 			"position": SPAWN_POSITIONS[i % SPAWN_POSITIONS.size()],
+			"model_path":    PLAYER_MODELS[i % PLAYER_MODELS.size()]
 		}
 		spawner.spawn(data)
 		print("World: Spawning player for peer %d at slot %d." % [peer_id, i])
@@ -119,5 +122,15 @@ func _spawn_player(data: Dictionary) -> Node:
 	player.spawn_color    = data["color"]
 	player.spawn_position = data["position"]
 	player.spawn_peer_id  = peer_id
+	
+	# Load the resource from the path string sent over the network
+	var model_path: String = data["model_path"]
+	var model_resource = load(model_path)
+
+	if model_resource is PackedScene:
+		# Assign it to a variable that Player.gd uses to instantiate the model
+		player.fish_model = model_resource 
+	else:
+		push_error("Failed to load fish model at path: " + model_path)
 
 	return player

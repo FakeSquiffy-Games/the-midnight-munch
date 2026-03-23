@@ -15,7 +15,8 @@ const BOOST_MULTIPLIER: float = 1.8
 
 var _player:       CharacterBody2D
 var _stat_manager: StatManager
-var _sprite:       Sprite2D
+var _sprite:       AnimatedSprite2D
+var _mouth: MouthArea  # New reference
 
 
 # =========================================================
@@ -25,7 +26,6 @@ var _sprite:       Sprite2D
 func _ready() -> void:
 	_player       = owner as CharacterBody2D
 	_stat_manager = owner.get_node("components/StatManager") as StatManager
-	_sprite       = owner.get_node("Sprite2D") as Sprite2D
 
 
 func _physics_process(_delta: float) -> void:
@@ -87,11 +87,9 @@ func _get_input_direction() -> Vector2:
 ## Replace _update_facing in PlayerController.gd
 func _update_facing(direction: Vector2) -> void:
 	if direction.x > 0.01:
-		_sprite.flip_h = false
-		(_player.get_node("components/MouthArea") as MouthArea).update_facing(true)
+		_player.sync_flip_h = false
 	elif direction.x < -0.01:
-		_sprite.flip_h = true
-		(_player.get_node("components/MouthArea") as MouthArea).update_facing(false)
+		_player.sync_flip_h = true
 
 
 # =========================================================

@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://otyph720djjr"]
+
+[ext_resource type="Script" uid="uid://3kmxne7oiygm" path="res://scenes/player/PlayerModel.gd" id="1_ssn6q"]
+[ext_resource type="Texture2D" uid="uid://dsup860b7fk21" path="res://assets/player/BlackSeadevil/idle/0.png" id="1_vswth"]
+[ext_resource type="Texture2D" uid="uid://bfp7lycfhavtc" path="res://assets/player/BlackSeadevil/idle/1.png" id="2_ssn6q"]
+[ext_resource type="PackedScene" uid="uid://dkc4rjb647wor" path="res://components/BodyArea.tscn" id="3_om5wd"]
+[ext_resource type="PackedScene" uid="uid://citqxsjde2com" path="res://components/MouthArea.tscn" id="4_2386m"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_f180x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_vswth")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ssn6q")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="PlayerModel" type="Node2D" unique_id=1773224112]
+script = ExtResource("1_ssn6q")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=832216548]
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_f180x")
+autoplay = "default"
+frame_progress = 0.35786816
+
+[node name="BodyArea" parent="." unique_id=2147235516 instance=ExtResource("3_om5wd")]
+
+[node name="BodyPolygon" type="CollisionPolygon2D" parent="BodyArea" unique_id=1746531534]
+scale = Vector2(4, 4)
+polygon = PackedVector2Array(3, -7, -2, -7, -5, -6, -6, -5, -7, -3, -8, -2, -9, 0, -10, 1, -11, 3, -11, 5, -14, 5, -14, 13, -10, 13, -8, 14, -5, 15, 7, 15, 11, 11, 12, 9, 12, 5, 11, 2, 10, -2, 9, -3, 9, -6, 8, -7, 6, -7)
+
+[node name="MouthArea" parent="." unique_id=1175388902 instance=ExtResource("4_2386m")]
+
+[node name="MouthPolygon" type="CollisionPolygon2D" parent="MouthArea" unique_id=1075815921]
+scale = Vector2(4, 4)
+polygon = PackedVector2Array(0, -2, -1, -1, -2, 0, -3, 2, -4, 4, -5, 7, -5, 17, 7, 17, 11, 13, 12, 11, 12, 3, 11, 0, 10, -2, 9, -3, 8, -4, 3, -4, 1, -3)
+
+[editable path="BodyArea"]
+[editable path="MouthArea"]

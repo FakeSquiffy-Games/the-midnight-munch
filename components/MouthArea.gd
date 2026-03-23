@@ -38,7 +38,8 @@ func _ready() -> void:
 ## Moves the MouthArea to always sit at the front (snout) of the fish.
 ## [facing_right] — true if fish is facing right, false if facing left.
 func update_facing(facing_right: bool) -> void:
-	position.x = SNOUT_OFFSET_X if facing_right else -SNOUT_OFFSET_X
+	#position.x = SNOUT_OFFSET_X if facing_right else -SNOUT_OFFSET_X
+	scale.x = 1 if facing_right else -1
 
 
 # =========================================================

@@ -9,6 +9,7 @@ extends CharacterBody2D
 # =========================================================
 
 @export var reconcile_threshold: float = 50.0
+@export var fish_model:          PackedScene 
 
 
 # =========================================================
@@ -24,11 +25,11 @@ var spawn_peer_id:  int     = 1
 # NODE REFERENCES
 # =========================================================
 
-@onready var sprite:            Sprite2D                = $Sprite2D
+@onready var sprite:            AnimatedSprite2D        = null
 @onready var stat_manager:      StatManager             = $components/StatManager
 @onready var player_controller: PlayerController        = $components/PlayerController
-@onready var mouth_area:        MouthArea               = $components/MouthArea
-@onready var body_area:         BodyArea                = $components/BodyArea
+@onready var mouth_area:        MouthArea               = null
+@onready var body_area:         BodyArea                = null
 @onready var synchronizer:      MultiplayerSynchronizer = $MultiplayerSynchronizer
 @onready var camera:            Camera2D                = $Camera2D
 
@@ -39,7 +40,10 @@ var spawn_peer_id:  int     = 1
 
 ## Reference to this player's HUD — only set for the local player.
 var _hud: Node = null
-
+var sync_flip_h: bool = false:
+	set(value):
+		scale.x *= -1 if (sync_flip_h != value) else 1
+		sync_flip_h = value
 
 # =========================================================
 # ENTER TREE
@@ -55,7 +59,8 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	global_position = spawn_position
-	sprite.modulate = spawn_color
+	#sprite.modulate = spawn_color
+	load_model(fish_model)
 
 	add_to_group("players")
 
@@ -82,6 +87,27 @@ func _ready() -> void:
 
 	print("Player: Ready. Authority peer ID = %d. Is local: %s." \
 		% [peer_id, str(is_multiplayer_authority())])
+
+func load_model(model_scene: PackedScene):
+	# Remove old model if it exists
+	for child in get_children():
+		if child is PlayerModel:
+			child.queue_free()
+
+	var new_model = model_scene.instantiate()
+	add_child(new_model)
+
+	# Re-link the Player's variables to the Model's nodes
+	sprite = new_model.sprite
+	mouth_area = new_model.mouth
+	body_area = new_model.body
+
+	# Apply species-specific scale
+	scale = Vector2.ONE * new_model.base_scale
+	
+	if player_controller:
+		player_controller._sprite = new_model.sprite
+		player_controller._mouth = new_model.mouth
 
 
 # =========================================================
@@ -206,7 +232,7 @@ func _configure_synchronizer() -> void:
 		{"path": ".:position",                            "on_change": false, "spawn": true},
 		{"path": ".:rotation",                            "on_change": false, "spawn": true},
 		{"path": ".:scale",                               "on_change": true,  "spawn": true},
-		{"path": "Sprite2D:flip_h",                       "on_change": true,  "spawn": true},
+		{"path": ".:sync_flip_h", "on_change": true, "spawn": true},
 		{"path": "components/StatManager:is_boosting",    "on_change": true,  "spawn": true},
 		{"path": "components/StatManager:current_energy", "on_change": true,  "spawn": true},
 		{"path": "components/StatManager:current_xp",     "on_change": true,  "spawn": true},
