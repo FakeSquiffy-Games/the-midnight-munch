@@ -2,11 +2,14 @@
 
 [ext_resource type="Script" uid="uid://bny54fi18xsm1" path="res://scenes/world/World.gd" id="1_6eebf"]
 [ext_resource type="Script" uid="uid://crvwqejbc25kl" path="res://scenes/world/NPCSpawner.gd" id="2_gbddb"]
+[ext_resource type="PackedScene" uid="uid://d16dycysxnh0v" path="res://scenes/world/WorldBorder.tscn" id="2_qxiha"]
 [ext_resource type="Script" uid="uid://digjhnxhwxnr0" path="res://scenes/world/CollectibleSpawner.gd" id="3_qxiha"]
 
 [node name="World" type="Node2D" unique_id=1791530930]
 script = ExtResource("1_6eebf")
 PLAYER_MODELS = Array[String](["res://scenes/player/BlackSeadevilModel.tscn", "res://scenes/player/FangtoothModel.tscn", "res://scenes/player/BlackSeadevilModel.tscn", "res://scenes/player/BlackSeadevilModel.tscn"])
+
+[node name="WorldBorder" parent="." unique_id=455931261 instance=ExtResource("2_qxiha")]
 
 [node name="NPCSpawner" type="Node" parent="." unique_id=904507801]
 script = ExtResource("2_gbddb")

@@ -1,35 +1,41 @@
 ## Player.gd
 ## Root script for the player fish entity.
-## Phase 4C: handles player_eliminated signal to remove node and HUD.
+## Phase XA: cleaned up dead code, fixed _on_synchronized, removed debug XP line.
 extends CharacterBody2D
 
 
 # =========================================================
-# CONSTANTS
+# EXPORTS
 # =========================================================
 
 @export var reconcile_threshold: float = 50.0
-@export var fish_model:          PackedScene 
+
+## The fish model PackedScene to instantiate on spawn.
+## Assigned by World._spawn_player() from the PLAYER_MODELS array.
+@export var fish_model: PackedScene
 
 
 # =========================================================
 # SPAWN DATA
+## Set by World._spawn_player() before the node enters the tree.
 # =========================================================
 
-var spawn_color:    Color   = Color.WHITE
 var spawn_position: Vector2 = Vector2.ZERO
 var spawn_peer_id:  int     = 1
 
 
 # =========================================================
 # NODE REFERENCES
+## sprite, mouth_area, body_area are null until load_model() runs in _ready().
+## They are assigned by load_model() from the instantiated PlayerModel.
 # =========================================================
 
-@onready var sprite:            AnimatedSprite2D        = null
+var sprite:     AnimatedSprite2D = null
+var mouth_area: MouthArea        = null
+var body_area:  BodyArea         = null
+
 @onready var stat_manager:      StatManager             = $components/StatManager
 @onready var player_controller: PlayerController        = $components/PlayerController
-@onready var mouth_area:        MouthArea               = null
-@onready var body_area:         BodyArea                = null
 @onready var synchronizer:      MultiplayerSynchronizer = $MultiplayerSynchronizer
 @onready var camera:            Camera2D                = $Camera2D
 
@@ -40,16 +46,23 @@ var spawn_peer_id:  int     = 1
 
 ## Reference to this player's HUD — only set for the local player.
 var _hud: Node = null
+
+## Synced flip state — drives scale.x on the Player root so that
+## CollisionPolygons and the model flip together as a unit.
 var sync_flip_h: bool = false:
 	set(value):
-		scale.x *= -1 if (sync_flip_h != value) else 1
+		if sync_flip_h != value:
+			scale.x *= -1
 		sync_flip_h = value
+
 
 # =========================================================
 # ENTER TREE
 # =========================================================
 
 func _enter_tree() -> void:
+	## Must be set here so MultiplayerSynchronizer gets a valid
+	## network ID before it initialises in _ready().
 	set_multiplayer_authority(spawn_peer_id)
 
 
@@ -59,7 +72,9 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	global_position = spawn_position
-	#sprite.modulate = spawn_color
+
+	## Load and instantiate the fish model first — assigns sprite,
+	## mouth_area, and body_area before anything else accesses them.
 	load_model(fish_model)
 
 	add_to_group("players")
@@ -69,44 +84,50 @@ func _ready() -> void:
 
 	_configure_synchronizer()
 
-	## Listen for elimination on all peers — not just the local player.
-	## Every peer needs to remove the eliminated node from its scene tree.
 	SignalBus.player_eliminated.connect(_on_player_eliminated)
 
 	if is_multiplayer_authority():
 		_setup_local_player()
 
-	if multiplayer.is_server() and is_multiplayer_authority():
-		stat_manager.current_xp = 1000.0  ## puts host at Level 5
-
-	## Initialise facing direction.
-	mouth_area.update_facing(true)
-
-	## Sync initial synchronizer state.
 	synchronizer.synchronized.connect(_on_synchronized)
 
 	print("Player: Ready. Authority peer ID = %d. Is local: %s." \
 		% [peer_id, str(is_multiplayer_authority())])
 
-func load_model(model_scene: PackedScene):
-	# Remove old model if it exists
+
+# =========================================================
+# MODEL LOADING
+# =========================================================
+
+## Instantiates [model_scene] and wires sprite, mouth_area, body_area.
+## Removes any previously loaded model first.
+func load_model(model_scene: PackedScene) -> void:
+	if model_scene == null:
+		push_error("Player: load_model() called with null PackedScene.")
+		return
+
+	## Remove existing model if present.
 	for child in get_children():
 		if child is PlayerModel:
 			child.queue_free()
 
-	var new_model = model_scene.instantiate()
+	var new_model := model_scene.instantiate() as PlayerModel
+	if new_model == null:
+		push_error("Player: model_scene did not instantiate as PlayerModel.")
+		return
+
 	add_child(new_model)
 
-	# Re-link the Player's variables to the Model's nodes
-	sprite = new_model.sprite
+	## Wire references from model to Player.
+	sprite     = new_model.sprite
 	mouth_area = new_model.mouth
-	body_area = new_model.body
+	body_area  = new_model.body
 
-	# Apply species-specific scale
+	## Apply species-specific base scale.
 	scale = Vector2.ONE * new_model.base_scale
-	
+
+	## Update PlayerController references if it is already initialised.
 	if player_controller:
-		player_controller._sprite = new_model.sprite
 		player_controller._mouth = new_model.mouth
 
 
@@ -117,6 +138,13 @@ func load_model(model_scene: PackedScene):
 func _setup_local_player() -> void:
 	camera.enabled = true
 	camera.make_current()
+	
+	## Clamp camera to world boundaries so it never pans outside.
+	## World spans -3840 to 3840 on X, -2160 to 2160 on Y.
+	camera.limit_left   = -1727.5
+	camera.limit_right  =  1727.5
+	camera.limit_top    = -972
+	camera.limit_bottom =  972
 
 	var hud := preload("res://scenes/ui/HUD.tscn").instantiate()
 	if hud == null:
@@ -126,7 +154,6 @@ func _setup_local_player() -> void:
 	get_tree().root.add_child(hud)
 	hud.call_deferred("initialise", get_multiplayer_authority(), stat_manager)
 
-	## Store reference so we can remove HUD on elimination.
 	_hud = hud
 
 
@@ -134,39 +161,24 @@ func _setup_local_player() -> void:
 # ELIMINATION HANDLER
 # =========================================================
 
-## Called on all peers when any player is eliminated.
-## Removes the eliminated player's node and HUD from the scene tree.
 func _on_player_eliminated(peer_id: int) -> void:
 	if get_multiplayer_authority() != peer_id:
 		return
 
 	print("Player: Peer %d eliminated — removing." % peer_id)
 
-	## Disconnect immediately to prevent re-entry.
 	SignalBus.player_eliminated.disconnect(_on_player_eliminated)
-
-	## Stop all processing on all peers immediately.
-	## This prevents PlayerController from sending further RPCs
-	## for this node after elimination is triggered.
 	_disable_all_processing()
 
-	## Remove HUD on any peer that owns it.
 	if _hud != null:
 		_hud.queue_free()
 		_hud = null
 
-	## Server calls queue_free() — MultiplayerSpawner handles the rest.
-	## Do NOT null the replication config — this breaks the spawner's
-	## ability to send the despawn packet to clients.
-	## Do NOT call queue_free() on clients — MultiplayerSpawner sends
-	## a despawn packet that removes the client copy automatically.
-	## Do NOT use a timer — free immediately so no sync packets are
-	## sent for a node that is being removed.
 	if multiplayer.is_server():
 		queue_free()
 
 
-## Disables physics and regular processing on this node and all descendants.
+## Disables physics and processing on this node and all descendants.
 func _disable_all_processing() -> void:
 	set_process(false)
 	set_physics_process(false)
@@ -190,13 +202,11 @@ func request_bite(attacker_peer_id: int, target_peer_id: int) -> void:
 	if not multiplayer.is_server():
 		return
 
-	## Ignore bites targeting already-eliminated peers.
 	if not GameState.alive_peers.has(target_peer_id):
 		print("Player: request_bite ignored — target peer %d already eliminated." \
 			% target_peer_id)
 		return
 
-	## Ignore bites from already-eliminated attackers.
 	if not GameState.alive_peers.has(attacker_peer_id):
 		print("Player: request_bite ignored — attacker peer %d already eliminated." \
 			% attacker_peer_id)
@@ -232,7 +242,7 @@ func _configure_synchronizer() -> void:
 		{"path": ".:position",                            "on_change": false, "spawn": true},
 		{"path": ".:rotation",                            "on_change": false, "spawn": true},
 		{"path": ".:scale",                               "on_change": true,  "spawn": true},
-		{"path": ".:sync_flip_h", "on_change": true, "spawn": true},
+		{"path": ".:sync_flip_h",                         "on_change": true,  "spawn": true},
 		{"path": "components/StatManager:is_boosting",    "on_change": true,  "spawn": true},
 		{"path": "components/StatManager:current_energy", "on_change": true,  "spawn": true},
 		{"path": "components/StatManager:current_xp",     "on_change": true,  "spawn": true},
@@ -255,9 +265,9 @@ func _configure_synchronizer() -> void:
 # =========================================================
 
 func _on_synchronized() -> void:
-	if is_multiplayer_authority():
-		return
-	mouth_area.update_facing(not sprite.flip_h)
+	## sync_flip_h setter handles scale.x on the Player root.
+	## No additional facing update needed on non-authority peers.
+	pass
 
 
 # =========================================================

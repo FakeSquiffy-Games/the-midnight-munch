@@ -1,3 +1,7 @@
+## PlayerController.gd
+## Handles input and movement for the local player fish.
+## Runs movement locally on the authority client for responsiveness.
+## Boost intent is sent to the server via RPC — energy is server-authoritative.
 class_name PlayerController
 extends Node
 
@@ -15,8 +19,7 @@ const BOOST_MULTIPLIER: float = 1.8
 
 var _player:       CharacterBody2D
 var _stat_manager: StatManager
-var _sprite:       AnimatedSprite2D
-var _mouth: MouthArea  # New reference
+var _mouth:        MouthArea
 
 
 # =========================================================
@@ -26,11 +29,12 @@ var _mouth: MouthArea  # New reference
 func _ready() -> void:
 	_player       = owner as CharacterBody2D
 	_stat_manager = owner.get_node("components/StatManager") as StatManager
+	## _mouth is assigned by Player.load_model() after the model is instantiated.
+	## It is null here — do not access it in _ready().
 
 
 func _physics_process(_delta: float) -> void:
-	## Guard against processing after the player node has been freed
-	## or during the elimination cleanup window.
+	## Guard against processing after elimination or before model is loaded.
 	if not is_instance_valid(_player) or not is_instance_valid(_stat_manager):
 		return
 
@@ -44,9 +48,7 @@ func _physics_process(_delta: float) -> void:
 	if multiplayer.is_server():
 		_set_boost_intent(wants_boost)
 	else:
-		## Mirror the server's energy logic locally so current_energy
-		## reaches zero at the same frame on the client, preventing
-		## a one-frame boost overshoot while waiting for the sync.
+		## Mirror server energy logic locally to prevent one-frame overshoot.
 		if wants_boost and _stat_manager.current_energy > 0.0:
 			_stat_manager.current_energy -= _stat_manager.energy_drain_rate * delta
 			_stat_manager.current_energy  = maxf(_stat_manager.current_energy, 0.0)
@@ -57,9 +59,7 @@ func _physics_process(_delta: float) -> void:
 				_stat_manager.current_energy + _stat_manager.energy_regen_rate * delta,
 				_stat_manager.max_energy)
 		_set_boost_intent.rpc_id(1, wants_boost)
-	
-	#print("Energy: %.1f | Boosting: %s" % [_stat_manager.current_energy, str(_stat_manager.is_boosting)])
-	
+
 	var current_speed := _stat_manager.speed
 	if _stat_manager.is_boosting:
 		current_speed *= BOOST_MULTIPLIER
@@ -77,6 +77,7 @@ func _physics_process(_delta: float) -> void:
 # INPUT
 # =========================================================
 
+## Returns a normalised movement vector from arrow key input.
 func _get_input_direction() -> Vector2:
 	var dir := Vector2.ZERO
 	dir.x    = Input.get_axis("move_left", "move_right")
@@ -84,7 +85,8 @@ func _get_input_direction() -> Vector2:
 	return dir.normalized()
 
 
-## Replace _update_facing in PlayerController.gd
+## Updates sync_flip_h on the Player root to flip the entire node
+## including CollisionPolygons. MouthArea follows automatically.
 func _update_facing(direction: Vector2) -> void:
 	if direction.x > 0.01:
 		_player.sync_flip_h = false
@@ -96,6 +98,8 @@ func _update_facing(direction: Vector2) -> void:
 # BOOST RPC
 # =========================================================
 
+## Received by the server from the authority client each physics frame.
+## Server resolves energy drain/regen and sets is_boosting authoritatively.
 @rpc("any_peer", "call_local", "unreliable")
 func _set_boost_intent(wants_boost: bool) -> void:
 	if not multiplayer.is_server():
@@ -113,8 +117,6 @@ func _set_boost_intent(wants_boost: bool) -> void:
 			_stat_manager.current_energy + _stat_manager.energy_regen_rate * delta,
 			_stat_manager.max_energy)
 
-	## Use RPC emit so the signal fires on all peers, not just the server.
-	## This ensures the client's HUD receives the update.
 	SignalBus.emit_energy_changed.rpc(
 		_player.get_multiplayer_authority(),
 		_stat_manager.current_energy,
@@ -125,6 +127,8 @@ func _set_boost_intent(wants_boost: bool) -> void:
 # POSITION REPORTING
 # =========================================================
 
+## Received by the server each physics frame from the authority client.
+## Updates server-side position for reconciliation in Player.gd.
 @rpc("any_peer", "call_remote", "unreliable")
 func _report_position(client_pos: Vector2) -> void:
 	if not multiplayer.is_server():
