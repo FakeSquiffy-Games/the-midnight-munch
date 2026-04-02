@@ -51,18 +51,18 @@ func _on_area_entered(area: Area2D) -> void:
 
 	## BodyArea → PlayerModel → Player (CharacterBody2D)
 	var target := area.get_parent().get_parent() as CharacterBody2D
-	if target == null:
-		return
-	if target == _player:
+	if target == null or target == _player:
 		return
 
-	var target_peer_id   := target.get_multiplayer_authority()
+	## Send the absolute NodePath instead of peer_id to uniquely 
+	## identify players, NPCs, and collectibles.
+	var target_path      := str(target.get_path())
 	var attacker_peer_id := _player.get_multiplayer_authority()
 
-	print("MouthArea: Detected overlap with peer %d — sending request_bite." \
-		% target_peer_id)
+	print("MouthArea: Detected overlap with %s — sending request_bite." \
+		% target.name)
 
 	if multiplayer.is_server():
-		_player.request_bite(attacker_peer_id, target_peer_id)
+		_player.request_bite(attacker_peer_id, target_path)
 	else:
-		_player.request_bite.rpc_id(1, attacker_peer_id, target_peer_id)
+		_player.request_bite.rpc_id(1, attacker_peer_id, target_path)

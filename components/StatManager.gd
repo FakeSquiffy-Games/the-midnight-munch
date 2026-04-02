@@ -85,6 +85,10 @@ var current_xp:     float = 0.0
 var current_energy: float = 100.0
 var is_boosting:    bool  = false
 
+## Tracks active timed boosts: Array of Dictionary 
+## {"stat": StatType, "amount": float, "time_left": float}
+var _active_boosts: Array[Dictionary] =[]
+
 
 # =========================================================
 # DERIVED PROPERTIES
@@ -117,11 +121,58 @@ func get_level_xp_gap() -> float:
 
 
 # =========================================================
-# BOOST APPLICATION (server only)
-## Called by EffectComponent in Phase 5.
+# LIFECYCLE
 # =========================================================
 
-## Applies a stat boost of [amount] to [stat] for [duration] seconds.
-## duration = 0 means permanent. Full implementation in Phase 5.
-func apply_boost(stat: StatType, amount: float, duration: float) -> void:
-	push_warning("StatManager.apply_boost() — not yet implemented (Phase 5).")
+func _ready() -> void:
+	## Disable process by default to save overhead. 
+	## Only enabled when active timed boosts exist.
+	set_process(false)
+	SignalBus.boost_applied.connect(_on_boost_applied)
+
+func _process(delta: float) -> void:
+	## Both Client and Server tick down the timer for smooth client prediction!
+	## Iterate backwards to safely remove items while looping
+	for i in range(_active_boosts.size() - 1, -1, -1):
+		var boost: Dictionary = _active_boosts[i]
+		boost.time_left -= delta
+		
+		print("Time left: ", boost.time_left)
+		
+		if boost.time_left <= 0.0:
+			_modify_stat(boost.stat, -boost.amount) # Reverse the boost
+			_active_boosts.remove_at(i)
+	
+	if _active_boosts.is_empty():
+		set_process(false)
+
+# =========================================================
+# BOOST APPLICATION (Symmetric)
+# =========================================================
+
+func _on_boost_applied(peer_id: int, stat: int, amount: float, duration: float) -> void:
+	## Only apply if this StatManager belongs to the targeted fish
+	if owner.get_multiplayer_authority() != peer_id:
+		return
+		
+	_modify_stat(stat, amount)
+	
+	if duration > 0.0:
+		_active_boosts.append({
+			"stat": stat,
+			"amount": amount,
+			"time_left": duration
+		})
+		set_process(true)
+
+func _modify_stat(stat: StatType, amount: float) -> void:
+	match stat:
+		StatType.SPEED:               speed += amount
+		StatType.TURN_RATE:           turn_rate += amount
+		StatType.XP_GAIN_MULTIPLIER:  xp_gain_multiplier += amount
+		StatType.BITE_POWER:          bite_power += amount
+		StatType.MAX_ENERGY:
+			max_energy += amount
+			current_energy = minf(current_energy, max_energy)
+		StatType.ENERGY_REGEN_RATE:   energy_regen_rate += amount
+		StatType.ENERGY_DRAIN_RATE:   energy_drain_rate += amount

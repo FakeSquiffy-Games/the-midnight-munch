@@ -198,35 +198,29 @@ func _disable_all_processing() -> void:
 # =========================================================
 
 @rpc("any_peer", "call_remote", "reliable")
-func request_bite(attacker_peer_id: int, target_peer_id: int) -> void:
+func request_bite(attacker_peer_id: int, target_path_str: String) -> void:
 	if not multiplayer.is_server():
 		return
 
-	if not GameState.alive_peers.has(target_peer_id):
-		print("Player: request_bite ignored — target peer %d already eliminated." \
-			% target_peer_id)
-		return
-
 	if not GameState.alive_peers.has(attacker_peer_id):
-		print("Player: request_bite ignored — attacker peer %d already eliminated." \
-			% attacker_peer_id)
 		return
-
-	print("Player: request_bite received — attacker peer %d → target peer %d." \
-		% [attacker_peer_id, target_peer_id])
 
 	var attacker := GameState.get_player_node(attacker_peer_id) as CharacterBody2D
-	var defender := GameState.get_player_node(target_peer_id)   as CharacterBody2D
-
 	if attacker == null:
-		push_warning("Player: request_bite — attacker node not found for peer %d." \
-			% attacker_peer_id)
 		return
 
+	## Resolve the exact node (Player, NPC, or Collectible)
+	var defender := get_node_or_null(NodePath(target_path_str)) as CharacterBody2D
 	if defender == null:
-		push_warning("Player: request_bite — defender node not found for peer %d." \
-			% target_peer_id)
+		push_warning("Player: request_bite — target not found at path: %s" % target_path_str)
 		return
+
+	## If the target is a player, ensure they are still alive
+	if defender.is_in_group("players"):
+		var target_peer_id := defender.get_multiplayer_authority()
+		if not GameState.alive_peers.has(target_peer_id):
+			print("Player: request_bite ignored — target peer %d already eliminated." % target_peer_id)
+			return
 
 	CombatResolver.process_bite_request(attacker, defender)
 
@@ -239,13 +233,20 @@ func _configure_synchronizer() -> void:
 	var config := SceneReplicationConfig.new()
 
 	var props := [
-		{"path": ".:position",                            "on_change": false, "spawn": true},
-		{"path": ".:rotation",                            "on_change": false, "spawn": true},
-		{"path": ".:scale",                               "on_change": true,  "spawn": true},
-		{"path": ".:sync_flip_h",                         "on_change": true,  "spawn": true},
-		{"path": "components/StatManager:is_boosting",    "on_change": true,  "spawn": true},
-		{"path": "components/StatManager:current_energy", "on_change": true,  "spawn": true},
-		{"path": "components/StatManager:current_xp",     "on_change": true,  "spawn": true},
+		{"path": ".:position",                                "on_change": false, "spawn": true},
+		{"path": ".:rotation",                                "on_change": false, "spawn": true},
+		{"path": ".:scale",                                   "on_change": true,  "spawn": true},
+		{"path": ".:sync_flip_h",                             "on_change": true,  "spawn": true},
+		{"path": "components/StatManager:is_boosting",        "on_change": true,  "spawn": true},
+		{"path": "components/StatManager:current_energy",     "on_change": true,  "spawn": true},
+		{"path": "components/StatManager:current_xp",         "on_change": true,  "spawn": true},
+		#{"path": "components/StatManager:speed",              "on_change": true, "spawn": true},
+		#{"path": "components/StatManager:turn_rate",          "on_change": true, "spawn": true},
+		#{"path": "components/StatManager:xp_gain_multiplier", "on_change": true, "spawn": true},
+		#{"path": "components/StatManager:bite_power",         "on_change": true, "spawn": true},
+		#{"path": "components/StatManager:max_energy",         "on_change": true, "spawn": true},
+		#{"path": "components/StatManager:energy_regen_rate",  "on_change": true, "spawn": true},
+		#{"path": "components/StatManager:energy_drain_rate",  "on_change": true, "spawn": true},
 	]
 
 	for prop in props:

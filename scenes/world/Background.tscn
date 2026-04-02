@@ -1,3 +1,14 @@
 [gd_scene format=3 uid="uid://0a34poykosmn"]
 
+[ext_resource type="Texture2D" uid="uid://f6u6lyv8mh1s" path="res://assets/background/1.png" id="1_uldm6"]
+[ext_resource type="Texture2D" uid="uid://bbghoym7qalsm" path="res://assets/background/3.png" id="2_o7vx3"]
+
 [node name="Background" type="Node2D" unique_id=680405929]
+
+[node name="OceanBackdrop" type="Sprite2D" parent="." unique_id=787131291]
+scale = Vector2(6, 6)
+texture = ExtResource("1_uldm6")
+
+[node name="Shipwreck" type="Sprite2D" parent="." unique_id=23733215]
+scale = Vector2(6, 6)
+texture = ExtResource("2_o7vx3")

@@ -87,3 +87,9 @@ func emit_tier_changed(peer_id: int, new_tier: int) -> void:
 @rpc("authority", "call_local", "reliable")
 func emit_player_eliminated(peer_id: int) -> void:
 	player_eliminated.emit(peer_id)
+
+
+## Broadcasts boost_applied to all peers.
+@rpc("authority", "call_local", "reliable")
+func emit_boost_applied(peer_id: int, stat: int, amount: float, duration: float) -> void:
+	boost_applied.emit(peer_id, stat, amount, duration)

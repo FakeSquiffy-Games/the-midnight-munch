@@ -65,47 +65,52 @@ static func process_bite_request(
 
 ## Resolves and applies the combat outcome for attacker vs defender.
 ## Must only be called on the server.
-static func apply(
-		attacker: CharacterBody2D,
-		defender: CharacterBody2D) -> void:
+static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
+	
+	## PHASE 5: INTERCEPT COLLECTIBLES
+	var effect := defender.get_node_or_null("components/EffectComponent") as EffectComponent
+	if effect:
+		effect.apply_to(attacker)
+		print("CombatResolver: Peer %d collected a boost!" % attacker.get_multiplayer_authority())
+		return
 
 	var result           := resolve(attacker, defender)
 	var defender_peer_id := defender.get_multiplayer_authority()
 	var attacker_peer_id := attacker.get_multiplayer_authority()
 	var is_npc_attacker  := not attacker.is_in_group("players")
+	var is_npc_defender  := not defender.is_in_group("players")
 
 	match result:
-
 		Result.ELIMINATION:
-			print("CombatResolver: ELIMINATION — peer %d eliminated by peer %d." \
-				% [defender_peer_id, attacker_peer_id])
-			## Award XP to attacker unless it is an NPC.
-			if not is_npc_attacker:
-				var d_stat: StatManager = defender.get_node("components/StatManager")
-				var reward := maxf(
-					d_stat.current_xp * KILL_XP_ATTACKER_SHARE,
-					ELIMINATION_MIN_XP)
-				_apply_xp_gain(attacker, reward)
-			GameState.eliminate_player(defender_peer_id)
-			SignalBus.emit_player_eliminated.rpc(defender_peer_id)
+			if is_npc_defender:
+				defender.queue_free()
+			else:
+				print("CombatResolver: ELIMINATION — peer %d eliminated by %s." \
+					% [defender_peer_id, attacker.name])
+				if not is_npc_attacker:
+					var d_stat: StatManager = defender.get_node("components/StatManager")
+					var reward := maxf(d_stat.current_xp * KILL_XP_ATTACKER_SHARE, ELIMINATION_MIN_XP)
+					_apply_xp_gain(attacker, reward)
+				GameState.eliminate_player(defender_peer_id)
+				SignalBus.emit_player_eliminated.rpc(defender_peer_id)
 
 		Result.KILL:
-			if attacker.is_in_group("players"):
-				## PvP KILL — immediate elimination with XP reward.
+			if is_npc_defender:
+				## Player or NPC killed an NPC
+				defender.queue_free()
+			elif is_npc_attacker:
+				## NPC killed a Player
+				print("CombatResolver: NPC KILL — peer %d demoted by NPC." % defender_peer_id)
+				_apply_npc_demotion(defender)
+			else:
+				## Player killed a Player
 				print("CombatResolver: PvP KILL — peer %d eliminated by peer %d." \
 					% [defender_peer_id, attacker_peer_id])
 				var d_stat: StatManager = defender.get_node("components/StatManager")
-				var reward := maxf(
-					d_stat.current_xp * KILL_XP_ATTACKER_SHARE,
-					ELIMINATION_MIN_XP)
+				var reward := maxf(d_stat.current_xp * KILL_XP_ATTACKER_SHARE, ELIMINATION_MIN_XP)
 				_apply_xp_gain(attacker, reward)
 				GameState.eliminate_player(defender_peer_id)
 				SignalBus.emit_player_eliminated.rpc(defender_peer_id)
-			else:
-				## NPC KILL — subtract one level's XP gap, no XP reward.
-				print("CombatResolver: NPC KILL — peer %d demoted by NPC." \
-					% defender_peer_id)
-				_apply_npc_demotion(defender)
 
 		Result.BITE:
 			_apply_bite_xp_drain(attacker, defender)
@@ -228,21 +233,23 @@ static func _broadcast_xp_changes(
 
 	var stat: StatManager = target.get_node("components/StatManager")
 
-	## Always sync XP — update GameState record and broadcast to all peers.
-	GameState.update_player_xp(peer_id, stat.current_xp)
-	SignalBus.emit_xp_changed.rpc(peer_id, stat.current_xp)
+	## Safety Guard: Only update GameState and Broadcast to HUDs 
+	## if the entity is an actual player.
+	if target.is_in_group("players"):
+		GameState.update_player_xp(peer_id, stat.current_xp)
+		SignalBus.emit_xp_changed.rpc(peer_id, stat.current_xp)
 
-	if stat.level != old_level:
-		print("CombatResolver: Level changed — peer %d is now Level %d." \
-			% [peer_id, stat.level])
-		SignalBus.emit_level_changed.rpc(peer_id, stat.level)
-		if GameState.player_states.has(peer_id):
-			GameState.player_states[peer_id].level = stat.level
+		if stat.level != old_level:
+			print("CombatResolver: Level changed — peer %d is now Level %d." \
+				% [peer_id, stat.level])
+			SignalBus.emit_level_changed.rpc(peer_id, stat.level)
+			if GameState.player_states.has(peer_id):
+				GameState.player_states[peer_id].level = stat.level
 
-	if stat.tier != old_tier:
-		print("CombatResolver: Tier changed — peer %d is now Tier %d." \
-			% [peer_id, stat.tier])
-		SignalBus.emit_tier_changed.rpc(peer_id, stat.tier)
+		if stat.tier != old_tier:
+			print("CombatResolver: Tier changed — peer %d is now Tier %d." \
+				% [peer_id, stat.tier])
+			SignalBus.emit_tier_changed.rpc(peer_id, stat.tier)
 
 
 # =========================================================

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://cnji4tgb0kin1"]
+
+[ext_resource type="PackedScene" uid="uid://b86gwqu03y0ld" path="res://scenes/npc/CollectibleBase.tscn" id="1_tl34l"]
+[ext_resource type="PackedScene" uid="uid://haq4vpy2wtuk" path="res://scenes/npc/OrbModel.tscn" id="2_lpqdd"]
+[ext_resource type="Script" uid="uid://co6bf34obr1jf" path="res://components/SwimUpBehavior.gd" id="3_2xfei"]
+
+[node name="LuminousOrb" unique_id=1757824682 instance=ExtResource("1_tl34l")]
+
+[node name="CollectibleModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_lpqdd")]
+
+[node name="EffectComponent" parent="components" parent_id_path=PackedInt32Array(147846176) index="1" unique_id=1919398075]
+stat = 1
+boost_amount = 10.0
+
+[node name="SwimUpBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(147846176) index="2" unique_id=1807863199]
+script = ExtResource("3_2xfei")

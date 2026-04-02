@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://b86gwqu03y0ld"]
+
+[ext_resource type="Script" uid="uid://clyard5unte54" path="res://scenes/npc/Collectible.gd" id="1_80dvp"]
+[ext_resource type="Script" uid="uid://bqracccb3021n" path="res://components/StatManager.gd" id="2_loe0h"]
+[ext_resource type="Script" uid="uid://otxu8qtsgxyp" path="res://components/EffectComponent.gd" id="3_p6rku"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tpbq3"]
+
+[node name="CollectibleBase" type="CharacterBody2D" unique_id=1757824682]
+collision_layer = 4
+script = ExtResource("1_80dvp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=502109782]
+
+[node name="components" type="Node" parent="." unique_id=147846176]
+
+[node name="StatManager" type="Node" parent="components" unique_id=111400448]
+script = ExtResource("2_loe0h")
+
+[node name="EffectComponent" type="Node" parent="components" unique_id=1919398075]
+script = ExtResource("3_p6rku")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1378687066]
+replication_config = SubResource("SceneReplicationConfig_tpbq3")
