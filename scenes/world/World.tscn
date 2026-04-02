@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://d16dycysxnh0v" path="res://scenes/world/WorldBorder.tscn" id="2_qxiha"]
 [ext_resource type="Script" uid="uid://digjhnxhwxnr0" path="res://scenes/world/CollectibleSpawner.gd" id="3_qxiha"]
 [ext_resource type="PackedScene" uid="uid://cnji4tgb0kin1" path="res://scenes/npc/LuminousOrb.tscn" id="5_i1jm3"]
+[ext_resource type="PackedScene" uid="uid://cys8ay5tpe7fq" path="res://scenes/npc/GhostShark.tscn" id="5_qh0kd"]
 [ext_resource type="PackedScene" uid="uid://ci05u7nvr0yn1" path="res://scenes/npc/DartEel.tscn" id="6_252at"]
 
 [node name="World" type="Node2D" unique_id=1791530930]
@@ -18,6 +19,11 @@ PLAYER_MODELS = Array[String](["res://scenes/player/BlackSeadevilModel.tscn", "r
 
 [node name="NPCSpawner" type="Node" parent="." unique_id=904507801]
 script = ExtResource("2_gbddb")
+npc_scenes = Array[PackedScene]([ExtResource("5_qh0kd")])
+
+[node name="NPCSynchronizer" type="MultiplayerSpawner" parent="NPCSpawner" unique_id=1174939102]
+_spawnable_scenes = PackedStringArray("uid://cys8ay5tpe7fq")
+spawn_path = NodePath("..")
 
 [node name="CollectibleSpawner" type="Node" parent="." unique_id=254830818]
 script = ExtResource("3_qxiha")

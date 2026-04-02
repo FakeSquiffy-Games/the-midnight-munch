@@ -44,7 +44,7 @@ signal boost_state_changed(peer_id: int, is_boosting: bool)
 signal collectible_collected(player: Node, effect: Node)
 
 ## Emitted on all peers after a stat boost is applied.
-signal boost_applied(peer_id: int, stat: int, amount: float, duration: float)
+signal boost_applied(target_path: String, stat: int, amount: float, duration: float)
 
 
 # =========================================================
@@ -91,5 +91,5 @@ func emit_player_eliminated(peer_id: int) -> void:
 
 ## Broadcasts boost_applied to all peers.
 @rpc("authority", "call_local", "reliable")
-func emit_boost_applied(peer_id: int, stat: int, amount: float, duration: float) -> void:
-	boost_applied.emit(peer_id, stat, amount, duration)
+func emit_boost_applied(target_path: String, stat: int, amount: float, duration: float) -> void:
+	boost_applied.emit(target_path, stat, amount, duration)

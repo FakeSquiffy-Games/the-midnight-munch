@@ -8,10 +8,11 @@ extends Node
 func apply_to(target: CharacterBody2D) -> void:
 	if not multiplayer.is_server(): return
 	
-	var peer_id := target.get_multiplayer_authority()
+	## Use the absolute NodePath so the correct entity gets the boost
+	var target_path := str(target.get_path())
 	
 	## Tell ALL peers that this specific player got a boost.
 	## "call_local" ensures the server also applies it to its own simulation.
-	SignalBus.emit_boost_applied.rpc(peer_id, stat, boost_amount, duration)
+	SignalBus.emit_boost_applied.rpc(target_path, stat, boost_amount, duration)
 	
 	owner.queue_free() # Destroy the collectible entity

@@ -63,6 +63,15 @@ func _on_area_entered(area: Area2D) -> void:
 		% target.name)
 
 	if multiplayer.is_server():
-		_player.request_bite(attacker_peer_id, target_path)
+		if _player.is_in_group("players"):
+			## Host Player attacking
+			_player.request_bite(attacker_peer_id, target_path)
+		else:
+			## NPC attacking — resolve immediately
+			if target.is_in_group("npc_inedible"):
+				return
+			CombatResolver.process_bite_request(_player, target)
 	else:
-		_player.request_bite.rpc_id(1, attacker_peer_id, target_path)
+		## Client Player attacking
+		if _player.is_in_group("players"):
+			_player.request_bite.rpc_id(1, attacker_peer_id, target_path)

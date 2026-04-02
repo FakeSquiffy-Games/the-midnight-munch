@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://cys8ay5tpe7fq"]
+
+[ext_resource type="PackedScene" uid="uid://buts7ikkhoh5l" path="res://scenes/npc/NPCBase.tscn" id="1_mur42"]
+[ext_resource type="PackedScene" uid="uid://dr5yhsu1u6ro4" path="res://scenes/npc/SharkModel.tscn" id="2_5fbqb"]
+[ext_resource type="Script" uid="uid://b6pbye5y6vfnl" path="res://components/NPCBehavior.gd" id="3_3rojx"]
+
+[node name="NPCBase" unique_id=1757824682 instance=ExtResource("1_mur42")]
+
+[node name="NPCModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_5fbqb")]
+
+[node name="NPCBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(147846176) index="1" unique_id=1728903586]
+script = ExtResource("3_3rojx")

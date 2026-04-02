@@ -137,7 +137,7 @@ func _process(delta: float) -> void:
 		var boost: Dictionary = _active_boosts[i]
 		boost.time_left -= delta
 		
-		print("Time left: ", boost.time_left)
+		#print("Time left: ", boost.time_left)
 		
 		if boost.time_left <= 0.0:
 			_modify_stat(boost.stat, -boost.amount) # Reverse the boost
@@ -150,9 +150,9 @@ func _process(delta: float) -> void:
 # BOOST APPLICATION (Symmetric)
 # =========================================================
 
-func _on_boost_applied(peer_id: int, stat: int, amount: float, duration: float) -> void:
-	## Only apply if this StatManager belongs to the targeted fish
-	if owner.get_multiplayer_authority() != peer_id:
+func _on_boost_applied(target_path: String, stat: int, amount: float, duration: float) -> void:
+	## Only apply if this StatManager belongs to the targeted specific Node
+	if str(owner.get_path()) != target_path:
 		return
 		
 	_modify_stat(stat, amount)
