@@ -82,7 +82,7 @@ func _spawn_from_edge(scene: PackedScene) -> void:
 	active_special_fish += 1
 
 func _spawn_from_bottom(scene: PackedScene) -> void:
-	var entity := scene.instantiate() as Node2D
+	var entity := scene.instantiate() as Entity
 	
 	var start_x := randf_range(-1600.0, 1600.0)
 	var start_y := 1050.0 ## Spawn slightly below the ±972 boundary

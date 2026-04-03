@@ -55,7 +55,7 @@ func _count_npcs_in_levels(levels: Array[int]) -> int:
 	for child in get_children():
 		if child is NPC:
 			## Access stat_manager safely
-			var stat = child.get_node_or_null("components/StatManager")
+			var stat = child.get_node_or_null("StatManager")
 			if stat and stat.level in levels:
 				count += 1
 	return count

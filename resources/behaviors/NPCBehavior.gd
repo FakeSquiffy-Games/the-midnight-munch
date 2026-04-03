@@ -18,8 +18,8 @@ var state_timer: float = 0.0
 
 func _ready() -> void:
 	_entity = owner as CharacterBody2D
-	_stat_manager = _entity.get_node("components/StatManager")
-	_aggro_zone = _entity.get_node_or_null("AggroZone")
+	_stat_manager = _entity.get_node("StatManager")
+	_aggro_zone = _entity.get_node_or_null("components/AggroZone")
 	
 	if is_inedible:
 		_entity.add_to_group("npc_inedible")
@@ -91,7 +91,7 @@ func _return_to_wander() -> void:
 func _on_aggro_entered(area: Area2D) -> void:
 	if current_state == State.LUNGE: return
 	if not area is BodyArea: return
-	
+		
 	var potential_target := area.get_parent().get_parent() as CharacterBody2D
 	if potential_target == null or potential_target == _entity: return
 	if potential_target.is_in_group("npc_inedible"): return

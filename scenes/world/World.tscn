@@ -5,13 +5,13 @@
 [ext_resource type="Script" uid="uid://crvwqejbc25kl" path="res://scenes/world/NPCSpawner.gd" id="2_gbddb"]
 [ext_resource type="PackedScene" uid="uid://d16dycysxnh0v" path="res://scenes/world/WorldBorder.tscn" id="2_qxiha"]
 [ext_resource type="Script" uid="uid://digjhnxhwxnr0" path="res://scenes/world/CollectibleSpawner.gd" id="3_qxiha"]
-[ext_resource type="PackedScene" uid="uid://cnji4tgb0kin1" path="res://scenes/npc/LuminousOrb.tscn" id="5_i1jm3"]
-[ext_resource type="PackedScene" uid="uid://cys8ay5tpe7fq" path="res://scenes/npc/GhostShark.tscn" id="5_qh0kd"]
-[ext_resource type="PackedScene" uid="uid://ci05u7nvr0yn1" path="res://scenes/npc/DartEel.tscn" id="6_252at"]
+[ext_resource type="PackedScene" uid="uid://bkpgkgej43nof" path="res://scenes/entities/npc/GhostShark.tscn" id="5_qh0kd"]
+[ext_resource type="PackedScene" uid="uid://c5ln4ixptye0p" path="res://scenes/entities/npc/LuminousOrb.tscn" id="7_yr1n6"]
+[ext_resource type="PackedScene" uid="uid://4fbi7rsus0x7" path="res://scenes/entities/npc/DartEel.tscn" id="8_l5ull"]
 
 [node name="World" type="Node2D" unique_id=1791530930]
 script = ExtResource("1_6eebf")
-PLAYER_MODELS = Array[String](["res://scenes/player/BlackSeadevilModel.tscn", "res://scenes/player/FangtoothModel.tscn", "res://scenes/player/BlackSeadevilModel.tscn", "res://scenes/player/BlackSeadevilModel.tscn"])
+PLAYER_MODELS = Array[String](["res://resources/models/BlackSeadevilModel.tscn", "res://resources/models/FangtoothModel.tscn", "res://resources/models/BlackSeadevilModel.tscn", "res://resources/models/BlackSeadevilModel.tscn"])
 
 [node name="Background" parent="." unique_id=680405929 instance=ExtResource("2_252at")]
 
@@ -22,18 +22,18 @@ script = ExtResource("2_gbddb")
 npc_scenes = Array[PackedScene]([ExtResource("5_qh0kd")])
 
 [node name="NPCSynchronizer" type="MultiplayerSpawner" parent="NPCSpawner" unique_id=1174939102]
-_spawnable_scenes = PackedStringArray("uid://cys8ay5tpe7fq")
+_spawnable_scenes = PackedStringArray("uid://bkpgkgej43nof")
 spawn_path = NodePath("..")
 
 [node name="CollectibleSpawner" type="Node" parent="." unique_id=254830818]
 script = ExtResource("3_qxiha")
-floating_item_scenes = Array[PackedScene]([ExtResource("5_i1jm3")])
-special_fish_scenes = Array[PackedScene]([ExtResource("6_252at")])
+floating_item_scenes = Array[PackedScene]([ExtResource("7_yr1n6")])
+special_fish_scenes = Array[PackedScene]([ExtResource("8_l5ull")])
 
 [node name="CollectibleSynchronizer" type="MultiplayerSpawner" parent="CollectibleSpawner" unique_id=1241486364]
-_spawnable_scenes = PackedStringArray("uid://cnji4tgb0kin1", "uid://ci05u7nvr0yn1")
+_spawnable_scenes = PackedStringArray("uid://c5ln4ixptye0p", "uid://4fbi7rsus0x7")
 spawn_path = NodePath("..")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1611525323]
-_spawnable_scenes = PackedStringArray("uid://c3bsmdstw0ice")
+_spawnable_scenes = PackedStringArray("uid://bqqotvi7jha02")
 spawn_path = NodePath("..")

@@ -7,5 +7,8 @@ extends Area2D
 # =========================================================
 
 func _ready() -> void:
-	## No logic needed — kept for future reference if owner access is required.
-	pass
+	# Set built-in Area2D properties
+	monitoring = false
+	monitorable = true
+	collision_layer = 2
+	collision_mask = 0

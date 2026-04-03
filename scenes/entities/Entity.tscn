@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bn6gm81ktqm6v"]
+
+[ext_resource type="Script" uid="uid://n163r4g7n4it" path="res://scenes/entities/Entity.gd" id="1_o625d"]
+[ext_resource type="Script" uid="uid://bqracccb3021n" path="res://components/StatManager.gd" id="2_n1dph"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_4kuee"]
+
+[node name="Entity" type="CharacterBody2D" unique_id=1905748098]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_o625d")
+metadata/_custom_type_script = "uid://n163r4g7n4it"
+
+[node name="StatManager" type="Node" parent="." unique_id=400482168]
+script = ExtResource("2_n1dph")
+metadata/_custom_type_script = "uid://bqracccb3021n"
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1788138357]
+replication_config = SubResource("SceneReplicationConfig_4kuee")
+
+[node name="components" type="Node2D" parent="." unique_id=1883867421]

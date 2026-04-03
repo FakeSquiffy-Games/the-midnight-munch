@@ -1,7 +1,7 @@
 ## Player.gd
 ## Root script for the player fish entity.
 ## Phase XA: cleaned up dead code, fixed _on_synchronized, removed debug XP line.
-extends CharacterBody2D
+extends Entity
 
 
 # =========================================================
@@ -27,17 +27,11 @@ var spawn_peer_id:  int     = 1
 # =========================================================
 # NODE REFERENCES
 ## sprite, mouth_area, body_area are null until load_model() runs in _ready().
-## They are assigned by load_model() from the instantiated PlayerModel.
+## They are assigned by load_model() from the instantiated EntityModel.
 # =========================================================
 
-var sprite:     AnimatedSprite2D = null
-var mouth_area: MouthArea        = null
-var body_area:  BodyArea         = null
-
-@onready var stat_manager:      StatManager             = $components/StatManager
 @onready var player_controller: PlayerController        = $components/PlayerController
-@onready var synchronizer:      MultiplayerSynchronizer = $MultiplayerSynchronizer
-@onready var camera:            Camera2D                = $Camera2D
+@onready var camera:            Camera2D                = $components/Camera2D
 
 
 # =========================================================
@@ -46,14 +40,6 @@ var body_area:  BodyArea         = null
 
 ## Reference to this player's HUD — only set for the local player.
 var _hud: Node = null
-
-## Synced flip state — drives scale.x on the Player root so that
-## CollisionPolygons and the model flip together as a unit.
-var sync_flip_h: bool = false:
-	set(value):
-		if sync_flip_h != value:
-			scale.x *= -1
-		sync_flip_h = value
 
 
 # =========================================================
@@ -82,6 +68,7 @@ func _ready() -> void:
 	var peer_id := get_multiplayer_authority()
 	GameState.register_player_node(peer_id, self)
 
+	_generate_world_collision()
 	_configure_synchronizer()
 
 	SignalBus.player_eliminated.connect(_on_player_eliminated)
@@ -108,12 +95,12 @@ func load_model(model_scene: PackedScene) -> void:
 
 	## Remove existing model if present.
 	for child in get_children():
-		if child is PlayerModel:
+		if child is EntityModel:
 			child.queue_free()
 
-	var new_model := model_scene.instantiate() as PlayerModel
+	var new_model := model_scene.instantiate() as EntityModel
 	if new_model == null:
-		push_error("Player: model_scene did not instantiate as PlayerModel.")
+		push_error("Player: model_scene did not instantiate as EntityModel.")
 		return
 
 	add_child(new_model)
@@ -141,8 +128,8 @@ func _setup_local_player() -> void:
 	
 	## Clamp camera to world boundaries so it never pans outside.
 	## World spans -3840 to 3840 on X, -2160 to 2160 on Y.
-	camera.limit_left   = -1727.5
-	camera.limit_right  =  1727.5
+	camera.limit_left   = -1727
+	camera.limit_right  =  1727
 	camera.limit_top    = -972
 	camera.limit_bottom =  972
 
@@ -223,42 +210,6 @@ func request_bite(attacker_peer_id: int, target_path_str: String) -> void:
 			return
 
 	CombatResolver.process_bite_request(attacker, defender)
-
-
-# =========================================================
-# SYNCHRONIZER CONFIGURATION
-# =========================================================
-
-func _configure_synchronizer() -> void:
-	var config := SceneReplicationConfig.new()
-
-	var props := [
-		{"path": ".:position",                                "on_change": false, "spawn": true},
-		{"path": ".:rotation",                                "on_change": false, "spawn": true},
-		{"path": ".:scale",                                   "on_change": true,  "spawn": true},
-		{"path": ".:sync_flip_h",                             "on_change": true,  "spawn": true},
-		{"path": "components/StatManager:is_boosting",        "on_change": true,  "spawn": true},
-		{"path": "components/StatManager:current_energy",     "on_change": true,  "spawn": true},
-		{"path": "components/StatManager:current_xp",         "on_change": true,  "spawn": true},
-		#{"path": "components/StatManager:speed",              "on_change": true, "spawn": true},
-		#{"path": "components/StatManager:turn_rate",          "on_change": true, "spawn": true},
-		#{"path": "components/StatManager:xp_gain_multiplier", "on_change": true, "spawn": true},
-		#{"path": "components/StatManager:bite_power",         "on_change": true, "spawn": true},
-		#{"path": "components/StatManager:max_energy",         "on_change": true, "spawn": true},
-		#{"path": "components/StatManager:energy_regen_rate",  "on_change": true, "spawn": true},
-		#{"path": "components/StatManager:energy_drain_rate",  "on_change": true, "spawn": true},
-	]
-
-	for prop in props:
-		config.add_property(prop["path"])
-		config.property_set_replication_mode(
-			prop["path"],
-			SceneReplicationConfig.REPLICATION_MODE_ON_CHANGE
-				if prop["on_change"]
-				else SceneReplicationConfig.REPLICATION_MODE_ALWAYS)
-		config.property_set_spawn(prop["path"], prop["spawn"])
-
-	synchronizer.replication_config = config
 
 
 # =========================================================

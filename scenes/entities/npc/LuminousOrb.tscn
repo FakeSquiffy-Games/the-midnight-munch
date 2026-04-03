@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://c5ln4ixptye0p"]
+
+[ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_w4617"]
+[ext_resource type="PackedScene" uid="uid://cmyfqx3txmit4" path="res://resources/models/LuminousOrbModel.tscn" id="2_2f1on"]
+[ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_4m054"]
+[ext_resource type="Script" uid="uid://co6bf34obr1jf" path="res://resources/behaviors/SwimUpBehavior.gd" id="3_4m054"]
+[ext_resource type="Script" uid="uid://otxu8qtsgxyp" path="res://components/EffectComponent.gd" id="4_2f1on"]
+
+[node name="Entity" unique_id=1905748098 instance=ExtResource("1_w4617")]
+script = ExtResource("2_4m054")
+disable_mouth = true
+
+[node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_2f1on")]
+
+[node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="0" unique_id=372116760]
+script = ExtResource("4_2f1on")
+stat = 1
+boost_amount = 10.0
+metadata/_custom_type_script = "uid://otxu8qtsgxyp"
+
+[node name="SwimUpBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=888993067]
+script = ExtResource("3_4m054")
+metadata/_custom_type_script = "uid://co6bf34obr1jf"

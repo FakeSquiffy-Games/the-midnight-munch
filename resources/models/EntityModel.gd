@@ -1,6 +1,6 @@
-# PlayerModel.gd
-extends Node2D
-class_name PlayerModel
+# EntityModel.gd
+extends Area2D
+class_name EntityModel
 
 @export_group("Identity")
 @export var species_name: String = "Unnamed Fish"
@@ -8,7 +8,6 @@ class_name PlayerModel
 @export_group("Visuals")
 @export var base_scale: float = 1.0
 
-# References for the Player.gd to "grab"
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var mouth: MouthArea = $MouthArea
 @onready var body: BodyArea = $BodyArea

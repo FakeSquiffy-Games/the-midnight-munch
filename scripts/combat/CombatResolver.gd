@@ -88,7 +88,7 @@ static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 				print("CombatResolver: ELIMINATION — peer %d eliminated by %s." \
 					% [defender_peer_id, attacker.name])
 				if not is_npc_attacker:
-					var d_stat: StatManager = defender.get_node("components/StatManager")
+					var d_stat: StatManager = defender.get_node("StatManager")
 					var reward := maxf(d_stat.current_xp * KILL_XP_ATTACKER_SHARE, ELIMINATION_MIN_XP)
 					_apply_xp_gain(attacker, reward)
 				GameState.eliminate_player(defender_peer_id)
@@ -106,7 +106,7 @@ static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 				## Player killed a Player
 				print("CombatResolver: PvP KILL — peer %d eliminated by peer %d." \
 					% [defender_peer_id, attacker_peer_id])
-				var d_stat: StatManager = defender.get_node("components/StatManager")
+				var d_stat: StatManager = defender.get_node("StatManager")
 				var reward := maxf(d_stat.current_xp * KILL_XP_ATTACKER_SHARE, ELIMINATION_MIN_XP)
 				_apply_xp_gain(attacker, reward)
 				GameState.eliminate_player(defender_peer_id)
@@ -122,8 +122,8 @@ static func resolve(
 		attacker: CharacterBody2D,
 		defender: CharacterBody2D) -> Result:
 
-	var d_stat: StatManager = defender.get_node("components/StatManager")
-	var a_stat: StatManager = attacker.get_node("components/StatManager")
+	var d_stat: StatManager = defender.get_node("StatManager")
+	var a_stat: StatManager = attacker.get_node("StatManager")
 
 	## Death floor — any hit at Level 0 / 0 XP is always elimination.
 	if d_stat.level == 0 and d_stat.current_xp <= 0.0:
@@ -156,8 +156,8 @@ static func _apply_bite_xp_drain(
 		attacker: CharacterBody2D,
 		defender: CharacterBody2D) -> void:
 
-	var a_stat: StatManager  = attacker.get_node("components/StatManager")
-	var d_stat: StatManager  = defender.get_node("components/StatManager")
+	var a_stat: StatManager  = attacker.get_node("StatManager")
+	var d_stat: StatManager  = defender.get_node("StatManager")
 	var defender_peer_id     := defender.get_multiplayer_authority()
 
 	var xp_loss := _calculate_bite_xp(a_stat.level)
@@ -180,7 +180,7 @@ static func _apply_bite_xp_drain(
 ## Subtracts one full level's XP gap from the defender (NPC KILL path).
 ## NPC attacker gains no XP.
 static func _apply_npc_demotion(defender: CharacterBody2D) -> void:
-	var d_stat: StatManager = defender.get_node("components/StatManager")
+	var d_stat: StatManager = defender.get_node("StatManager")
 	var xp_gap              := d_stat.get_level_xp_gap()
 	_apply_xp_loss(defender, xp_gap)
 
@@ -195,7 +195,7 @@ static func _apply_npc_demotion(defender: CharacterBody2D) -> void:
 ## Subtracts [amount] XP from [target], clamps to 0, then broadcasts
 ## xp_changed and any resulting level/tier changes to all peers.
 static func _apply_xp_loss(target: CharacterBody2D, amount: float) -> void:
-	var stat: StatManager = target.get_node("components/StatManager")
+	var stat: StatManager = target.get_node("StatManager")
 	var peer_id           := target.get_multiplayer_authority()
 	var old_level         := stat.level
 	var old_tier          := stat.tier
@@ -208,7 +208,7 @@ static func _apply_xp_loss(target: CharacterBody2D, amount: float) -> void:
 ## Adds [amount] XP to [target], then broadcasts xp_changed and any
 ## resulting level/tier changes to all peers.
 static func _apply_xp_gain(target: CharacterBody2D, amount: float) -> void:
-	var stat: StatManager = target.get_node("components/StatManager")
+	var stat: StatManager = target.get_node("StatManager")
 	var peer_id           := target.get_multiplayer_authority()
 	var old_level         := stat.level
 	var old_tier          := stat.tier
@@ -231,7 +231,7 @@ static func _broadcast_xp_changes(
 		old_level: int,
 		old_tier: int) -> void:
 
-	var stat: StatManager = target.get_node("components/StatManager")
+	var stat: StatManager = target.get_node("StatManager")
 
 	## Safety Guard: Only update GameState and Broadcast to HUDs 
 	## if the entity is an actual player.

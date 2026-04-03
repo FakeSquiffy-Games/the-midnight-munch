@@ -107,7 +107,7 @@ func _spawn_all_players() -> void:
 ## Spawn function called on ALL peers by MultiplayerSpawner.
 ## Must return the Node to be added to the scene tree.
 func _spawn_player(data: Dictionary) -> Node:
-	var player_scene := preload("res://scenes/player/Player.tscn")
+	var player_scene := preload("res://scenes/entities/player/Player.tscn")
 	var player       := player_scene.instantiate()
 
 	var peer_id: int      = data["peer_id"]

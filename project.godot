@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Feeding Frenzy"
-config/version="0.4.0"
+config/version="0.4.1"
 run/main_scene="res://scenes/ui/LobbyUI.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -64,9 +64,9 @@ boost={
 
 [layer_names]
 
-2d_physics/layer_1="world"
-2d_physics/layer_2="combat"
-2d_physics/layer_3="player_body"
+2d_physics/layer_1="environment"
+2d_physics/layer_2="entity_bodies"
+2d_physics/version="0.4.0"
 
 [physics]
 

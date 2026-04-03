@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bqqotvi7jha02"]
+
+[ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_afppm"]
+[ext_resource type="Script" uid="uid://dl6eulywybtmw" path="res://scenes/entities/player/Player.gd" id="2_30dhn"]
+[ext_resource type="Script" uid="uid://cbqcdl6yaa0wc" path="res://components/PlayerController.gd" id="2_n1xdv"]
+
+[node name="Entity" unique_id=1905748098 instance=ExtResource("1_afppm")]
+script = ExtResource("2_30dhn")
+reconcile_threshold = 50.0
+fish_model = null
+
+[node name="Camera2D" type="Camera2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="0" unique_id=1891725811]
+zoom = Vector2(0.5, 0.5)
+
+[node name="PlayerController" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=2099270104]
+script = ExtResource("2_n1xdv")
+metadata/_custom_type_script = "uid://cbqcdl6yaa0wc"

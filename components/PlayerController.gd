@@ -28,7 +28,7 @@ var _mouth:        MouthArea
 
 func _ready() -> void:
 	_player       = owner as CharacterBody2D
-	_stat_manager = owner.get_node("components/StatManager") as StatManager
+	_stat_manager = owner.get_node("StatManager") as StatManager
 	## _mouth is assigned by Player.load_model() after the model is instantiated.
 	## It is null here — do not access it in _ready().
 

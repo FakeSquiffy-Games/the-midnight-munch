@@ -1,7 +1,7 @@
 ## MouthArea.gd
 ## Collision area at the fish snout. Detects BodyArea overlaps on the
 ## authority client only and sends request_bite RPC to the server.
-## Positioned and scaled via PlayerModel — no hardcoded offsets needed.
+## Positioned and scaled via EntityModel — no hardcoded offsets needed.
 class_name MouthArea
 extends Area2D
 
@@ -18,7 +18,13 @@ var _player: CharacterBody2D
 # =========================================================
 
 func _ready() -> void:
-	## Walk up: MouthArea → PlayerModel → Player (CharacterBody2D).
+	# Set built-in Area2D properties
+	monitoring = true
+	monitorable = false
+	collision_layer = 0
+	collision_mask = 2
+	
+	## Walk up: MouthArea → EntityModel → Player (CharacterBody2D).
 	_player = get_parent().get_parent() as CharacterBody2D
 
 	## Only the authority client monitors overlaps — prevents duplicate
@@ -49,7 +55,7 @@ func _on_area_entered(area: Area2D) -> void:
 	if not area is BodyArea:
 		return
 
-	## BodyArea → PlayerModel → Player (CharacterBody2D)
+	## BodyArea → EntityModel → Player (CharacterBody2D)
 	var target := area.get_parent().get_parent() as CharacterBody2D
 	if target == null or target == _player:
 		return
