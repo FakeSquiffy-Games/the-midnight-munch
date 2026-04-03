@@ -21,11 +21,15 @@ extends Node
 var active_special_fish:   int = 0
 var active_floating_items: int = 0
 
+@onready var spawner: MultiplayerSpawner = $CollectibleSynchronizer
+
 # =========================================================
 # LIFECYCLE
 # =========================================================
 
 func _ready() -> void:
+	spawner.spawn_function = _spawn_custom
+	
 	if not multiplayer.is_server():
 		return
 		
@@ -49,20 +53,39 @@ func _ready() -> void:
 func _on_special_fish_timer_timeout() -> void:
 	if active_special_fish >= max_special_fish or special_fish_scenes.is_empty():
 		return
+		
+	var is_left := randf() > 0.5
+	var start_x := -1800.0 if is_left else 1800.0
+	var pos     := Vector2(start_x, randf_range(-850.0, 850.0))
 	
-	var scene: PackedScene = special_fish_scenes.pick_random()
-	_spawn_from_edge(scene)
+	spawner.spawn({ "type": "special", "index": randi() % special_fish_scenes.size(), "pos": pos })
 
 func _on_floating_item_timer_timeout() -> void:
 	if active_floating_items >= max_floating_items or floating_item_scenes.is_empty():
 		return
 		
-	var scene: PackedScene = floating_item_scenes.pick_random()
-	_spawn_from_bottom(scene)
+	var pos := Vector2(randf_range(-1600.0, 1600.0), 1050.0)
+	spawner.spawn({ "type": "floating", "index": randi() % floating_item_scenes.size(), "pos": pos })
 
 # =========================================================
 # SPAWN ROUTING
 # =========================================================
+
+func _spawn_custom(data: Dictionary) -> Node:
+	var entity: Entity
+	if data["type"] == "special":
+		entity = special_fish_scenes[data["index"]].instantiate() as Entity
+		if multiplayer.is_server():
+			entity.tree_exited.connect(func(): active_special_fish -= 1)
+			active_special_fish += 1
+	else:
+		entity = floating_item_scenes[data["index"]].instantiate() as Entity
+		if multiplayer.is_server():
+			entity.tree_exited.connect(func(): active_floating_items -= 1)
+			active_floating_items += 1
+			
+	entity.global_position = data["pos"]
+	return entity
 
 func _spawn_from_edge(scene: PackedScene) -> void:
 	var entity := scene.instantiate() as Node2D

@@ -2,7 +2,7 @@
 class_name NPCBehavior
 extends Node
 
-enum State { WANDER, LUNGE }
+enum State { WANDER, LUNGE, FLEE }
 
 @export var is_inedible: bool = false
 @export var wander_speed_multiplier: float = 0.4
@@ -14,7 +14,9 @@ var _aggro_zone: Area2D
 var current_state: State = State.WANDER
 var target: CharacterBody2D = null
 var wander_direction: Vector2 = Vector2.RIGHT
+
 var state_timer: float = 0.0
+var aggro_cooldown: float = 0.0
 
 func _ready() -> void:
 	_entity = owner as CharacterBody2D
@@ -26,58 +28,65 @@ func _ready() -> void:
 	
 	if multiplayer.is_server():
 		if _aggro_zone != null:
+			_aggro_zone.set_collision_mask_value(1, false)
+			_aggro_zone.set_collision_mask_value(3, true)
 			_aggro_zone.area_entered.connect(_on_aggro_entered)
 			
-		## Ensure they start by swimming roughly toward the center of the arena
 		var dir_to_center := _entity.global_position.direction_to(Vector2.ZERO)
 		wander_direction = dir_to_center.rotated(randf_range(-0.5, 0.5)).normalized()
 		state_timer = randf_range(2.0, 5.0)
 
+func trigger_cooldown(duration: float = 2.0) -> void:
+	aggro_cooldown = duration
+	_return_to_wander()
+
 func _physics_process(delta: float) -> void:
-	if not multiplayer.is_server(): return
-	if not is_instance_valid(_entity): return
+	if not multiplayer.is_server() or not is_instance_valid(_entity): return
+
+	if aggro_cooldown > 0.0:
+		aggro_cooldown -= delta
 
 	match current_state:
-		State.WANDER:
-			_process_wander(delta)
-		State.LUNGE:
-			_process_lunge()
+		State.WANDER: _process_wander(delta)
+		State.LUNGE:  _process_lunge()
+		State.FLEE:   _process_flee()
 			
 	_entity.move_and_slide()
-	_update_facing(_entity.velocity)
+	_entity.update_facing(_entity.velocity)
 
 func _process_wander(delta: float) -> void:
 	state_timer -= delta
-	if state_timer <= 0.0:
+	
+	## Wall Bounce Mechanic using built-in physics
+	if _entity.is_on_wall():
+		var normal := _entity.get_wall_normal()
+		wander_direction = normal.rotated(randf_range(-0.5, 0.5)).normalized()
+		state_timer = randf_range(2.0, 4.0)
+	elif state_timer <= 0.0:
 		_pick_new_wander_direction()
 		
 	_entity.velocity = wander_direction * (_stat_manager.speed * wander_speed_multiplier)
-	
-	## Prevent jitter trap: Force direction inward using abs() instead of *= -1
-	if _entity.global_position.x > 1700.0:
-		wander_direction.x = -abs(wander_direction.x)
-	elif _entity.global_position.x < -1700.0:
-		wander_direction.x = abs(wander_direction.x)
-
-	if _entity.global_position.y > 950.0:
-		wander_direction.y = -abs(wander_direction.y)
-	elif _entity.global_position.y < -950.0:
-		wander_direction.y = abs(wander_direction.y)
 
 func _process_lunge() -> void:
-	if not is_instance_valid(target) or target.is_queued_for_deletion():
-		_return_to_wander()
-		return
-		
-	var dist := _entity.global_position.distance_to(target.global_position)
-	if dist > 600.0: # Lose aggro if target escapes too far
-		_return_to_wander()
-		return
-
+	if not _is_target_valid(): return
 	var direction := _entity.global_position.direction_to(target.global_position)
 	_entity.velocity = direction * _stat_manager.speed
-	
-	#print("NPCBehavior: Lunging towards %s" % str(direction))
+
+func _process_flee() -> void:
+	if not _is_target_valid(): return
+	## Swim away with slight noise so it feels like a panicked fish
+	var away_dir := target.global_position.direction_to(_entity.global_position)
+	away_dir = away_dir.rotated(randf_range(-0.2, 0.2)).normalized()
+	_entity.velocity = away_dir * _stat_manager.speed
+
+func _is_target_valid() -> bool:
+	if not is_instance_valid(target) or target.is_queued_for_deletion():
+		_return_to_wander()
+		return false
+	if _entity.global_position.distance_to(target.global_position) > 750.0:
+		_return_to_wander()
+		return false
+	return true
 
 func _pick_new_wander_direction() -> void:
 	wander_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
@@ -89,7 +98,7 @@ func _return_to_wander() -> void:
 	_pick_new_wander_direction()
 
 func _on_aggro_entered(area: Area2D) -> void:
-	if current_state == State.LUNGE: return
+	if current_state != State.WANDER or aggro_cooldown > 0.0: return
 	if not area is BodyArea: return
 		
 	var potential_target := area.get_parent().get_parent() as CharacterBody2D
@@ -97,10 +106,11 @@ func _on_aggro_entered(area: Area2D) -> void:
 	if potential_target.is_in_group("npc_inedible"): return
 	
 	target = potential_target
-	current_state = State.LUNGE
-
-func _update_facing(direction: Vector2) -> void:
-	if direction.x > 0.01:
-		_entity.sync_flip_h = false
-	elif direction.x < -0.01:
-		_entity.sync_flip_h = true
+	var target_stat := target.get_node_or_null("StatManager") as StatManager
+	
+	if target_stat and target_stat.level > _stat_manager.level:
+		## Target is stronger. 60% chance to flee.
+		if randf() > 0.4:
+			current_state = State.FLEE
+	else:
+		current_state = State.LUNGE

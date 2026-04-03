@@ -71,46 +71,79 @@ static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 	var effect := defender.get_node_or_null("components/EffectComponent") as EffectComponent
 	if effect:
 		effect.apply_to(attacker)
-		print("CombatResolver: Peer %d collected a boost!" % attacker.get_multiplayer_authority())
-		return
+		print("CombatResolver: %s collected a boost!" % attacker.name)
+		#return
 
 	var result           := resolve(attacker, defender)
 	var defender_peer_id := defender.get_multiplayer_authority()
-	var attacker_peer_id := attacker.get_multiplayer_authority()
-	var is_npc_attacker  := not attacker.is_in_group("players")
-	var is_npc_defender  := not defender.is_in_group("players")
+	#var attacker_peer_id := attacker.get_multiplayer_authority()
+	#var is_npc_attacker  := not attacker.is_in_group("players")
+	#var is_npc_defender  := not defender.is_in_group("players")
+	var a_is_player      := attacker.is_in_group("players")
+	var d_is_player      := defender.is_in_group("players")
 
+	#match result:
+		#Result.ELIMINATION:
+			#if is_npc_defender:
+				#defender.queue_free()
+			#else:
+				#print("CombatResolver: ELIMINATION — peer %d eliminated by %s." \
+					#% [defender_peer_id, attacker.name])
+				#if not is_npc_attacker:
+					#var d_stat: StatManager = defender.get_node("StatManager")
+					#var reward := maxf(d_stat.current_xp * KILL_XP_ATTACKER_SHARE, ELIMINATION_MIN_XP)
+					#_apply_xp_gain(attacker, reward)
+				#GameState.eliminate_player(defender_peer_id)
+				#SignalBus.emit_player_eliminated.rpc(defender_peer_id)
+#
+		#Result.KILL:
+			#if is_npc_defender:
+				### Player or NPC killed an NPC
+				#defender.queue_free()
+			#elif is_npc_attacker:
+				### NPC killed a Player
+				#print("CombatResolver: NPC KILL — peer %d demoted by NPC." % defender_peer_id)
+				#_apply_npc_demotion(defender)
+			#else:
+				### Player killed a Player
+				#print("CombatResolver: PvP KILL — peer %d eliminated by peer %d." \
+					#% [defender_peer_id, attacker_peer_id])
+				#var d_stat: StatManager = defender.get_node("StatManager")
+				#var reward := maxf(d_stat.current_xp * KILL_XP_ATTACKER_SHARE, ELIMINATION_MIN_XP)
+				#_apply_xp_gain(attacker, reward)
+				#GameState.eliminate_player(defender_peer_id)
+				#SignalBus.emit_player_eliminated.rpc(defender_peer_id)
+#
+		#Result.BITE:
+			#_apply_bite_xp_drain(attacker, defender)
+	
 	match result:
-		Result.ELIMINATION:
-			if is_npc_defender:
-				defender.queue_free()
-			else:
-				print("CombatResolver: ELIMINATION — peer %d eliminated by %s." \
-					% [defender_peer_id, attacker.name])
-				if not is_npc_attacker:
-					var d_stat: StatManager = defender.get_node("StatManager")
-					var reward := maxf(d_stat.current_xp * KILL_XP_ATTACKER_SHARE, ELIMINATION_MIN_XP)
-					_apply_xp_gain(attacker, reward)
-				GameState.eliminate_player(defender_peer_id)
-				SignalBus.emit_player_eliminated.rpc(defender_peer_id)
-
-		Result.KILL:
-			if is_npc_defender:
-				## Player or NPC killed an NPC
-				defender.queue_free()
-			elif is_npc_attacker:
-				## NPC killed a Player
+		Result.ELIMINATION, Result.KILL:
+			
+			## 1. Handle the "Demotion" exception (NPC killing a Player, but not at Death Floor)
+			if result == Result.KILL and not a_is_player and d_is_player:
 				print("CombatResolver: NPC KILL — peer %d demoted by NPC." % defender_peer_id)
 				_apply_npc_demotion(defender)
-			else:
-				## Player killed a Player
-				print("CombatResolver: PvP KILL — peer %d eliminated by peer %d." \
-					% [defender_peer_id, attacker_peer_id])
+				return
+			
+			## 2. All other Kills/Eliminations result in the defender dying.
+			##    If the attacker is a player, calculate and award the XP share.
+			if a_is_player:
 				var d_stat: StatManager = defender.get_node("StatManager")
 				var reward := maxf(d_stat.current_xp * KILL_XP_ATTACKER_SHARE, ELIMINATION_MIN_XP)
 				_apply_xp_gain(attacker, reward)
+				print("CombatResolver: %s gained %.1f XP from killing %s." \
+					% [attacker.name, reward, defender.name])
+
+			## 3. Process the defender's actual removal
+			if d_is_player:
+				print("CombatResolver: Player %d eliminated by %s." \
+					% [defender_peer_id, attacker.name])
 				GameState.eliminate_player(defender_peer_id)
 				SignalBus.emit_player_eliminated.rpc(defender_peer_id)
+			else:
+				## Standard NPC removal (Will be swapped to Pool return in 6.5B)
+				defender.queue_free()
 
 		Result.BITE:
 			_apply_bite_xp_drain(attacker, defender)
@@ -124,25 +157,33 @@ static func resolve(
 
 	var d_stat: StatManager = defender.get_node("StatManager")
 	var a_stat: StatManager = attacker.get_node("StatManager")
+	var a_is_player         := attacker.is_in_group("players")
+	var d_is_player         := defender.is_in_group("players")
 
 	## Death floor — any hit at Level 0 / 0 XP is always elimination.
 	if d_stat.level == 0 and d_stat.current_xp <= 0.0:
 		return Result.ELIMINATION
 
-	## NPC KILL at Level 0 regardless of XP — no level below to subtract.
-	if d_stat.level == 0 and not attacker.is_in_group("players"):
-		return Result.KILL
+	### NPC KILL at Level 0 regardless of XP — no level below to subtract.
+	#if d_stat.level == 0 and not attacker.is_in_group("players"):
+		#return Result.KILL
 
 	var a_tier  := a_stat.tier
 	var a_level := a_stat.level
 	var d_tier  := d_stat.tier
 	var d_level := d_stat.level
 
-	if a_tier > d_tier:
-		return Result.KILL
-
-	if a_tier == d_tier and a_level >= d_level + 2:
-		return Result.KILL
+	if a_is_player and d_is_player:
+		## Player vs Player (The Privilege applies to the defender)
+		if a_tier > d_tier: return Result.KILL
+		if a_tier == d_tier and a_level >= d_level + 2: return Result.KILL
+	elif not a_is_player and d_is_player:
+		## NPC vs Player (The Privilege applies to the defender)
+		if a_tier > d_tier: return Result.KILL
+		if a_tier == d_tier and a_level >= d_level + 2: return Result.KILL
+	else:
+		## Fast Combat: Player vs NPC, or NPC vs NPC
+		if a_level > d_level: return Result.KILL
 
 	return Result.BITE
 
@@ -171,6 +212,16 @@ static func _apply_bite_xp_drain(
 	## Attacker gains a share of the actual XP drained.
 	var attacker_gain := actual_drain * BITE_XP_ATTACKER_SHARE
 	_apply_xp_gain(attacker, attacker_gain)
+
+	## NEW: Escape Burst! Defender gets a 1.5s flat +150 speed boost to escape.
+	var target_path := str(defender.get_path())
+	SignalBus.emit_boost_applied.rpc(target_path, StatManager.StatType.SPEED, 150.0, 1.5)
+
+	## NEW: Trigger Aggro Cooldown on AI to prevent infinite lunge loops
+	var a_ai := attacker.get_node_or_null("components/NPCBehavior") as NPCBehavior
+	var d_ai := defender.get_node_or_null("components/NPCBehavior") as NPCBehavior
+	if a_ai: a_ai.trigger_cooldown()
+	if d_ai: d_ai.trigger_cooldown()
 
 	print("CombatResolver: BITE — peer %d lost %.1f XP, peer %d gained %.1f XP." \
 		% [defender_peer_id, actual_drain,

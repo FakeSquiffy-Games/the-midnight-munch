@@ -18,12 +18,6 @@ var _player: CharacterBody2D
 # =========================================================
 
 func _ready() -> void:
-	# Set built-in Area2D properties
-	monitoring = true
-	monitorable = false
-	collision_layer = 0
-	collision_mask = 2
-	
 	## Walk up: MouthArea → EntityModel → Player (CharacterBody2D).
 	_player = get_parent().get_parent() as CharacterBody2D
 

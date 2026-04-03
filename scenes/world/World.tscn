@@ -22,7 +22,6 @@ script = ExtResource("2_gbddb")
 npc_scenes = Array[PackedScene]([ExtResource("5_qh0kd")])
 
 [node name="NPCSynchronizer" type="MultiplayerSpawner" parent="NPCSpawner" unique_id=1174939102]
-_spawnable_scenes = PackedStringArray("uid://bkpgkgej43nof")
 spawn_path = NodePath("..")
 
 [node name="CollectibleSpawner" type="Node" parent="." unique_id=254830818]
@@ -31,7 +30,6 @@ floating_item_scenes = Array[PackedScene]([ExtResource("7_yr1n6")])
 special_fish_scenes = Array[PackedScene]([ExtResource("8_l5ull")])
 
 [node name="CollectibleSynchronizer" type="MultiplayerSpawner" parent="CollectibleSpawner" unique_id=1241486364]
-_spawnable_scenes = PackedStringArray("uid://c5ln4ixptye0p", "uid://4fbi7rsus0x7")
 spawn_path = NodePath("..")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1611525323]

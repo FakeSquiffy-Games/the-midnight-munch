@@ -5,14 +5,18 @@ extends Node
 @export var npc_soft_cap:       int   = 15
 @export var spawn_interval:     float = 3.0
 @export var fodder_floor_count: int   = 5
-@export var fodder_levels:      Array[int] =[1, 2]
+@export var fodder_levels:      Array[int] = [0, 1]
 
 ## Models to spawn (e.g. FangtoothModel, BlackSeadevilModel)
 @export var npc_scenes: Array[PackedScene] = []
 
 var active_npcs: int = 0
+@onready var spawner: MultiplayerSpawner = $NPCSynchronizer
 
 func _ready() -> void:
+	## Both Server and Client must register the spawn function!
+	spawner.spawn_function = _spawn_custom
+	
 	if not multiplayer.is_server():
 		return
 		
@@ -27,7 +31,33 @@ func _on_spawn_timer_timeout() -> void:
 		return
 		
 	var level := _pick_spawn_level()
-	_spawn_from_edge(level)
+	var scene_index := randi() % npc_scenes.size()
+	
+	var is_left := randf() > 0.5
+	var start_x := -1800.0 if is_left else 1800.0
+	var start_y := randf_range(-850.0, 850.0)
+	var pos := Vector2(start_x, start_y)
+	
+	## Tell the spawner to execute _spawn_custom on all peers
+	spawner.spawn({
+		"scene_index": scene_index,
+		"level": level,
+		"pos": pos
+	})
+
+## Executes on ALL peers to build the node perfectly before it enters the tree.
+func _spawn_custom(data: Dictionary) -> Node:
+	var npc_scene: PackedScene = npc_scenes[data["scene_index"]]
+	var npc := npc_scene.instantiate() as NPC
+	
+	npc.spawn_level     = data["level"]
+	npc.global_position = data["pos"]
+	
+	if multiplayer.is_server():
+		npc.tree_exited.connect(func(): active_npcs -= 1)
+		active_npcs += 1
+		
+	return npc
 
 func _pick_spawn_level() -> int:
 	## Ensure fodder floor is maintained first

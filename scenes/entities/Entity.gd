@@ -74,17 +74,12 @@ func _generate_world_collision() -> void:
 	
 	## Create a physical clone for the CharacterBody2D
 	var world_poly := source_poly.duplicate() as CollisionPolygon2D
+	if world_poly == null: return
+	if model == null:
+		model = self.get_node_or_null("EntityModel") as EntityModel
+	if model == null: return
+	world_poly.scale = model.scale
 	add_child(world_poly)
-	
-	## CONFIGURE LAYERS:
-	## Layer 3 = Entity Body
-	## Mask 1  = World Boundaries (StaticBody2Ds)
-	collision_layer = 0
-	set_collision_layer_value(3, true)
-	
-	collision_mask = 0
-	set_collision_mask_value(1, true)
-
 
 ## Sets up replication based on whether this is a local player or a server-actor.
 func _configure_synchronizer() -> void:
@@ -110,3 +105,9 @@ func _configure_synchronizer() -> void:
 	config.property_set_replication_mode("StatManager:current_xp", SceneReplicationConfig.REPLICATION_MODE_ON_CHANGE)
 	
 	synchronizer.replication_config = config
+
+func update_facing(direction: Vector2) -> void:
+	if direction.x > 0.01:
+		sync_flip_h = false
+	elif direction.x < -0.01:
+		sync_flip_h = true

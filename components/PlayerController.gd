@@ -67,7 +67,7 @@ func _physics_process(_delta: float) -> void:
 	_player.velocity = direction * current_speed
 	_player.move_and_slide()
 
-	_update_facing(direction)
+	_player.update_facing(direction)
 
 	if not multiplayer.is_server():
 		_report_position.rpc_id(1, _player.global_position)
@@ -85,13 +85,13 @@ func _get_input_direction() -> Vector2:
 	return dir.normalized()
 
 
-## Updates sync_flip_h on the Player root to flip the entire node
-## including CollisionPolygons. MouthArea follows automatically.
-func _update_facing(direction: Vector2) -> void:
-	if direction.x > 0.01:
-		_player.sync_flip_h = false
-	elif direction.x < -0.01:
-		_player.sync_flip_h = true
+### Updates sync_flip_h on the Player root to flip the entire node
+### including CollisionPolygons. MouthArea follows automatically.
+#func _update_facing(direction: Vector2) -> void:
+	#if direction.x > 0.01:
+		#_player.sync_flip_h = false
+	#elif direction.x < -0.01:
+		#_player.sync_flip_h = true
 
 
 # =========================================================
