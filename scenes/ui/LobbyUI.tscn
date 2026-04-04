@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cesy3yp0ramj1"]
 
 [ext_resource type="Script" uid="uid://cjfleyadd0dtm" path="res://scenes/ui/LobbyUI.gd" id="1_wxsam"]
+[ext_resource type="PackedScene" uid="uid://rrqd40rhp53y" path="res://scenes/ui/SplashBackground.tscn" id="2_kpkqk"]
 
 [node name="LobbyUI" type="Control" unique_id=1011279643]
 layout_mode = 3
@@ -12,18 +13,31 @@ grow_vertical = 2
 script = ExtResource("1_wxsam")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=128440325]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1047925767]
 layout_mode = 2
+
+[node name="SinglePlayerButton" type="Button" parent="VBoxContainer" unique_id=369119842]
+layout_mode = 2
+text = "Start Solo Mode"
 
 [node name="HostButton" type="Button" parent="VBoxContainer" unique_id=1243543943]
 layout_mode = 2
 
 [node name="KeyLabel" type="Label" parent="VBoxContainer" unique_id=356740367]
 layout_mode = 2
+text = "Session"
 
 [node name="KeyInput" type="LineEdit" parent="VBoxContainer" unique_id=998289511]
 layout_mode = 2
@@ -34,12 +48,12 @@ layout_mode = 2
 [node name="StatusLabel" type="Label" parent="VBoxContainer" unique_id=481717741]
 layout_mode = 2
 
-[node name="SinglePlayerButton" type="Button" parent="VBoxContainer" unique_id=369119842]
-layout_mode = 2
-text = "Start Solo Mode"
-
 [node name="StartButton" type="Button" parent="VBoxContainer" unique_id=1527540966]
 visible = false
 layout_mode = 2
 disabled = true
 text = "Start Game"
+
+[node name="SplashBackground" parent="." unique_id=1273534731 instance=ExtResource("2_kpkqk")]
+z_index = 1
+layout_mode = 0
