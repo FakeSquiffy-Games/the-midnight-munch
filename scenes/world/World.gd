@@ -60,7 +60,16 @@ func _ready() -> void:
 
 	add_to_group("world")
 	spawner.spawn_function = _spawn_player
-	_notify_ready.rpc_id(1)
+	
+	if multiplayer.is_server():
+		## Check if everyone is somehow already ready, otherwise wait for signal
+		if GameState._peers_world_ready.size() >= GameState.player_states.size():
+			_spawn_all_players()
+		else:
+			GameState.all_ready_for_world.connect(_spawn_all_players)
+
+	## Notify the server's Autoload that this specific peer has loaded the scene
+	GameState.notify_world_loaded.rpc_id(1)
 
 
 # =========================================================

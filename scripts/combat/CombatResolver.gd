@@ -314,10 +314,25 @@ static func _calculate_bite_xp(attacker_level: int) -> float:
 
 ## Validates that attacker and defender are close enough for the bite
 ## to be plausible given LAN latency.
-static func _validate_distance(
-		attacker: CharacterBody2D,
-		defender: CharacterBody2D) -> bool:
-
-	var dist     := attacker.global_position.distance_to(defender.global_position)
+static func _validate_distance(attacker: CharacterBody2D, defender: CharacterBody2D) -> bool:
+	var attacker_id := attacker.get_multiplayer_authority()
+	var one_way_ping_ms := 0
+	
+	## FIX: Access multiplayer via the 'attacker' node
+	if attacker_id != 1 and attacker.multiplayer.multiplayer_peer is ENetMultiplayerPeer:
+		var enet := attacker.multiplayer.multiplayer_peer as ENetMultiplayerPeer
+		var rtt  := enet.get_peer(attacker_id).get_statistic(ENetPacketPeer.PEER_ROUND_TRIP_TIME)
+		one_way_ping_ms = rtt / 2
+	
+	var def_path := str(defender.get_path())
+	var past_pos := LagCompensator.get_historical_position(def_path, one_way_ping_ms)
+	
+	var def_pos := defender.global_position if past_pos == Vector2.INF else past_pos
+	var dist    := attacker.global_position.distance_to(def_pos)
+	
 	var max_dist := 120.0 + NETWORK_MARGIN
-	return dist <= max_dist
+	
+	if dist > max_dist:
+		print("CombatResolver: Bite rejected! Dist: %.1f, Ping: %dms" % [dist, one_way_ping_ms])
+		return false
+	return true

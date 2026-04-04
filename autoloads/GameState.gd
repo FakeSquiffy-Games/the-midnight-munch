@@ -3,6 +3,10 @@
 ## Clients read replicated values via MultiplayerSynchronizer — never directly.
 extends Node
 
+signal all_ready_for_world
+var _peers_world_ready: Array =[]
+var is_single_player: bool = false
+
 
 # =========================================================
 # TYPES
@@ -80,7 +84,9 @@ func reset() -> void:
 	player_states.clear()
 	alive_peers.clear()
 	player_nodes.clear()
+	_peers_world_ready.clear()
 	match_phase = MatchPhase.LOBBY
+	is_single_player = false
 	print("GameState: Reset.")
 
 
@@ -121,3 +127,17 @@ func max_player_level() -> int:
 		if player_states.has(peer_id):
 			mx = max(mx, player_states[peer_id].level)
 	return mx
+
+# Add the new Autoload Handshake RPC
+@rpc("any_peer", "call_local", "reliable")
+func notify_world_loaded() -> void:
+	if not multiplayer.is_server(): return
+	var sender := multiplayer.get_remote_sender_id()
+	if sender == 0: sender = 1
+
+	if not _peers_world_ready.has(sender):
+		_peers_world_ready.append(sender)
+		print("GameState: Peer %d loaded World. (%d/%d)" % [sender, _peers_world_ready.size(), player_states.size()])
+
+	if _peers_world_ready.size() >= player_states.size():
+		all_ready_for_world.emit()

@@ -34,6 +34,10 @@ layout_mode = 2
 [node name="StatusLabel" type="Label" parent="VBoxContainer" unique_id=481717741]
 layout_mode = 2
 
+[node name="SinglePlayerButton" type="Button" parent="VBoxContainer" unique_id=369119842]
+layout_mode = 2
+text = "Start Solo Mode"
+
 [node name="StartButton" type="Button" parent="VBoxContainer" unique_id=1527540966]
 visible = false
 layout_mode = 2

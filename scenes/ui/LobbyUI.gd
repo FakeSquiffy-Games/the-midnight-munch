@@ -15,6 +15,7 @@ extends Control
 @onready var join_button:  Button   = $VBoxContainer/JoinButton
 @onready var status_label: Label    = $VBoxContainer/StatusLabel
 @onready var start_button: Button   = $VBoxContainer/StartButton
+@onready var single_player_button: Button = $VBoxContainer/SinglePlayerButton
 
 
 # =========================================================
@@ -36,6 +37,7 @@ func _ready() -> void:
 	host_button.pressed.connect(_on_host_pressed)
 	join_button.pressed.connect(_on_join_pressed)
 	start_button.pressed.connect(_on_start_pressed)
+	single_player_button.pressed.connect(_on_single_player_pressed)
 
 	NetworkManager.player_connected.connect(_on_player_connected)
 	NetworkManager.player_disconnected.connect(_on_player_disconnected)
@@ -80,6 +82,12 @@ func _on_start_pressed() -> void:
 		return
 	start_button.disabled = true
 	NetworkManager.start_game()
+
+func _on_single_player_pressed() -> void:
+	host_button.disabled = true
+	join_button.disabled = true
+	single_player_button.disabled = true
+	NetworkManager.start_single_player()
 
 
 # =========================================================
@@ -141,3 +149,4 @@ func _reset_ui() -> void:
 	key_input.text        = ""
 	start_button.visible  = false
 	start_button.disabled = true
+	single_player_button.disabled = false

@@ -113,4 +113,6 @@ func _on_aggro_entered(area: Area2D) -> void:
 		if randf() > 0.4:
 			current_state = State.FLEE
 	else:
-		current_state = State.LUNGE
+		## Target is weaker. 40% chance to lunge.
+		if randf() > 0.6:
+			current_state = State.LUNGE

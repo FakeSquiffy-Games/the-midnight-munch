@@ -146,6 +146,25 @@ func start_game() -> void:
 	print("NetworkManager: Starting game — broadcasting countdown.")
 	_run_countdown.rpc()
 
+func start_single_player() -> void:
+	_stop_udp_broadcast()
+	
+	if multiplayer.multiplayer_peer:
+		multiplayer.multiplayer_peer.close()
+		
+	## FIX: Explicitly assign an OfflineMultiplayerPeer instead of null.
+	## This prevents all "multiplayer_peer.is_null()" errors across the game!
+	var offline_peer := OfflineMultiplayerPeer.new()
+	multiplayer.multiplayer_peer = offline_peer 
+	
+	GameState.reset()
+	GameState.is_single_player = true
+	GameState.register_player(1)
+	GameState.match_phase = GameState.MatchPhase.IN_GAME
+	
+	print("NetworkManager: Starting Single Player Mode.")
+	get_tree().change_scene_to_file("res://scenes/world/World.tscn")
+
 # =========================================================
 # SCENE TRANSITION RPC
 # =========================================================
