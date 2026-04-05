@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://u68kwrkyylce"]
 
 [ext_resource type="Script" uid="uid://bqdt72wsgjlkh" path="res://scenes/ui/HUD.gd" id="1_kw0id"]
+[ext_resource type="PackedScene" uid="uid://fpdyl33oib7j" path="res://scenes/ui/VirtualController.tscn" id="2_atyv1"]
 
 [node name="HUD" type="CanvasLayer" unique_id=1357385127]
 script = ExtResource("1_kw0id")
@@ -22,3 +23,5 @@ show_percentage = false
 layout_mode = 2
 value = 100.0
 show_percentage = false
+
+[node name="VirtualController" parent="." unique_id=2092010908 instance=ExtResource("2_atyv1")]
