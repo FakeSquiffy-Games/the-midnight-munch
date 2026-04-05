@@ -210,8 +210,10 @@ static func _apply_bite_xp_drain(
 	_apply_xp_loss(defender, actual_drain)
 
 	## Attacker gains a share of the actual XP drained.
-	var attacker_gain := actual_drain * BITE_XP_ATTACKER_SHARE
-	_apply_xp_gain(attacker, attacker_gain)
+	var attacker_gain := 0.0
+	if attacker.is_in_group("players"):
+		attacker_gain = actual_drain * BITE_XP_ATTACKER_SHARE
+		_apply_xp_gain(attacker, attacker_gain)
 
 	## NEW: Escape Burst! Defender gets a 1.5s flat +150 speed boost to escape.
 	var target_path := str(defender.get_path())
@@ -259,6 +261,9 @@ static func _apply_xp_loss(target: CharacterBody2D, amount: float) -> void:
 ## Adds [amount] XP to [target], then broadcasts xp_changed and any
 ## resulting level/tier changes to all peers.
 static func _apply_xp_gain(target: CharacterBody2D, amount: float) -> void:
+	if not target.is_in_group("players"):
+		return
+	
 	var stat: StatManager = target.get_node("StatManager")
 	var peer_id           := target.get_multiplayer_authority()
 	var old_level         := stat.level
@@ -318,7 +323,6 @@ static func _validate_distance(attacker: CharacterBody2D, defender: CharacterBod
 	var attacker_id := attacker.get_multiplayer_authority()
 	var one_way_ping_ms := 0
 	
-	## FIX: Access multiplayer via the 'attacker' node
 	if attacker_id != 1 and attacker.multiplayer.multiplayer_peer is ENetMultiplayerPeer:
 		var enet := attacker.multiplayer.multiplayer_peer as ENetMultiplayerPeer
 		var rtt  := enet.get_peer(attacker_id).get_statistic(ENetPacketPeer.PEER_ROUND_TRIP_TIME)
@@ -330,9 +334,25 @@ static func _validate_distance(attacker: CharacterBody2D, defender: CharacterBod
 	var def_pos := defender.global_position if past_pos == Vector2.INF else past_pos
 	var dist    := attacker.global_position.distance_to(def_pos)
 	
-	var max_dist := 120.0 + NETWORK_MARGIN
+	## FIX: Use a highly generous base radius. 
+	## Some fish models are long, putting the mouth far from the center.
+	## Since the client's physics engine already proved the polygons touched,
+	## this check just prevents extreme map-wide hacking.
+	var a_scale := 1.0
+	var d_scale := 1.0
+	if attacker is Entity: a_scale = attacker.current_scale_mult
+	if defender is Entity: d_scale = defender.current_scale_mult
+	
+	var base_radius := 180.0
+	var a_radius := base_radius * a_scale
+	var d_radius := base_radius * d_scale
+	
+	## Include a velocity margin (approx 200ms of movement) to account for 
+	## the attacker's own slight position desync over the network.
+	var vel_margin := attacker.velocity.length() * 0.2
+	var max_dist := a_radius + d_radius + NETWORK_MARGIN + vel_margin
 	
 	if dist > max_dist:
-		print("CombatResolver: Bite rejected! Dist: %.1f, Ping: %dms" % [dist, one_way_ping_ms])
+		print("CombatResolver: Bite rejected! Dist: %.1f, Max: %.1f" % [dist, max_dist])
 		return false
 	return true

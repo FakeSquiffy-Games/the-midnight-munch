@@ -42,11 +42,16 @@ enum StatType {
 	MAX_ENERGY,
 	ENERGY_REGEN_RATE,
 	ENERGY_DRAIN_RATE,
+	LIGHT_ENERGY, 
 }
 
 ## Emitted when is_boosting changes. Listened to by PlayerController
 ## to update its local _boost_active cache without polling.
 signal changed_boosting(value: bool)
+
+signal local_xp_changed(old_value: float, new_value: float)
+signal local_level_changed(new_level: int)
+signal local_tier_changed(new_tier: int)
 
 
 # =========================================================
@@ -80,6 +85,9 @@ signal changed_boosting(value: bool)
 ## Written only by the server. Replicated to clients via
 ## MultiplayerSynchronizer (configured in Phase 3C).
 # =========================================================
+
+var _cached_level: int = 0
+var _cached_tier: int  = 0
 
 var current_xp:     float = 0.0
 var current_energy: float = 100.0
@@ -129,6 +137,7 @@ func _ready() -> void:
 	## Only enabled when active timed boosts exist.
 	set_process(false)
 	SignalBus.boost_applied.connect(_on_boost_applied)
+	SignalBus.xp_changed.connect(_on_network_xp_changed)
 
 func _process(delta: float) -> void:
 	## Both Client and Server tick down the timer for smooth client prediction!
@@ -164,6 +173,12 @@ func _on_boost_applied(target_path: String, stat: int, amount: float, duration: 
 			"time_left": duration
 		})
 		set_process(true)
+
+## Ensures the local client player actually updates their XP variable
+func _on_network_xp_changed(peer_id: int, new_xp: float) -> void:
+## NPCs sync via MultiplayerSynchronizer, so only "players" should listen here.
+	if owner.is_in_group("players") and owner.get_multiplayer_authority() == peer_id:
+		current_xp = new_xp
 
 func _modify_stat(stat: StatType, amount: float) -> void:
 	match stat:

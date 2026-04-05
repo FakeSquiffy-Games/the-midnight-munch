@@ -11,5 +11,4 @@ func _ready() -> void:
 	_generate_world_collision()
 	_configure_synchronizer()
 	
-	if multiplayer.is_server():
-		stat_manager.current_xp = StatManager.XP_THRESHOLDS[spawn_level]
+	stat_manager.current_xp = StatManager.XP_THRESHOLDS[spawn_level]

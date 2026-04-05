@@ -19,6 +19,7 @@ var model:      EntityModel      = null
 var sprite:     AnimatedSprite2D = null
 var body_area:  BodyArea         = null
 var mouth_area: MouthArea        = null
+var _world_poly: CollisionPolygon2D = null
 
 # =========================================================
 # SYNCED STATE
@@ -27,9 +28,16 @@ var mouth_area: MouthArea        = null
 ## Drives scale.x to flip visuals and hitboxes together.
 var sync_flip_h: bool = false:
 	set(value):
-		if sync_flip_h != value:
-			scale.x *= -1
 		sync_flip_h = value
+		_update_transform()
+
+var current_scale_mult: float = 1.0:
+	set(value):
+		current_scale_mult = value
+		_update_transform()
+
+var _poly_base_scale: Vector2 = Vector2.ONE
+
 
 # =========================================================
 # LIFECYCLE
@@ -73,13 +81,32 @@ func _generate_world_collision() -> void:
 	if source_poly == null: return
 	
 	## Create a physical clone for the CharacterBody2D
-	var world_poly := source_poly.duplicate() as CollisionPolygon2D
-	if world_poly == null: return
+	_world_poly = source_poly.duplicate() as CollisionPolygon2D
+	if _world_poly == null: return
+	
 	if model == null:
 		model = self.get_node_or_null("EntityModel") as EntityModel
 	if model == null: return
-	world_poly.scale = model.scale
-	add_child(world_poly)
+	_poly_base_scale = source_poly.scale
+	
+	add_child(_world_poly)
+	
+	_update_transform()
+
+## Safely scales and flips the hitboxes and visuals without breaking the physics root.
+func _update_transform() -> void:
+	if model == null: return
+	
+	var base_s := model.base_scale * current_scale_mult
+	var sign_x := -1.0 if sync_flip_h else 1.0
+	
+	model.scale = Vector2(base_s * sign_x, base_s)
+	
+	if _world_poly:
+		_world_poly.scale = Vector2(
+			base_s * sign_x * _poly_base_scale.x, 
+			base_s * _poly_base_scale.y
+		)
 
 ## Sets up replication based on whether this is a local player or a server-actor.
 func _configure_synchronizer() -> void:
@@ -97,12 +124,17 @@ func _configure_synchronizer() -> void:
 	else:
 		## If Authority == 1, this is a Server-Owned NPC or Collectible.
 		config.property_set_replication_mode(".:position", SceneReplicationConfig.REPLICATION_MODE_ON_CHANGE)
+		
+		## ONLY Server-owned entities (NPCs) use the Synchronizer for XP.
+		## Client Players receive XP updates via the SignalBus instead!
+		config.add_property("StatManager:current_xp")
+		config.property_set_replication_mode("StatManager:current_xp", SceneReplicationConfig.REPLICATION_MODE_ON_CHANGE)
 
 	config.property_set_replication_mode(".:sync_flip_h", SceneReplicationConfig.REPLICATION_MODE_ON_CHANGE)
 	
-	## Sync vital stats for all entities
-	config.add_property("StatManager:current_xp")
-	config.property_set_replication_mode("StatManager:current_xp", SceneReplicationConfig.REPLICATION_MODE_ON_CHANGE)
+	### Sync vital stats for all entities
+	#config.add_property("StatManager:current_xp")
+	#config.property_set_replication_mode("StatManager:current_xp", SceneReplicationConfig.REPLICATION_MODE_ON_CHANGE)
 	
 	synchronizer.replication_config = config
 

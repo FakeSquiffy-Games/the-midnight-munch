@@ -22,10 +22,13 @@ animations = [{
 species_name = "Fangtooth"
 
 [node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
+scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_f3hfh")
 
 [node name="BodyPolygon" type="CollisionPolygon2D" parent="BodyArea" parent_id_path=PackedInt32Array(1257139104) index="0" unique_id=1132887096]
+scale = Vector2(4, 4)
 polygon = PackedVector2Array(-4, -12, -8, -8, -9, -6, -9, 0, -10, 0, -11, 2, -12, 3, -13, 2, -15, 2, -15, 3, -15, 10, -13, 9, -11.75, 8, -10, 10, -9, 11, -8, 12, -4, 14, -3, 15, 1, 15, 3, 14, 10, 13, 12, 12, 13, 11, 14, 9, 15, 6, 15, -2, 15, -7, 14, -8, 12, -9, 10, -11, 8, -12)
 
 [node name="MouthPolygon" type="CollisionPolygon2D" parent="MouthArea" parent_id_path=PackedInt32Array(555163341) index="0" unique_id=910214183]
+scale = Vector2(4, 4)
 polygon = PackedVector2Array(6, 1, 5, 3, 4, 6, 3, 10, 3, 15, 10, 15, 12, 14, 14, 12, 15, 10, 16, 8, 16, 2, 15, -2, 14, -4, 11, -4, 9, -3, 7, -1)

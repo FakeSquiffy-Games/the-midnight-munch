@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://n163r4g7n4it" path="res://scenes/entities/Entity.gd" id="1_o625d"]
 [ext_resource type="Script" uid="uid://bqracccb3021n" path="res://components/StatManager.gd" id="2_n1dph"]
+[ext_resource type="Script" uid="uid://bpdic1ygsdeuy" path="res://components/AnimationHandler.gd" id="3_4h6cm"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_4kuee"]
 
@@ -18,3 +19,7 @@ metadata/_custom_type_script = "uid://bqracccb3021n"
 replication_config = SubResource("SceneReplicationConfig_4kuee")
 
 [node name="components" type="Node2D" parent="." unique_id=1883867421]
+
+[node name="AnimationHandler" type="Node" parent="components" unique_id=390289515]
+script = ExtResource("3_4h6cm")
+metadata/_custom_type_script = "uid://bpdic1ygsdeuy"
