@@ -143,3 +143,25 @@ func update_facing(direction: Vector2) -> void:
 		sync_flip_h = false
 	elif direction.x < -0.01:
 		sync_flip_h = true
+
+# =========================================================
+# ELIMINATION SEQUENCE
+# =========================================================
+
+@rpc("authority", "call_local", "reliable")
+func play_elimination() -> void:
+	## Disable physical interactions immediately on all clients
+	if body_area: body_area.set_deferred("monitorable", false)
+	if mouth_area: mouth_area.set_deferred("monitoring", false)
+	set_physics_process(false)
+	
+	## Play spatial death sound
+	if self.is_in_group("players"):
+		AudioManager.play_spatial_sound("death", global_position)
+	
+	var anim := components.get_node_or_null("AnimationHandler") as AnimationHandler
+	if anim:
+		anim.play_death_animation()
+	else:
+		## Fallback if no animation handler exists
+		visible = false

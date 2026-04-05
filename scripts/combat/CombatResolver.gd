@@ -71,6 +71,7 @@ static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 	var effect := defender.get_node_or_null("components/EffectComponent") as EffectComponent
 	if effect:
 		effect.apply_to(attacker)
+		AudioManager.play_spatial_sound("level_up", attacker.global_position)
 		print("CombatResolver: %s collected a boost!" % attacker.name)
 		#return
 
@@ -117,6 +118,7 @@ static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 		#Result.BITE:
 			#_apply_bite_xp_drain(attacker, defender)
 	
+	AudioManager.play_spatial_sound("bite", defender.global_position)
 	match result:
 		Result.ELIMINATION, Result.KILL:
 			
@@ -135,6 +137,9 @@ static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 				print("CombatResolver: %s gained %.1f XP from killing %s." \
 					% [attacker.name, reward, defender.name])
 
+			if defender.has_method("play_elimination"):
+				defender.play_elimination.rpc()
+
 			## 3. Process the defender's actual removal
 			if d_is_player:
 				print("CombatResolver: Player %d eliminated by %s." \
@@ -143,7 +148,11 @@ static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 				SignalBus.emit_player_eliminated.rpc(defender_peer_id)
 			else:
 				## Standard NPC removal (Will be swapped to Pool return in 6.5B)
-				defender.queue_free()
+				var tree := defender.get_tree()
+				if tree:
+					## FIX: Connect directly to the method. No lambda capture needed!
+					tree.create_timer(1.0).timeout.connect(defender.queue_free)
+				#defender.queue_free()
 
 		Result.BITE:
 			_apply_bite_xp_drain(attacker, defender)

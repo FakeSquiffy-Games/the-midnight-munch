@@ -126,3 +126,18 @@ func _on_global_boost_applied(target_path: String, stat: int, amount: float, _du
 		
 	var text := "+%s %s!" % [str(amount), stat_name]
 	FloatingText.spawn(_entity.get_parent(), _entity.global_position, text, Color(0.3, 1.0, 0.3)) # Green
+
+func play_death_animation() -> void:
+	if not is_instance_valid(_entity.model): return
+	
+	var tween := create_tween().set_parallel(true)
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	
+	## Fade out
+	tween.tween_property(_entity.model, "modulate:a", 0.0, 1.0)
+	## Sink downwards by 150 pixels
+	tween.tween_property(_entity.model, "position:y", _entity.model.position.y + 150.0, 1.0)
+	
+	## Rotate to upside-down (belly up)
+	var death_rotation := PI if not _entity.sync_flip_h else -PI
+	tween.tween_property(_entity.model, "rotation", death_rotation, 1.0)
