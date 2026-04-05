@@ -3,6 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_afppm"]
 [ext_resource type="Script" uid="uid://dl6eulywybtmw" path="res://scenes/entities/player/Player.gd" id="2_30dhn"]
 [ext_resource type="Script" uid="uid://cbqcdl6yaa0wc" path="res://components/PlayerController.gd" id="2_n1xdv"]
+[ext_resource type="Shader" uid="uid://j81ehwyy84al" path="res://resources/shaders/Circle.gdshader" id="4_rqwkw"]
+[ext_resource type="Script" uid="uid://c4v4fof65gk3h" path="res://components/BioluminescentComponent.gd" id="5_hgjck"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ppr6r"]
+shader = ExtResource("4_rqwkw")
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_afppm")]
 script = ExtResource("2_30dhn")
@@ -15,3 +20,10 @@ zoom = Vector2(0.5, 0.5)
 [node name="PlayerController" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=2099270104]
 script = ExtResource("2_n1xdv")
 metadata/_custom_type_script = "uid://cbqcdl6yaa0wc"
+
+[node name="BioluminescentComponent" type="Node2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="3" unique_id=829523201]
+material = SubResource("ShaderMaterial_ppr6r")
+script = ExtResource("5_hgjck")
+mode = 1
+max_radius = 500.0
+metadata/_custom_type_script = "uid://c4v4fof65gk3h"

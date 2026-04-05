@@ -133,6 +133,11 @@ func _setup_local_player() -> void:
 	camera.limit_top    = -972
 	camera.limit_bottom =  972
 
+	var overlay := CanvasModulate.new()
+	overlay.name = "DarkOverlay"
+	overlay.color = Color(0.0, 0.153, 0.247, 1.0)
+	get_tree().current_scene.call_deferred("add_child", overlay)
+
 	var hud := preload("res://scenes/ui/HUD.tscn").instantiate()
 	if hud == null:
 		push_error("Player: Failed to instantiate HUD.tscn.")
