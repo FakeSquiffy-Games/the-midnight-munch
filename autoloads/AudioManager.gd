@@ -7,7 +7,12 @@ var sounds: Dictionary = {
 	"bite": preload("res://assets/audio/bite.wav"),
 	"level_up": preload("res://assets/audio/level_up.wav"),
 	"death": preload("res://assets/audio/death.wav"),
+	"intro": preload("res://assets/audio/intro.wav"),
+	"ambience": preload("res://assets/audio/ambience.wav"),
 }
+
+## Dictionary of active sounds for ambience and intro.
+var _active_players: Dictionary = {}
 
 ## Plays a global UI sound (e.g., Level Up, Game Over)
 func play_ui_sound(sound_name: String, volume_db: float = 0.0) -> void:
@@ -22,6 +27,7 @@ func play_ui_sound(sound_name: String, volume_db: float = 0.0) -> void:
 	add_child(player)
 	player.play()
 	player.finished.connect(player.queue_free)
+	
 
 ## Plays a spatial sound at a specific location in the world (e.g., Bites, Eliminations)
 func play_spatial_sound(sound_name: String, global_pos: Vector2, volume_db: float = 0.0) -> void:
@@ -39,3 +45,15 @@ func play_spatial_sound(sound_name: String, global_pos: Vector2, volume_db: floa
 	get_tree().current_scene.add_child(player)
 	player.play()
 	player.finished.connect(player.queue_free)
+
+func stop_sound(sound_name: String) -> void:
+	if _active_players.has(sound_name):
+		var player = _active_players[sound_name]
+		if is_instance_valid(player):
+			player.stop()
+			player.queue_free()
+		_active_players.erase(sound_name)
+
+func stop_all() -> void:
+	for sound_name in _active_players.keys():
+		stop_sound(sound_name)

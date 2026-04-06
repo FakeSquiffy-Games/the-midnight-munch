@@ -62,6 +62,8 @@ func _ready() -> void:
 	NetworkManager.countdown_tick.connect(_on_countdown_tick)
 	
 	_update_carousel()
+	
+	AudioManager.play_ui_sound("ambience")
 
 
 # =========================================================
