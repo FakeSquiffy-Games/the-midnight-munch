@@ -37,7 +37,7 @@ const ELIMINATION_MIN_XP: float = 25.0
 # RESULT ENUM
 # =========================================================
 
-enum Result { ELIMINATION, KILL, BITE }
+enum Result { ELIMINATION, KILL, BITE, IGNORE }
 
 
 # =========================================================
@@ -79,6 +79,8 @@ static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 	var defender_peer_id := defender.get_multiplayer_authority()
 	var a_is_player      := attacker.is_in_group("players")
 	var d_is_player      := defender.is_in_group("players")
+	
+	if result == Result.IGNORE: return
 	
 	AudioManager.play_spatial_sound("bite", defender.global_position)
 	match result:
@@ -138,7 +140,7 @@ static func resolve(
 	var d_is_player         := defender.is_in_group("players")
 
 	## Death floor — any hit at Level 0 / 0 XP is always elimination.
-	if d_stat.level == 0 and d_stat.current_xp <= 0.0:
+	if not d_is_player and d_stat.level == 0 and d_stat.current_xp <= 0.0:
 		return Result.ELIMINATION
 
 	### NPC KILL at Level 0 regardless of XP — no level below to subtract.
@@ -152,7 +154,8 @@ static func resolve(
 
 	if a_is_player and d_is_player:
 		## Player vs Player (The Privilege applies to the defender)
-		if a_level <= 2 and d_level <= 2: return Result.BITE
+		if a_level <= 0 and d_level <= 0: return Result.IGNORE
+		if a_tier < 1 and d_tier < 1: return Result.BITE
 		if a_tier > d_tier: return Result.KILL
 		if a_tier == d_tier and a_level >= d_level + 2: return Result.KILL
 	elif not a_is_player and d_is_player:
