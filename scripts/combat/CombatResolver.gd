@@ -152,6 +152,7 @@ static func resolve(
 
 	if a_is_player and d_is_player:
 		## Player vs Player (The Privilege applies to the defender)
+		if a_level <= 2 and d_level <= 2: return Result.BITE
 		if a_tier > d_tier: return Result.KILL
 		if a_tier == d_tier and a_level >= d_level + 2: return Result.KILL
 	elif not a_is_player and d_is_player:

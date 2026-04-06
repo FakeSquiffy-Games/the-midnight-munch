@@ -2,7 +2,13 @@
 
 [ext_resource type="Script" uid="uid://ucy8qqr3uoke" path="res://scenes/ui/Joystick.gd" id="1_hcsbe"]
 [ext_resource type="Shader" uid="uid://j81ehwyy84al" path="res://resources/shaders/Circle.gdshader" id="2_yfcjh"]
-[ext_resource type="Texture2D" uid="uid://4e4xuo2boe16" path="res://assets/ui/button.svg" id="3_hcsbe"]
+[ext_resource type="Texture2D" uid="uid://dr8ihnvy8r4i0" path="res://assets/ui/tile_0074.png" id="3_si5sv"]
+[ext_resource type="Texture2D" uid="uid://q5bwybyijbxv" path="res://assets/ui/tile_0075.png" id="4_m62p5"]
+[ext_resource type="Texture2D" uid="uid://dwqhgu5b01m17" path="res://assets/ui/tile_0087.png" id="5_rw6nm"]
+[ext_resource type="Texture2D" uid="uid://dm40qelkn3nr3" path="res://assets/ui/tile_0088.png" id="6_xqmdb"]
+[ext_resource type="Texture2D" uid="uid://diqp2fmsxlwid" path="res://assets/ui/tile_0042.png" id="7_wcxnk"]
+[ext_resource type="Texture2D" uid="uid://nlpmhomokuf4" path="res://assets/ui/dash.png" id="8_m62p5"]
+[ext_resource type="Texture2D" uid="uid://dfnhjwy34ohls" path="res://assets/ui/dash - Copy.png" id="9_rw6nm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ya4ey"]
 shader = ExtResource("2_yfcjh")
@@ -10,8 +16,8 @@ shader = ExtResource("2_yfcjh")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_choun"]
 shader = ExtResource("2_yfcjh")
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ljra3"]
-radius = 60.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xqmdb"]
+size = Vector2(48, 48)
 
 [node name="VirtualController" type="Control" unique_id=2092010908]
 layout_mode = 3
@@ -29,15 +35,16 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Joystick" type="Control" parent="." unique_id=1421929866]
+modulate = Color(1, 1, 1, 0.47058824)
 anchors_preset = 0
-offset_left = 20.0
-offset_top = 450.0
-offset_right = 270.0
-offset_bottom = 700.0
+offset_left = 39.0
+offset_top = 412.0
+offset_right = 314.0
+offset_bottom = 688.0
 mouse_filter = 2
 script = ExtResource("1_hcsbe")
 
-[node name="BaseVisual" type="ColorRect" parent="Joystick" unique_id=1000678615]
+[node name="BaseVisual" type="Control" parent="Joystick" unique_id=1185662891]
 material = SubResource("ShaderMaterial_ya4ey")
 layout_mode = 1
 anchors_preset = 15
@@ -45,9 +52,28 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 1, 1, 0.39215687)
 
-[node name="Stick" type="ColorRect" parent="Joystick" unique_id=920580297]
+[node name="Sprite2D" type="Sprite2D" parent="Joystick/BaseVisual" unique_id=1951631550]
+position = Vector2(50, 50)
+scale = Vector2(3, 3)
+texture = ExtResource("3_si5sv")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Joystick/BaseVisual" unique_id=862051954]
+position = Vector2(225, 50)
+scale = Vector2(3, 3)
+texture = ExtResource("4_m62p5")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Joystick/BaseVisual" unique_id=1807293094]
+position = Vector2(50, 225.99997)
+scale = Vector2(3, 3)
+texture = ExtResource("5_rw6nm")
+
+[node name="Sprite2D4" type="Sprite2D" parent="Joystick/BaseVisual" unique_id=137978047]
+position = Vector2(223, 226)
+scale = Vector2(3, 3)
+texture = ExtResource("6_xqmdb")
+
+[node name="Stick" type="Control" parent="Joystick" unique_id=1743527513]
 material = SubResource("ShaderMaterial_choun")
 layout_mode = 1
 anchors_preset = 8
@@ -61,11 +87,17 @@ offset_right = 50.0
 offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 1, 1, 0.78431374)
+
+[node name="Sprite2D" type="Sprite2D" parent="Joystick/Stick" unique_id=443412341]
+position = Vector2(50, 50)
+scale = Vector2(3, 3)
+texture = ExtResource("7_wcxnk")
 
 [node name="BoostButton" type="TouchScreenButton" parent="." unique_id=1713448357]
-modulate = Color(1, 1, 1, 0.39215687)
-position = Vector2(1050, 510)
-texture_normal = ExtResource("3_hcsbe")
-shape = SubResource("CircleShape2D_ljra3")
+modulate = Color(1, 1, 1, 0.78431374)
+position = Vector2(1034, 468)
+scale = Vector2(4, 4)
+texture_normal = ExtResource("8_m62p5")
+texture_pressed = ExtResource("9_rw6nm")
+shape = SubResource("RectangleShape2D_xqmdb")
 action = "boost"
