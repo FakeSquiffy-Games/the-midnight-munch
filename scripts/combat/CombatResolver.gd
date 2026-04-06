@@ -77,46 +77,8 @@ static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 
 	var result           := resolve(attacker, defender)
 	var defender_peer_id := defender.get_multiplayer_authority()
-	#var attacker_peer_id := attacker.get_multiplayer_authority()
-	#var is_npc_attacker  := not attacker.is_in_group("players")
-	#var is_npc_defender  := not defender.is_in_group("players")
 	var a_is_player      := attacker.is_in_group("players")
 	var d_is_player      := defender.is_in_group("players")
-
-	#match result:
-		#Result.ELIMINATION:
-			#if is_npc_defender:
-				#defender.queue_free()
-			#else:
-				#print("CombatResolver: ELIMINATION — peer %d eliminated by %s." \
-					#% [defender_peer_id, attacker.name])
-				#if not is_npc_attacker:
-					#var d_stat: StatManager = defender.get_node("StatManager")
-					#var reward := maxf(d_stat.current_xp * KILL_XP_ATTACKER_SHARE, ELIMINATION_MIN_XP)
-					#_apply_xp_gain(attacker, reward)
-				#GameState.eliminate_player(defender_peer_id)
-				#SignalBus.emit_player_eliminated.rpc(defender_peer_id)
-#
-		#Result.KILL:
-			#if is_npc_defender:
-				### Player or NPC killed an NPC
-				#defender.queue_free()
-			#elif is_npc_attacker:
-				### NPC killed a Player
-				#print("CombatResolver: NPC KILL — peer %d demoted by NPC." % defender_peer_id)
-				#_apply_npc_demotion(defender)
-			#else:
-				### Player killed a Player
-				#print("CombatResolver: PvP KILL — peer %d eliminated by peer %d." \
-					#% [defender_peer_id, attacker_peer_id])
-				#var d_stat: StatManager = defender.get_node("StatManager")
-				#var reward := maxf(d_stat.current_xp * KILL_XP_ATTACKER_SHARE, ELIMINATION_MIN_XP)
-				#_apply_xp_gain(attacker, reward)
-				#GameState.eliminate_player(defender_peer_id)
-				#SignalBus.emit_player_eliminated.rpc(defender_peer_id)
-#
-		#Result.BITE:
-			#_apply_bite_xp_drain(attacker, defender)
 	
 	AudioManager.play_spatial_sound("bite", defender.global_position)
 	match result:
@@ -131,6 +93,12 @@ static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 			## 2. All other Kills/Eliminations result in the defender dying.
 			##    If the attacker is a player, calculate and award the XP share.
 			if a_is_player:
+				## RECORD THE KILL STAT
+				var counts := true
+				if not d_is_player and defender is NPC:
+					counts = defender.counts_as_kill_stat
+				if counts:
+					GameState.record_kill(attacker.get_multiplayer_authority(), d_is_player)
 				var d_stat: StatManager = defender.get_node("StatManager")
 				var reward := maxf(d_stat.current_xp * KILL_XP_ATTACKER_SHARE, ELIMINATION_MIN_XP)
 				_apply_xp_gain(attacker, reward)
@@ -284,6 +252,9 @@ static func _apply_xp_gain(target: CharacterBody2D, amount: float) -> void:
 
 	print("CombatResolver: XP gain — peer %d gained %.1f XP. New XP: %.1f." \
 		% [peer_id, amount, stat.current_xp])
+
+	## RECORD THE XP STAT
+	GameState.record_xp_gained(peer_id, amount, stat.level)
 
 	_broadcast_xp_changes(target, peer_id, old_level, old_tier)
 

@@ -11,6 +11,7 @@ extends Node
 # =========================================================
 
 const BOOST_MULTIPLIER: float = 1.8
+const SPECTATOR_SPEED: float = 1000.0
 
 
 # =========================================================
@@ -20,6 +21,7 @@ const BOOST_MULTIPLIER: float = 1.8
 var _player:       CharacterBody2D
 var _stat_manager: StatManager
 var _mouth:        MouthArea
+var is_spectating: bool = false
 
 
 # =========================================================
@@ -42,6 +44,13 @@ func _physics_process(_delta: float) -> void:
 		return
 
 	var direction   := _get_input_direction()
+	
+	if is_spectating:
+		## Simple ghost movement: ignore boost/energy/flipping
+		_player.velocity = direction * SPECTATOR_SPEED
+		_player.move_and_slide()
+		return
+	
 	var wants_boost := Input.is_action_pressed("boost")
 	var delta       := get_physics_process_delta_time()
 

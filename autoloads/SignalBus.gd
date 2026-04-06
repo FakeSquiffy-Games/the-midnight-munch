@@ -53,7 +53,7 @@ signal boost_applied(target_path: String, stat: int, amount: float, duration: fl
 
 ## Emitted on all peers when exactly one player remains alive.
 signal match_ended(winner_peer_id: int)
-
+signal personal_stats_received(stats: Dictionary)
 
 # =========================================================
 # RPC EMITTERS

@@ -2,17 +2,21 @@
 ## Root script for the player fish entity.
 ## Phase XA: cleaned up dead code, fixed _on_synchronized, removed debug XP line.
 extends Entity
-
+class_name Player
 
 # =========================================================
 # EXPORTS
 # =========================================================
 
+## Add these at the top of Player.gd (under the existing exports)
+@export var character_name: String = "Unnamed Fish"
+@export_multiline var character_description: String = "A fish."
+
 @export var reconcile_threshold: float = 50.0
 
 ## The fish model PackedScene to instantiate on spawn.
 ## Assigned by World._spawn_player() from the PLAYER_MODELS array.
-@export var fish_model: PackedScene
+#@export var fish_model: PackedScene
 
 
 # =========================================================
@@ -53,30 +57,37 @@ func _enter_tree() -> void:
 
 
 # =========================================================
+# CLEANUP
+# =========================================================
+
+func _exit_tree() -> void:
+	## When the World unloads (or if the player disconnects), 
+	## ensure the HUD doesn't get left behind on the root window!
+	if is_instance_valid(_hud):
+		_hud.queue_free()
+
+
+# =========================================================
 # LIFECYCLE
 # =========================================================
 
 func _ready() -> void:
 	global_position = spawn_position
 
-	## Load and instantiate the fish model first — assigns sprite,
-	## mouth_area, and body_area before anything else accesses them.
-	load_model(fish_model)
+	## 1. Let the parent (Entity.gd) find the baked-in EntityModel, 
+	## generate the world collision, and configure the synchronizer!
+	super._ready()
 
+	## 2. Now do Player-specific setup
 	add_to_group("players")
-
 	var peer_id := get_multiplayer_authority()
 	GameState.register_player_node(peer_id, self)
 
-	_generate_world_collision()
-	_configure_synchronizer()
-
 	SignalBus.player_eliminated.connect(_on_player_eliminated)
+	synchronizer.synchronized.connect(_on_synchronized)
 
 	if is_multiplayer_authority():
 		_setup_local_player()
-
-	synchronizer.synchronized.connect(_on_synchronized)
 
 	print("Player: Ready. Authority peer ID = %d. Is local: %s." \
 		% [peer_id, str(is_multiplayer_authority())])
@@ -86,36 +97,36 @@ func _ready() -> void:
 # MODEL LOADING
 # =========================================================
 
-## Instantiates [model_scene] and wires sprite, mouth_area, body_area.
-## Removes any previously loaded model first.
-func load_model(model_scene: PackedScene) -> void:
-	if model_scene == null:
-		push_error("Player: load_model() called with null PackedScene.")
-		return
-
-	## Remove existing model if present.
-	for child in get_children():
-		if child is EntityModel:
-			child.queue_free()
-
-	var new_model := model_scene.instantiate() as EntityModel
-	if new_model == null:
-		push_error("Player: model_scene did not instantiate as EntityModel.")
-		return
-
-	add_child(new_model)
-
-	## Wire references from model to Player.
-	sprite     = new_model.sprite
-	mouth_area = new_model.mouth
-	body_area  = new_model.body
-
-	## Apply species-specific base scale.
-	scale = Vector2.ONE * new_model.base_scale
-
-	## Update PlayerController references if it is already initialised.
-	if player_controller:
-		player_controller._mouth = new_model.mouth
+### Instantiates [model_scene] and wires sprite, mouth_area, body_area.
+### Removes any previously loaded model first.
+#func load_model() -> void:
+	#if fish_model == null:
+		#push_error("Player: load_model() called with null PackedScene.")
+		#return
+#
+	### Remove existing model if present.
+	##for child in get_children():
+		##if child is EntityModel:
+			##child.queue_free()
+#
+	##var new_model := model_scene.instantiate() as EntityModel
+	##if new_model == null:
+		##push_error("Player: model_scene did not instantiate as EntityModel.")
+		##return
+#
+	##add_child(new_model)
+#
+	### Wire references from model to Player.
+	#sprite     = fish_model.sprite
+	#mouth_area = fish_model.mouth
+	#body_area  = fish_model.body
+#
+	### Apply species-specific base scale.
+	#scale = Vector2.ONE * fish_model.base_scale
+#
+	### Update PlayerController references if it is already initialised.
+	#if player_controller:
+		#player_controller._mouth = fish_model.mouth
 
 
 # =========================================================
@@ -156,18 +167,37 @@ func _setup_local_player() -> void:
 func _on_player_eliminated(peer_id: int) -> void:
 	if get_multiplayer_authority() != peer_id:
 		return
+	else:
+		var p_name = GameState.player_names.get(peer_id, "Player %d" % peer_id)
+		ToastManager.show_toast("%s was eliminated!" % p_name, Color(1.0, 0.4, 0.4))
+	
+	if not is_multiplayer_authority():
+		return
 
-	print("Player: Peer %d eliminated — removing." % peer_id)
+	print("Player: Peer %d eliminated — shifting to spcectating." % peer_id)
 
-	SignalBus.player_eliminated.disconnect(_on_player_eliminated)
-	_disable_all_processing()
+	## FIX: Re-enable physics on the ROOT (Entity.gd)
+	## The Entity.play_elimination RPC turned this off. Without the root
+	## processing physics, move_and_slide() on the body does nothing.
+	self.set_physics_process(true)
+	self.set_process(true) # Ensure the root can also process
 
-	if _hud != null:
-		_hud.queue_free()
-		_hud = null
+	## 1. Remove the Dark Overlay to restore full visibility for spectating
+	var overlay = get_tree().current_scene.get_node_or_null("DarkOverlay")
+	if overlay:
+		overlay.queue_free()
+	
+	## 2. Remove the local player's BioluminescentComponent
+	var bio_light = components.get_node_or_null("BioluminescentComponent")
+	if bio_light:
+		bio_light.queue_free()
 
-	if multiplayer.is_server():
-		queue_free()
+	if SignalBus.player_eliminated.is_connected(_on_player_eliminated):
+		SignalBus.player_eliminated.disconnect(_on_player_eliminated)
+
+	## Tell the controller to switch to spectator movement
+	if player_controller:
+		player_controller.is_spectating = true
 
 
 ## Disables physics and processing on this node and all descendants.

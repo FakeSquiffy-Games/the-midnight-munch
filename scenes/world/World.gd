@@ -71,6 +71,25 @@ func _ready() -> void:
 	## Notify the server's Autoload that this specific peer has loaded the scene
 	GameState.notify_world_loaded.rpc_id(1)
 
+func _physics_process(_delta: float) -> void:
+	if not multiplayer.is_server(): return
+	if GameState.match_phase != GameState.MatchPhase.IN_GAME: return
+	if GameState._peers_world_ready.size() < GameState.player_states.size(): return # Wait for spawn
+
+	if GameState.is_single_player:
+		
+		var p1 = GameState.player_states.get(1)
+		if p1:
+			if not p1.is_alive:
+				_trigger_end_match(0, "Game Over")
+			elif p1.level >= 10:
+				_trigger_end_match(1, GameState.player_names.get(1, "Player 1"))
+	else:
+		if GameState.alive_peers.size() <= 1:
+			var winner_id = GameState.alive_peers[0] if GameState.alive_peers.size() == 1 else 0
+			var winner_name = GameState.player_names.get(winner_id, "Draw") if winner_id != 0 else "Draw"
+			_trigger_end_match(winner_id, winner_name)
+
 
 # =========================================================
 # READY HANDSHAKE
@@ -107,28 +126,61 @@ func _spawn_all_players() -> void:
 			"peer_id":    peer_id,
 			"color":      PLAYER_COLORS[i % PLAYER_COLORS.size()],
 			"position":   SPAWN_POSITIONS[i % SPAWN_POSITIONS.size()],
-			"model_path": PLAYER_MODELS[i % PLAYER_MODELS.size()],
+			"scene_path": GameState.player_characters[peer_id] # Grab locked prefab
 		}
 		spawner.spawn(data)
-		print("World: Spawning player for peer %d at slot %d." % [peer_id, i])
+		print("World: Spawning player for peer %d." % peer_id)
 
-
-## Spawn function called on ALL peers by MultiplayerSpawner.
-## Must return the Node to be added to the scene tree.
 func _spawn_player(data: Dictionary) -> Node:
-	var player_scene := preload("res://scenes/entities/player/Player.tscn")
-	var player       := player_scene.instantiate()
+	var player_scene := load(data["scene_path"]) as PackedScene
+	var player       := player_scene.instantiate() as Entity
 
 	var peer_id: int      = data["peer_id"]
 	player.name           = "Player_%d" % peer_id
 	player.spawn_position = data["position"]
 	player.spawn_peer_id  = peer_id
 
-	var model_path: String   = data["model_path"]
-	var model_resource       = load(model_path)
-	if model_resource is PackedScene:
-		player.fish_model = model_resource
-	else:
-		push_error("World: Failed to load fish model at path: %s" % model_path)
-
+	## Note: We no longer load 'fish_model' here because the prefab already contains it!
+	
 	return player
+
+
+# END
+func _trigger_end_match(winner_id: int, winner_name: String) -> void:
+	GameState.match_phase = GameState.MatchPhase.ENDED
+	var end_time := Time.get_ticks_msec()
+	
+	## 1. Finalize survival times for anyone still alive
+	for state in GameState.player_states.values():
+		if state.is_alive:
+			state.time_survived = (end_time - GameState.match_start_time_msec) / 1000.0
+
+	## 2. Broadcast the winner UI
+	_show_results.rpc(winner_id, winner_name)
+
+	## 3. Send personal stats specifically to each client
+	for peer_id in GameState.player_states.keys():
+		var st = GameState.player_states[peer_id]
+		var stats_dict = {
+			"max_level": st.max_level_reached,
+			"p_kills": st.total_player_kills,
+			"n_kills": st.total_npc_kills,
+			"xp": st.total_xp_collected,
+			"time": st.time_survived
+		}
+		if peer_id == 1:
+			SignalBus.personal_stats_received.emit(stats_dict)
+		else:
+			_send_stats.rpc_id(peer_id, stats_dict)
+
+@rpc("authority", "call_local", "reliable")
+func _show_results(_winner_id: int, winner_name: String) -> void:
+	var results_scene = preload("res://scenes/ui/ResultsUI.tscn")
+	if results_scene:
+		var ui = results_scene.instantiate()
+		get_tree().root.add_child(ui)
+		ui.setup(winner_name)
+
+@rpc("authority", "call_remote", "reliable")
+func _send_stats(stats_dict: Dictionary) -> void:
+	SignalBus.personal_stats_received.emit(stats_dict)

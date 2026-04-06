@@ -82,6 +82,8 @@ func _ready() -> void:
 
 ## Generates a session key, starts an ENet server, and begins UDP broadcast.
 func host_game() -> void:
+	leave_game() ## FIX: Ensure clean state before hosting
+	
 	var peer := ENetMultiplayerPeer.new()
 	var err  := peer.create_server(PORT, MAX_PEERS)
 
@@ -102,6 +104,8 @@ func host_game() -> void:
 ## Discovers the host on LAN by matching [key] via UDP, then connects via ENet.
 ## Emits discovery_failed if no host is found within DISCOVERY_TIMEOUT seconds.
 func join_game(key: String) -> void:
+	leave_game() ## FIX: Ensure clean state before joining
+	
 	print("NetworkManager: Searching for host with key '%s'..." % key)
 	## Discovery is async — run it as a coroutine and await the result.
 	var ip: String = await _discover_host_by_key(key)
@@ -146,7 +150,7 @@ func start_game() -> void:
 	print("NetworkManager: Starting game — broadcasting countdown.")
 	_run_countdown.rpc()
 
-func start_single_player() -> void:
+func start_single_player(scene_path: String, username: String) -> void:
 	_stop_udp_broadcast()
 	
 	if multiplayer.multiplayer_peer:
@@ -160,7 +164,15 @@ func start_single_player() -> void:
 	GameState.reset()
 	GameState.is_single_player = true
 	GameState.register_player(1)
+	
+	## Assign the lobby selections AFTER the reset!
+	GameState.player_characters[1] = scene_path
+	GameState.player_names[1] = username
+	
 	GameState.match_phase = GameState.MatchPhase.IN_GAME
+	
+	## NEW: Record start time
+	GameState.match_start_time_msec = Time.get_ticks_msec()
 	
 	print("NetworkManager: Starting Single Player Mode.")
 	get_tree().change_scene_to_file("res://scenes/world/World.tscn")
@@ -176,6 +188,11 @@ func _run_countdown() -> void:
 	for i in range(NetworkManager.COUNTDOWN_DURATION, 0, -1):
 		countdown_tick.emit(i)
 		await get_tree().create_timer(1.0).timeout
+	
+	## NEW: Record start time exactly as the match begins
+	if multiplayer.is_server():
+		GameState.match_start_time_msec = Time.get_ticks_msec()
+	
 	get_tree().change_scene_to_file("res://scenes/world/World.tscn")
 
 # =========================================================

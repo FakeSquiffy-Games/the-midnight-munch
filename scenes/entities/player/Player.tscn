@@ -11,6 +11,8 @@ shader = ExtResource("4_rqwkw")
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_afppm")]
 script = ExtResource("2_30dhn")
+character_name = "Unnamed Fish"
+character_description = "A fish."
 reconcile_threshold = 50.0
 fish_model = null
 

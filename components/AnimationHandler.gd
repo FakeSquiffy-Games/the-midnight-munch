@@ -107,10 +107,15 @@ func _update_nametag() -> void:
 	if _stat_manager.tier == 1: tier_str = "T"
 	elif _stat_manager.tier == 2: tier_str = "A"
 	
-	var entity_name := _entity.model.species_name
+	var display_name := _entity.model.species_name
+	
+	if _entity.is_in_group("players"):
+		var peer_id = _entity.get_multiplayer_authority()
+		# Fallback to "Player ID" if the name dictionary isn't populated yet
+		display_name = GameState.player_names.get(peer_id, "Player %d" % peer_id)
 	
 	## (Phase 8 will replace entity_name with Username for players)
-	label.text = "(%s) Lvl %d | %s" % [tier_str, _stat_manager.level, entity_name]
+	label.text = "(%s) Lvl %d | %s" % [tier_str, _stat_manager.level, display_name]
 
 ## Listens to the global signal and spawns text if THIS entity was the one boosted
 func _on_global_boost_applied(target_path: String, stat: int, amount: float, _duration: float) -> void:

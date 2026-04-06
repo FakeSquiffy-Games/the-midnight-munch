@@ -1,5 +1,5 @@
 # EntityModel.gd
-extends Area2D
+extends Node2D
 class_name EntityModel
 
 @export_group("Identity")

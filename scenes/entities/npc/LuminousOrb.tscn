@@ -9,6 +9,7 @@
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_w4617")]
 script = ExtResource("2_4m054")
+counts_as_kill_stat = false
 disable_mouth = true
 
 [node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_2f1on")]

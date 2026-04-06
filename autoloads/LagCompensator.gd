@@ -5,7 +5,9 @@ const MAX_HISTORY_MS: int = 300
 var history: Dictionary = {} # node_path -> Array of {time, pos}
 
 func _physics_process(_delta: float) -> void:
-	if not multiplayer.is_server(): return
+	## FIX: Guard against null peers during disconnects or lobby time
+	if multiplayer.multiplayer_peer == null: return
+	if GameState.match_phase != GameState.MatchPhase.IN_GAME: return
 	
 	var now := Time.get_ticks_msec()
 	var players := get_tree().get_nodes_in_group("players")

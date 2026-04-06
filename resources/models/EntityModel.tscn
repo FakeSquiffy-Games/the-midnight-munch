@@ -4,10 +4,8 @@
 [ext_resource type="Script" uid="uid://ni253j3jqks" path="res://components/BodyArea.gd" id="4_f31f3"]
 [ext_resource type="Script" uid="uid://cf8nqdkun8vl5" path="res://components/MouthArea.gd" id="5_lj3vk"]
 
-[node name="EntityModel" type="Area2D" unique_id=877799466]
+[node name="EntityModel" type="Node2D" unique_id=1730000128]
 scale = Vector2(4, 4)
-collision_layer = 0
-collision_mask = 0
 script = ExtResource("1_qjg0g")
 metadata/_custom_type_script = "uid://3kmxne7oiygm"
 

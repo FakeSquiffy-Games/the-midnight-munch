@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Feeding Frenzy"
-config/version="0.7.0"
+config/version="0.8.0"
 run/main_scene="res://scenes/ui/LobbyUI.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -23,6 +23,7 @@ GameState="*uid://cslqpw2ge62ht"
 NetworkManager="*uid://dahl0tah1dvep"
 LagCompensator="*uid://6q0fligjvh8r"
 AudioManager="*uid://b72oq4mw5lybp"
+ToastManager="*uid://cvoytfehdftmf"
 
 [display]
 
