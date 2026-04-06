@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://t0r5eg2k1bte"
+path="res://.godot/imported/varnished.fnt-19754f5b523432e74da524f2fda6c086.fontdata"
+
+[deps]
+
+source_file="res://assets/fonts/varnished.fnt"
+dest_files=["res://.godot/imported/varnished.fnt-19754f5b523432e74da524f2fda6c086.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=2

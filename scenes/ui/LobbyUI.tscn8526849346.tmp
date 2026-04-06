@@ -5,11 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://rrqd40rhp53y" path="res://scenes/ui/SplashBackground.tscn" id="2_kpkqk"]
 [ext_resource type="PackedScene" uid="uid://d32jl470ov1aq" path="res://scenes/entities/player/Fangtooth.tscn" id="3_6h17u"]
 
-[sub_resource type="FontVariation" id="FontVariation_e11ce"]
-
-[sub_resource type="Theme" id="Theme_6h17u"]
-default_font = SubResource("FontVariation_e11ce")
-
 [node name="LobbyUI" type="Control" unique_id=1011279643]
 layout_mode = 3
 anchors_preset = 15
@@ -28,21 +23,21 @@ anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -482.0
-offset_top = 23.0
 offset_right = 482.0
-offset_bottom = -32.0
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_6h17u")
 
 [node name="SinglePlayerButton" type="Button" parent="VBoxContainer" unique_id=369119842]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 0.4
 text = "Start Solo Mode"
 
 [node name="HostButton" type="Button" parent="VBoxContainer" unique_id=1243543943]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 0.4
 text = "Host Game"
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer" unique_id=1080504231]
