@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dwumdptq2ml0h"
-path="res://.godot/imported/dash.png-c8a9350270df9861041182e17d843d61.ctex"
+uid="uid://cdqgbtn8hrs4j"
+path="res://.godot/imported/dash_pressed.png-c51d710580a55f9426ab26b8ddc906e5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/dash.png"
-dest_files=["res://.godot/imported/dash.png-c8a9350270df9861041182e17d843d61.ctex"]
+source_file="res://assets/ui/dash_pressed.png"
+dest_files=["res://.godot/imported/dash_pressed.png-c51d710580a55f9426ab26b8ddc906e5.ctex"]
 
 [params]
 

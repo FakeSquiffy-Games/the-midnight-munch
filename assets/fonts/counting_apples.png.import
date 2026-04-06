@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dfnhjwy34ohls"
-path="res://.godot/imported/dash - Copy.png-b0d73dbbf51388c0ca5a384a5b052223.ctex"
+uid="uid://fk28orgb5048"
+path="res://.godot/imported/counting_apples.png-dc27afaeb97922389259512e89a3061a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/dash - Copy.png"
-dest_files=["res://.godot/imported/dash - Copy.png-b0d73dbbf51388c0ca5a384a5b052223.ctex"]
+source_file="res://assets/fonts/counting_apples.png"
+dest_files=["res://.godot/imported/counting_apples.png-dc27afaeb97922389259512e89a3061a.ctex"]
 
 [params]
 

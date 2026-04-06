@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://cmliq3im3qyv6"
+path="res://.godot/imported/counting_apples.fnt-61ae1906abf4c93150f783d3ff262f00.fontdata"
+
+[deps]
+
+source_file="res://assets/fonts/counting_apples.fnt"
+dest_files=["res://.godot/imported/counting_apples.fnt-61ae1906abf4c93150f783d3ff262f00.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=2

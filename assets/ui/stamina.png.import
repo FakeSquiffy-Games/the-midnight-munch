@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dwqhgu5b01m17"
-path="res://.godot/imported/tile_0087.png-5f8a930ee12647a865d7e88ae0bdb263.ctex"
+uid="uid://bhkbdwcyf41rk"
+path="res://.godot/imported/stamina.png-57d5b87e01aefdc32ce5741606104f77.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/tile_0087.png"
-dest_files=["res://.godot/imported/tile_0087.png-5f8a930ee12647a865d7e88ae0bdb263.ctex"]
+source_file="res://assets/ui/stamina.png"
+dest_files=["res://.godot/imported/stamina.png-57d5b87e01aefdc32ce5741606104f77.ctex"]
 
 [params]
 

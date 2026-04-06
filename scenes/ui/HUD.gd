@@ -11,8 +11,8 @@ extends CanvasLayer
 # =========================================================
 
 @onready var level_label: Label       = $VBoxContainer/LevelLabel
-@onready var xp_bar:      ProgressBar = $VBoxContainer/XPBar
-@onready var energy_bar:  ProgressBar = $VBoxContainer/EnergyBar
+@onready var xp_bar:      TextureProgressBar = $VBoxContainer/XPBar
+@onready var energy_bar:  TextureProgressBar = $VBoxContainer/EnergyBar
 
 
 # =========================================================
@@ -88,7 +88,7 @@ func _update_xp(new_xp: float) -> void:
 	xp_bar.max_value = next_threshold
 	xp_bar.value     = new_xp
 
-	level_label.text = "Level %d" % derived_level
+	level_label.text = "Lv. %d" % derived_level
 
 
 ## Updates the energy bar.
