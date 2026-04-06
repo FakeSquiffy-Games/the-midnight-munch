@@ -70,6 +70,8 @@ func _ready() -> void:
 
 	## Notify the server's Autoload that this specific peer has loaded the scene
 	GameState.notify_world_loaded.rpc_id(1)
+	
+	AudioManager.stop_sound("intro")
 	AudioManager.play_ui_sound("ambience")
 
 func _physics_process(_delta: float) -> void:

@@ -67,7 +67,8 @@ func _ready() -> void:
 		## Fresh boot OR returning from Single Player: Reset to default state!
 		_reset_ui()
 	
-	AudioManager.play_ui_sound("ambience")
+	AudioManager.stop_sound("ambience")
+	AudioManager.play_ui_sound("intro")
 
 
 # =========================================================

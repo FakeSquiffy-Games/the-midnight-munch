@@ -19,14 +19,26 @@ func play_ui_sound(sound_name: String, volume_db: float = 0.0) -> void:
 	var stream = sounds.get(sound_name)
 	if not stream or not stream is AudioStream: return
 	
+	## Stop the sound if it is already playing to prevent overlaps
+	stop_sound(sound_name)
+	
 	var player := AudioStreamPlayer.new()
 	player.stream = stream
 	player.volume_db = volume_db
 	player.bus = "Master"
 	
+	## Track the active player
+	_active_players[sound_name] = player
+	
 	add_child(player)
 	player.play()
-	player.finished.connect(player.queue_free)
+	
+	## Clean up tracking when finished
+	player.finished.connect(func():
+		if _active_players.get(sound_name) == player:
+			_active_players.erase(sound_name)
+		player.queue_free()
+	)
 	
 
 ## Plays a spatial sound at a specific location in the world (e.g., Bites, Eliminations)

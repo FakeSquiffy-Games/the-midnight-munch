@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cceulhs5rov7t"]
+[gd_scene format=3 uid="uid://bv05641gh4jji"]
 
 [ext_resource type="PackedScene" uid="uid://bwenv8gtlqvo3" path="res://resources/models/EntityModel.tscn" id="1_kpwug"]
 [ext_resource type="Texture2D" uid="uid://cqqsrn2knmt0n" path="res://assets/npc/LanternFish/idle/0.png" id="2_gb4tp"]
