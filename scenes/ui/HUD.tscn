@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://bqdt72wsgjlkh" path="res://scenes/ui/HUD.gd" id="1_kw0id"]
 [ext_resource type="PackedScene" uid="uid://fpdyl33oib7j" path="res://scenes/ui/VirtualController.tscn" id="2_atyv1"]
-[ext_resource type="Texture2D" uid="uid://drv51x6cwfgxo" path="res://assets/ui/level_frame.png" id="2_rnyu1"]
-[ext_resource type="Texture2D" uid="uid://bddlp8pbjecjd" path="res://assets/ui/level.png" id="3_jlufg"]
-[ext_resource type="Texture2D" uid="uid://l6pj0q2fgif1" path="res://assets/ui/stamina_frame.png" id="4_l20r4"]
-[ext_resource type="Texture2D" uid="uid://cbupwcx2d1cpb" path="res://assets/ui/stamina.png" id="5_jvmx1"]
+[ext_resource type="Texture2D" uid="uid://dwplurwqfn8y1" path="res://assets/ui/level_frame.png" id="2_rnyu1"]
+[ext_resource type="Texture2D" uid="uid://l7g2d5qtnxo" path="res://assets/ui/level.png" id="3_jlufg"]
+[ext_resource type="Texture2D" uid="uid://df75qhbafwica" path="res://assets/ui/stamina_frame.png" id="4_l20r4"]
+[ext_resource type="Texture2D" uid="uid://bhkbdwcyf41rk" path="res://assets/ui/stamina.png" id="5_jvmx1"]
 [ext_resource type="FontFile" uid="uid://cmliq3im3qyv6" path="res://assets/fonts/counting_apples.fnt" id="6_jlufg"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_rnyu1"]

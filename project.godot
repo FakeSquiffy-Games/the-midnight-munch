@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Feeding Frenzy"
+config/name="The Midnight Munch"
 config/version="0.8.0"
 run/main_scene="res://scenes/ui/LobbyUI.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
@@ -29,8 +29,8 @@ ToastManager="*uid://cvoytfehdftmf"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
-window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
+window/stretch/mode="viewport"
+window/stretch/aspect="keep_width"
 
 [input]
 

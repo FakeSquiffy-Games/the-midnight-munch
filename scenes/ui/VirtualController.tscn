@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://ucy8qqr3uoke" path="res://scenes/ui/Joystick.gd" id="1_hcsbe"]
 [ext_resource type="Shader" uid="uid://j81ehwyy84al" path="res://resources/shaders/Circle.gdshader" id="2_yfcjh"]
-[ext_resource type="Texture2D" uid="uid://k1fdduxpt0sw" path="res://assets/ui/control_frame.png" id="3_wcbxj"]
-[ext_resource type="Texture2D" uid="uid://2ojm8f77gqr0" path="res://assets/ui/control.png" id="4_wcbxj"]
-[ext_resource type="Texture2D" uid="uid://bs2h7c4h08hw7" path="res://assets/ui/dash_pressed.png" id="6_wcbxj"]
-[ext_resource type="Texture2D" uid="uid://nlpmhomokuf4" path="res://assets/ui/dash.png" id="8_m62p5"]
+[ext_resource type="Texture2D" uid="uid://bjdlr4icykuwu" path="res://assets/ui/control_frame.png" id="3_wcbxj"]
+[ext_resource type="Texture2D" uid="uid://dh0k00rftnjlt" path="res://assets/ui/control.png" id="4_wcbxj"]
+[ext_resource type="Texture2D" uid="uid://cdqgbtn8hrs4j" path="res://assets/ui/dash_pressed.png" id="6_wcbxj"]
+[ext_resource type="Texture2D" uid="uid://dwumdptq2ml0h" path="res://assets/ui/dash.png" id="8_m62p5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ya4ey"]
 shader = ExtResource("2_yfcjh")
@@ -34,10 +34,10 @@ mouse_filter = 2
 [node name="Joystick" type="Control" parent="." unique_id=1421929866]
 modulate = Color(1, 1, 1, 0.7058824)
 anchors_preset = 0
-offset_left = 31.0
-offset_top = 421.0
-offset_right = 306.0
-offset_bottom = 696.0
+offset_left = 41.0
+offset_top = 436.0
+offset_right = 316.0
+offset_bottom = 711.0
 mouse_filter = 2
 script = ExtResource("1_hcsbe")
 
@@ -78,7 +78,7 @@ texture = ExtResource("4_wcbxj")
 
 [node name="BoostButton" type="TouchScreenButton" parent="." unique_id=1713448357]
 modulate = Color(1, 1, 1, 0.7058824)
-position = Vector2(973, 421)
+position = Vector2(982, 429)
 scale = Vector2(2, 2)
 texture_normal = ExtResource("8_m62p5")
 texture_pressed = ExtResource("6_wcbxj")

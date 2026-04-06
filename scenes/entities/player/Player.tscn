@@ -16,7 +16,7 @@ character_description = "A fish."
 reconcile_threshold = 50.0
 
 [node name="Camera2D" type="Camera2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="0" unique_id=1891725811]
-zoom = Vector2(0.5, 0.5)
+zoom = Vector2(0.7, 0.7)
 
 [node name="PlayerController" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=2099270104]
 script = ExtResource("2_n1xdv")
