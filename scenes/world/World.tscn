@@ -26,8 +26,9 @@ spawn_path = NodePath("..")
 
 [node name="CollectibleSpawner" type="Node" parent="." unique_id=254830818]
 script = ExtResource("3_qxiha")
-special_fish_interval = 9.0
-floating_item_interval = 6.0
+max_floating_items = 8
+special_fish_interval = 8.0
+floating_item_interval = 4.0
 floating_item_scenes = Array[PackedScene]([ExtResource("7_yr1n6")])
 special_fish_scenes = Array[PackedScene]([ExtResource("8_l5ull")])
 
