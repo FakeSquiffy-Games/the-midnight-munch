@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://u68kwrkyylce"]
+
+[ext_resource type="Script" uid="uid://bqdt72wsgjlkh" path="res://scenes/ui/HUD.gd" id="1_kw0id"]
+[ext_resource type="PackedScene" uid="uid://fpdyl33oib7j" path="res://scenes/ui/VirtualController.tscn" id="2_atyv1"]
+
+[node name="HUD" type="CanvasLayer" unique_id=1357385127]
+script = ExtResource("1_kw0id")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1675237979]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 95.0
+
+[node name="LevelLabel" type="Label" parent="VBoxContainer" unique_id=206758631]
+layout_mode = 2
+
+[node name="XPBar" type="ProgressBar" parent="VBoxContainer" unique_id=679112769]
+layout_mode = 2
+show_percentage = false
+
+[node name="EnergyBar" type="ProgressBar" parent="VBoxContainer" unique_id=631934757]
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="VirtualController" parent="." unique_id=2092010908 instance=ExtResource("2_atyv1")]

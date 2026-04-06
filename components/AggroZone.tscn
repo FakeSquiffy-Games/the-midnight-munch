@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bdgg407nnbcsk"]
+
+[ext_resource type="Script" uid="uid://b8k00b07ihdmi" path="res://components/AggroZone.gd" id="1_7u3p1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_htl0s"]
+radius = 300.0
+
+[node name="AggroZone" type="Area2D" unique_id=1557422602]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_7u3p1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=954099021]
+shape = SubResource("CircleShape2D_htl0s")

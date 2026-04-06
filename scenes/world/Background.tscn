@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://0a34poykosmn"]
+
+[ext_resource type="Texture2D" uid="uid://f6u6lyv8mh1s" path="res://assets/background/1.png" id="1_uldm6"]
+[ext_resource type="Texture2D" uid="uid://ewb3b8u8tj26" path="res://assets/background/2.png" id="2_0afhw"]
+[ext_resource type="Texture2D" uid="uid://bbghoym7qalsm" path="res://assets/background/3.png" id="2_o7vx3"]
+[ext_resource type="Texture2D" uid="uid://br2ny2x6unuxp" path="res://assets/background/4.png" id="4_lvvce"]
+[ext_resource type="Texture2D" uid="uid://b5br1rh88g84m" path="res://assets/background/5.png" id="5_hk7d3"]
+[ext_resource type="Texture2D" uid="uid://cdq30kttt5pwq" path="res://assets/background/6.png" id="6_p7i1y"]
+
+[node name="Background" type="Node2D" unique_id=680405929]
+
+[node name="OceanSprite" type="Sprite2D" parent="." unique_id=2035114903]
+scale = Vector2(6, 6)
+texture = ExtResource("1_uldm6")
+
+[node name="ShipwreckSprite" type="Sprite2D" parent="." unique_id=973190833]
+scale = Vector2(6, 6)
+texture = ExtResource("2_o7vx3")
+
+[node name="Ocean" type="Parallax2D" parent="." unique_id=986388369]
+visible = false
+scroll_scale = Vector2(0.8, 0)
+repeat_size = Vector2(3456, 0)
+repeat_times = 2
+follow_viewport = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Ocean" unique_id=787131291]
+scale = Vector2(6, 6)
+texture = ExtResource("1_uldm6")
+
+[node name="Shark" type="Parallax2D" parent="." unique_id=1144427899]
+visible = false
+scroll_scale = Vector2(0.85, 0.2)
+follow_viewport = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Shark" unique_id=208203363]
+scale = Vector2(6, 6)
+texture = ExtResource("2_0afhw")
+
+[node name="Shipwreck" type="Parallax2D" parent="." unique_id=1984975119]
+visible = false
+scroll_scale = Vector2(0.85, 0.5)
+repeat_size = Vector2(3456, 0)
+repeat_times = 2
+follow_viewport = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Shipwreck" unique_id=23733215]
+scale = Vector2(6, 6)
+texture = ExtResource("2_o7vx3")
+
+[node name="Bubble1" type="Parallax2D" parent="." unique_id=1840381371]
+visible = false
+scroll_scale = Vector2(0.9, 0.7)
+repeat_size = Vector2(2304, 0)
+repeat_times = 2
+follow_viewport = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Bubble1" unique_id=1735744660]
+scale = Vector2(4, 4)
+texture = ExtResource("4_lvvce")
+
+[node name="Bubble2" type="Parallax2D" parent="." unique_id=416149046]
+visible = false
+scroll_scale = Vector2(0.95, 0.8)
+repeat_size = Vector2(2304, 0)
+repeat_times = 2
+follow_viewport = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Bubble2" unique_id=2093559475]
+scale = Vector2(4, 4)
+texture = ExtResource("5_hk7d3")
+
+[node name="Sand" type="Parallax2D" parent="." unique_id=841963211]
+visible = false
+repeat_size = Vector2(2304, 0)
+repeat_times = 2
+follow_viewport = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Sand" unique_id=811733151]
+position = Vector2(0, 324)
+scale = Vector2(4, 4)
+texture = ExtResource("6_p7i1y")

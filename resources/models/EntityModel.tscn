@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://bwenv8gtlqvo3"]
+
+[ext_resource type="Script" uid="uid://3kmxne7oiygm" path="res://resources/models/EntityModel.gd" id="1_qjg0g"]
+[ext_resource type="Script" uid="uid://ni253j3jqks" path="res://components/BodyArea.gd" id="4_f31f3"]
+[ext_resource type="Script" uid="uid://cf8nqdkun8vl5" path="res://components/MouthArea.gd" id="5_lj3vk"]
+
+[node name="EntityModel" type="Node2D" unique_id=1730000128]
+scale = Vector2(4, 4)
+script = ExtResource("1_qjg0g")
+metadata/_custom_type_script = "uid://3kmxne7oiygm"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=832216548]
+autoplay = "default"
+
+[node name="BodyArea" type="Area2D" parent="." unique_id=1257139104]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+script = ExtResource("4_f31f3")
+metadata/_custom_type_script = "uid://ni253j3jqks"
+
+[node name="MouthArea" type="Area2D" parent="." unique_id=555163341]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+script = ExtResource("5_lj3vk")
+metadata/_custom_type_script = "uid://cf8nqdkun8vl5"
+
+[node name="Nametag" type="Label" parent="." unique_id=637477405]
+offset_left = -100.0
+offset_top = -80.0
+offset_right = 100.0
+offset_bottom = -57.0
+pivot_offset = Vector2(100, 11.5)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+horizontal_alignment = 1
