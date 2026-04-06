@@ -8,7 +8,7 @@ extends Control
 # NODE REFERENCES
 # =========================================================
 
-@onready var title_label:  Label    = $VBoxContainer/TitleLabel
+#@onready var title_label:  Label    = $VBoxContainer/TitleLabel
 @onready var host_button:  Button   = $VBoxContainer/HostButton
 @onready var key_label:    Label    = $VBoxContainer/KeyLabel
 @onready var key_input:    LineEdit = $VBoxContainer/KeyInput
@@ -39,10 +39,6 @@ var locked_indices: Dictionary = {} # peer_id -> index
 # =========================================================
 
 func _ready() -> void:
-	start_button.visible      = false
-	start_button.disabled     = true
-	leave_button.visible      = false
-
 	host_button.pressed.connect(_on_host_pressed)
 	join_button.pressed.connect(_on_join_pressed)
 	leave_button.pressed.connect(_on_leave_pressed)
@@ -61,7 +57,15 @@ func _ready() -> void:
 	NetworkManager.discovery_failed.connect(_on_discovery_failed)
 	NetworkManager.countdown_tick.connect(_on_countdown_tick)
 	
-	_update_carousel()
+	## FIX: Specifically check if we are in an active LAN session (ENet)
+	var peer = multiplayer.multiplayer_peer
+	var is_lan_connected = (peer is ENetMultiplayerPeer) and (peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED)
+	
+	if is_lan_connected:
+		_restore_active_connection()
+	else:
+		## Fresh boot OR returning from Single Player: Reset to default state!
+		_reset_ui()
 	
 	AudioManager.play_ui_sound("ambience")
 
@@ -74,6 +78,7 @@ func _on_host_pressed() -> void:
 	NetworkManager.host_game()
 	key_label.text        = "Session key:  %s" % NetworkManager.session_key
 	status_label.text     = "Hosting — share the key with other players."
+	single_player_button.disabled = true
 	host_button.disabled  = true
 	join_button.disabled  = true
 	key_input.editable    = false
@@ -89,6 +94,7 @@ func _on_join_pressed() -> void:
 		status_label.text = "Key must be exactly %d characters." % NetworkManager.KEY_LENGTH
 		return
 	status_label.text     = "Searching for host with key '%s'..." % key
+	single_player_button.disabled = true
 	host_button.disabled  = true
 	join_button.disabled  = true
 	key_input.editable    = false
@@ -319,8 +325,45 @@ func _confirm_unlock(peer_id: int) -> void:
 
 
 # =========================================================
-# HELPERS
+# HELPERS & REMATCH RESTORE
 # =========================================================
+
+## Restores the Lobby layout and selections after a match ends
+func _restore_active_connection() -> void:
+	host_button.disabled  = true
+	join_button.disabled  = true
+	single_player_button.disabled = true
+	key_input.editable    = false
+	leave_button.visible  = true
+	
+	var my_id = multiplayer.get_unique_id()
+	
+	if multiplayer.is_server():
+		status_label.text = "Hosting — share the key with other players."
+		key_label.text    = "Session key:  %s" % NetworkManager.session_key
+		start_button.visible = true
+		_check_start_condition()
+	else:
+		status_label.text = "Connected! My peer ID: %d." % my_id
+
+	## Restore previous character selection
+	if GameState.player_characters.has(my_id):
+		var saved_path = GameState.player_characters[my_id]
+		for i in available_characters.size():
+			if available_characters[i].resource_path == saved_path:
+				current_index = i
+				break
+				
+	if GameState.player_names.has(my_id):
+		username_input.text = GameState.player_names[my_id]
+
+	## Reset locking states so everyone must click "Ready" again
+	locked_indices.clear()
+	is_ready = false
+	ready_button.text = "Ready"
+	ready_button.disabled = false
+	
+	_update_carousel()
 
 func _reset_ui() -> void:
 	host_button.disabled  = false

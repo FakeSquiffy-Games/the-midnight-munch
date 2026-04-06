@@ -192,9 +192,8 @@ func _execute_return_to_lobby() -> void:
 	match_phase = MatchPhase.LOBBY
 	match_start_time_msec = 0
 	
-	## 2. Clear Selections so everyone must re-pick
-	player_characters.clear()
-	# Note: We keep `player_names` so they don't have to retype them
+	## 2. FIX: Do NOT clear player_characters or player_names. 
+	## We keep them so the LobbyUI can automatically re-select the fish!
 	
 	## 3. Reset personal stats for the next round
 	for state in player_states.values():
@@ -211,5 +210,9 @@ func _execute_return_to_lobby() -> void:
 	var results = get_tree().root.get_node_or_null("ResultsUI")
 	if results: results.queue_free()
 
-	## 5. Transition scene
+	## 5. FIX: Await one engine frame. This gives the RPC queue time to finish 
+	## processing BEFORE the World is destroyed, preventing "Node not found" errors.
+	await get_tree().process_frame
+
+	## 6. Transition scene
 	get_tree().change_scene_to_file("res://scenes/ui/LobbyUI.tscn")

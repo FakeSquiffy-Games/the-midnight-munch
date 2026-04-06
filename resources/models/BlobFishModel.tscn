@@ -19,6 +19,7 @@ animations = [{
 }]
 
 [node name="EntityModel" unique_id=1730000128 instance=ExtResource("1_vygw6")]
+species_name = "Blob Fish"
 
 [node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
 scale = Vector2(4, 4)

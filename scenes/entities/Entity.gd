@@ -154,11 +154,10 @@ func play_elimination() -> void:
 	if not multiplayer.is_server() and multiplayer.get_remote_sender_id() != 1:
 		return
 	
-	## 2. Stop the synchronizer immediately to prevent network jitter/errors
-	if synchronizer:
-		synchronizer.public_visibility = false
-		synchronizer.process_mode = PROCESS_MODE_DISABLED
-	
+	## FIX: Removed the code that disables the synchronizer. 
+	## Leaving the synchronizer active prevents the "on_despawn_receive" ERR_UNAUTHORIZED
+	## crash when the match unloads. The ghost safely continues to sync its spectator position.
+
 	## Disable physical interactions immediately on all clients
 	if body_area: 
 		body_area.set_deferred("monitorable", false)
@@ -166,8 +165,6 @@ func play_elimination() -> void:
 	if mouth_area: 
 		mouth_area.set_deferred("monitoring", false)
 		mouth_area.set_deferred("monitorable", false)
-	
-	#set_physics_process(false)
 	
 	## Play spatial death sound
 	if self.is_in_group("players"):
@@ -177,28 +174,21 @@ func play_elimination() -> void:
 	if anim:
 		anim.play_death_animation()
 	else:
-		## Fallback if no animation handler exists
 		visible = false
 	
-	## 4. Physics/Collision Shift
-	# Set Layer to 0 so living fish swim through the ghost
+	## Physics/Collision Shift
 	collision_layer = 0 
-	# Keep Mask 1 so the ghost still bumps into world boundaries
-	#set_collision_mask_value(1, true) 
 
-	## 5. Persistence Check
+	## Persistence Check
 	if not is_in_group("players"):
-		## NPCs are deleted after the animation
 		var tree = get_tree()
 		if tree:
 			tree.create_timer(1.0).timeout.connect(queue_free)
 	else:
-		## Players transition to Spectator Mode
 		_enter_spectator_mode()
 
 func _enter_spectator_mode() -> void:
 	print("Entity: %s entering spectator mode." % name)
-	# Hide the visuals and nametag after the death animation finishes
 	var tree = get_tree()
 	if tree:
 		await tree.create_timer(1.0).timeout

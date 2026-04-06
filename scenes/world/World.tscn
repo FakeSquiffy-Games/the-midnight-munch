@@ -6,8 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://d16dycysxnh0v" path="res://scenes/world/WorldBorder.tscn" id="2_qxiha"]
 [ext_resource type="Script" uid="uid://digjhnxhwxnr0" path="res://scenes/world/CollectibleSpawner.gd" id="3_qxiha"]
 [ext_resource type="PackedScene" uid="uid://bkpgkgej43nof" path="res://scenes/entities/npc/GhostShark.tscn" id="5_qh0kd"]
-[ext_resource type="PackedScene" uid="uid://c5ln4ixptye0p" path="res://scenes/entities/npc/LuminousOrb.tscn" id="7_yr1n6"]
-[ext_resource type="PackedScene" uid="uid://4fbi7rsus0x7" path="res://scenes/entities/npc/DartEel.tscn" id="8_l5ull"]
+[ext_resource type="PackedScene" uid="uid://c5ln4ixptye0p" path="res://scenes/entities/npc/SeaAngel.tscn" id="7_yr1n6"]
+[ext_resource type="PackedScene" uid="uid://4fbi7rsus0x7" path="res://scenes/entities/npc/LanternFish.tscn" id="8_l5ull"]
 
 [node name="World" type="Node2D" unique_id=1791530930]
 script = ExtResource("1_6eebf")
