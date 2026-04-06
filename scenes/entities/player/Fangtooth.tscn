@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://d32jl470ov1aq"]
+
+[ext_resource type="PackedScene" uid="uid://bqqotvi7jha02" path="res://scenes/entities/player/Player.tscn" id="1_pffjj"]
+[ext_resource type="PackedScene" uid="uid://b6mlwj642u4oi" path="res://resources/models/FangtoothModel.tscn" id="2_h3lri"]
+
+[node name="Entity" unique_id=1905748098 instance=ExtResource("1_pffjj")]
+character_name = "Fangtooth"
+character_description = "Scary orange fish."
+
+[node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_h3lri")]
