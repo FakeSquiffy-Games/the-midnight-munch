@@ -5,6 +5,6 @@
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_bi4w0")]
 character_name = "Black Seadevil"
-character_description = "Scary green fish."
+character_description = "The deep-sea catfish who’ll light up the room just to eat it."
 
 [node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_cteo1")]

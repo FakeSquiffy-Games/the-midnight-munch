@@ -5,6 +5,7 @@
 - [Pixabay](https://pixabay.com/) - Free Sound effects
 
 ## More Assets
+- [pixel_emm](https://pixel-emm.itch.io/deep-sea-creatures?download) - Deep Sea Fish Sprites
 - [Kenney Vleugels](https://kenney.nl/assets/ui-pack-pixel-adventure) - Control UI
 - [Canvas Coven](https://canvas-coven.itch.io/fish-fellas-free-asset-pack) - Player Resource HUD and Dash Button
 - [Slime](https://pleeze.itch.io/slimesfonts) - Fonts

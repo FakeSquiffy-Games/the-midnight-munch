@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://gka6ghi6yojc"]
+
+[ext_resource type="PackedScene" uid="uid://bqqotvi7jha02" path="res://scenes/entities/player/Player.tscn" id="1_5gjkw"]
+[ext_resource type="PackedScene" uid="uid://gqv76labxnxs" path="res://resources/models/BlobFishModel.tscn" id="2_g40fg"]
+
+[node name="Entity" unique_id=1905748098 instance=ExtResource("1_5gjkw")]
+character_name = "Blob Fish"
+character_description = "The global icon for \"I wasn't ready to get out of bed today.\""
+
+[node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("2_g40fg")]
+position = Vector2(3, -9)
