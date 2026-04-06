@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://cceulhs5rov7t"]
+
+[ext_resource type="PackedScene" uid="uid://bwenv8gtlqvo3" path="res://resources/models/EntityModel.tscn" id="1_kpwug"]
+[ext_resource type="Texture2D" uid="uid://cqqsrn2knmt0n" path="res://assets/npc/LanternFish/idle/0.png" id="2_gb4tp"]
+[ext_resource type="Texture2D" uid="uid://cs6so1yemfweg" path="res://assets/npc/LanternFish/idle/1.png" id="3_oxall"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n24yy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_gb4tp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_oxall")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="EntityModel" unique_id=1773224112 instance=ExtResource("1_kpwug")]
+species_name = "Dart Eel"
+
+[node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_n24yy")
+
+[node name="BodyPolygon" type="CollisionPolygon2D" parent="BodyArea" parent_id_path=PackedInt32Array(1257139104) index="0" unique_id=1341678894]
+scale = Vector2(4, 4)
+polygon = PackedVector2Array(1.4375, -4.5625, 0.6875, -3.0625, -3.0625, -1.9375, -3.375, -1.1875, -7.9375, -1.1875, -9.625, -0.1875, -10.125, 0.875, -11.1875, 0.0625, -13.1875, -3.125, -13.875, -2.875, -13.9375, 1, -12.875, 1.375, -13.028128, 2.9573202, -13.9375, 2.9375, -14, 4.8125, -12.125, 5.25, -11.4375, 3.9375, -9, 4, -9.1875, 4.875, -8.0625, 5.875, -7.9375, 7, -6.9375, 7.875, -3.5625, 7.9375, -1.125, 7, -0.375, 5.9375, 3.25, 6, 2.9375, 7, 3.125, 7.875, 6.25, 8, 7, 7.125, 8.1875, 6.9375, 9.5, 6.0625, 12.25, 6.0625, 14.125, 5, 15.125, 3.75, 15.0625, 1.1875, 14.1875, -0.875, 13.0625, -1.875, 10.4375, -2.5, 9.4375, -3.25, 6.875, -3.375, 4.25, -6, 3.0625, -5.9375)
+
+[node name="MouthPolygon" type="CollisionPolygon2D" parent="MouthArea" parent_id_path=PackedInt32Array(555163341) index="0" unique_id=325969926]
+scale = Vector2(4, 4)
+polygon = PackedVector2Array(9.4375, 6.25, 12.0625, 6.0625, 14.75, 4.6875, 15.5, 3.75, 15.25, 1.875, 13.0625, 1, 11.4375, 2.1875, 10.4375, 4.125)
