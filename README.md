@@ -91,7 +91,7 @@ The local player spawns a global dark overlay at match start. Each fish emits a 
 ## Known Issues
 
 **1. Boost Stacking (Infinite Speed)**
-Collecting multiple copies of the same timed collectible (e.g., Dart Eel) currently stacks their speed multipliers. Eating three Dart Eels in quick succession makes the player uncontrollably fast. Fix requires `StatManager.gd` to check whether a stat is already boosted; if so, refresh the timer rather than appending a new multiplier.
+Collecting multiple copies of the same timed collectible (e.g., Lanter Fish) currently stacks their speed multipliers. Eating three Lantern Fish in quick succession makes the player uncontrollably fast. Fix requires `StatManager.gd` to check whether a stat is already boosted; if so, refresh the timer rather than appending a new multiplier.
 
 
 ## Unimplemented Features

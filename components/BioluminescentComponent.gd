@@ -51,7 +51,7 @@ func _process_active_mode() -> void:
 func _process_player_mode(delta: float) -> void:
 	if not is_active: return
 	current_radius -= drain_rate * delta
-	current_radius = max(current_radius, 0.0)
+	current_radius = max(current_radius, 100.0)
 
 func _process_dormant_mode(delta: float) -> void:
 	if is_active:

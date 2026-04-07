@@ -140,7 +140,7 @@ static func resolve(
 	var d_is_player         := defender.is_in_group("players")
 
 	## Death floor — any hit at Level 0 / 0 XP is always elimination.
-	if not d_is_player and d_stat.level == 0 and d_stat.current_xp <= 0.0:
+	if d_stat.level == 0 and d_stat.current_xp <= 0.0:
 		return Result.ELIMINATION
 
 	### NPC KILL at Level 0 regardless of XP — no level below to subtract.

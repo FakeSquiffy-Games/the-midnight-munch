@@ -146,7 +146,7 @@ func _setup_local_player() -> void:
 
 	var overlay := CanvasModulate.new()
 	overlay.name = "DarkOverlay"
-	overlay.color = Color(0.0, 0.153, 0.247, 1.0)
+	overlay.color = Color(0.0, 0.098, 0.098, 1.0)
 	get_tree().current_scene.call_deferred("add_child", overlay)
 
 	var hud := preload("res://scenes/ui/HUD.tscn").instantiate()

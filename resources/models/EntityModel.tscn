@@ -1,8 +1,13 @@
 [gd_scene format=3 uid="uid://bwenv8gtlqvo3"]
 
 [ext_resource type="Script" uid="uid://3kmxne7oiygm" path="res://resources/models/EntityModel.gd" id="1_qjg0g"]
+[ext_resource type="FontFile" uid="uid://t0r5eg2k1bte" path="res://assets/fonts/varnished.fnt" id="4_evd0u"]
 [ext_resource type="Script" uid="uid://ni253j3jqks" path="res://components/BodyArea.gd" id="4_f31f3"]
 [ext_resource type="Script" uid="uid://cf8nqdkun8vl5" path="res://components/MouthArea.gd" id="5_lj3vk"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1pdhl"]
+font = ExtResource("4_evd0u")
+font_size = 64
 
 [node name="EntityModel" type="Node2D" unique_id=1730000128]
 scale = Vector2(4, 4)
@@ -33,4 +38,5 @@ offset_right = 100.0
 offset_bottom = -57.0
 pivot_offset = Vector2(100, 11.5)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+label_settings = SubResource("LabelSettings_1pdhl")
 horizontal_alignment = 1
