@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://ca8hy4kqtdo11"]
+
+[ext_resource type="PackedScene" uid="uid://bqqotvi7jha02" path="res://scenes/entities/player/Player.tscn" id="1_irf37"]
+[ext_resource type="PackedScene" uid="uid://coaj7a223ah7c" path="res://resources/models/ViperFishModel.tscn" id="2_xangn"]
+
+[node name="Entity" unique_id=1905748098 instance=ExtResource("1_irf37")]
+character_name = "ViperFish"
+character_description = "A high-speed needle-trap that’s 90% teeth and 10% pure, unadulterated spite."
+
+[node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("2_xangn")]
