@@ -8,6 +8,7 @@
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_vn70c")]
 script = ExtResource("2_tqe2g")
+counts_as_kill_stat = true
 
 [node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_veqn3")]
 

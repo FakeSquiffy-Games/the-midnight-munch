@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://c6nyhlpcq3cp0"]
+
+[ext_resource type="PackedScene" uid="uid://bwenv8gtlqvo3" path="res://resources/models/EntityModel.tscn" id="1_c7jsm"]
+[ext_resource type="Texture2D" uid="uid://cv1v1x3nsamie" path="res://assets/npc/OarFish/idle/0.png" id="2_ypv3j"]
+[ext_resource type="Texture2D" uid="uid://cqqu4ppmok4ea" path="res://assets/npc/OarFish/idle/1.png" id="3_j045a"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_emhn6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ypv3j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_j045a")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="EntityModel" unique_id=1730000128 instance=ExtResource("1_c7jsm")]
+
+[node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
+scale = Vector2(6, 6)
+sprite_frames = SubResource("SpriteFrames_emhn6")
+frame_progress = 0.37132347
+flip_h = true
+
+[node name="BodyPolygon" type="CollisionPolygon2D" parent="BodyArea" parent_id_path=PackedInt32Array(1257139104) index="0" unique_id=1640726574]
+scale = Vector2(6, 6)
+polygon = PackedVector2Array(5.6875, -9.0625, 2.125, -9.875, -5, -6, -6, -5, -7, -3, -16.375, -4, -18.6875, -2.875, -20.8125, 0, -21.3125, 5.375, -23.0625, 9.1875, -24.9375, 11.0625, -16, 12.9375, -11.625, 13.5625, -9, 13.3125, -6.375, 11.0625, -6.6875, 8.5, -4.0625, 7.625, -0.125, 7.4375, 4.375, 8.625, 7.8125, 7.25, 10.375, 3.0625, 18.1875, 3.75, 19.6875, 2.625, 21.75, 2.8125, 23, 3.5, 25.625, 4.125, 27.3125, 0.9375, 26.625, -1.8125, 25.625, -5.4375, 23.8125, -7.875, 19.8125, -7.875, 18.1875, -9.3125, 16.3125, -8.625, 14.0625, -7.5625, 10.625, -8)
+
+[node name="MouthPolygon" type="CollisionPolygon2D" parent="MouthArea" parent_id_path=PackedInt32Array(555163341) index="0" unique_id=1029490855]
+scale = Vector2(6, 6)
+polygon = PackedVector2Array(17.291668, 4.125, 25.833334, 5.666667, 29.458334, 2.2083335, 28.791668, -1.25, 27.458334, -4.2083335, 24.666668, -3.9166667, 22.458334, -2.625, 20.041668, -2.125, 17.208334, 0.041666668)
