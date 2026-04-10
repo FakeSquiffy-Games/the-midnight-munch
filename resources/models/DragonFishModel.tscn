@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://dnktk8nbvdg8f"]
+
+[ext_resource type="PackedScene" uid="uid://bwenv8gtlqvo3" path="res://resources/models/EntityModel.tscn" id="1_0eqe1"]
+[ext_resource type="Texture2D" uid="uid://c17s0swv8ifjo" path="res://assets/player/DragonFish/idle/0.png" id="2_fgap6"]
+[ext_resource type="Texture2D" uid="uid://b77c6hmaw7im8" path="res://assets/player/DragonFish/idle/1.png" id="3_668n3"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gkai5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_fgap6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_668n3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="EntityModel" unique_id=1730000128 instance=ExtResource("1_0eqe1")]
+
+[node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
+rotation = 0.37350047
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_gkai5")
+frame_progress = 0.21761666
+flip_h = true
+
+[node name="BodyPolygon" type="CollisionPolygon2D" parent="BodyArea" parent_id_path=PackedInt32Array(1257139104) index="0" unique_id=296173986]
+scale = Vector2(4, 4)
+polygon = PackedVector2Array(1.0625, -11.375, -1.1875, -10.9375, -2.75, -10.75, -6.875, -12.4375, -8.8125, -12, -11, -10.8125, -11.8125, -9.1875, -9.5625, -6.625, -11.1875, -5.1875, -12.5, -4.3125, -13.4375, -3.5625, -14.625, -2.4375, -15.1875, -0.6875, -14.5625, -0.375, -15.8125, 2.1875, -16.875, 3.375, -18.3125, 5, -18.8125, 5.9375, -16.625, 5.3125, -15.5625, 7.125, -13.75, 4.25, -12.625, 3, -12, 4.5, -10.4375, 4.9375, -8.6875, 4, -6.75, 0.6875, -3.6875, -0.25, -4.3125, 3.375, -0.6875, -1.4375, 1.3125, -0.9375, 2.75, -1.1875, 3.3125, 0.1875, 5.0625, 0.5625, 7.75, 2.125, 9.4375, 4.75, 13.1875, 4.4375, 15.6875, 3, 15.75, -1.6875, 16.9375, -2.9375, 16.5, -4.1875, 15.8125, -5.625, 14.25, -7.3125, 12.9375, -8.0625, 12.5625, -9.25, 7.625, -11.0625, 7.3125, -10.3125, 5, -10.8125, 3.8125, -10.375)
+
+[node name="MouthPolygon" type="CollisionPolygon2D" parent="MouthArea" parent_id_path=PackedInt32Array(555163341) index="0" unique_id=525794709]
+scale = Vector2(4, 4)
+polygon = PackedVector2Array(5.125, 0.8125, 10.375, 3.6875, 12.875, 4.5625, 15.25, 3, 17.0625, 0.375, 17.1875, -3.0625, 12.375, -4.25, 9.5, -3.875, 5.5625, -5.8125, 4.125, -2.875)

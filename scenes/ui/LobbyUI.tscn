@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://rrqd40rhp53y" path="res://scenes/ui/SplashBackground.tscn" id="2_kpkqk"]
 [ext_resource type="PackedScene" uid="uid://d32jl470ov1aq" path="res://scenes/entities/player/Fangtooth.tscn" id="3_6h17u"]
 [ext_resource type="PackedScene" uid="uid://gka6ghi6yojc" path="res://scenes/entities/player/Blobfish.tscn" id="4_6h17u"]
+[ext_resource type="PackedScene" uid="uid://cxakbhvqguo5e" path="res://scenes/entities/player/DragonFish.tscn" id="5_m8d72"]
 
 [sub_resource type="FontVariation" id="FontVariation_e11ce"]
 
@@ -19,7 +20,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wxsam")
-available_characters = Array[PackedScene]([ExtResource("2_e11ce"), ExtResource("3_6h17u"), ExtResource("4_6h17u")])
+available_characters = Array[PackedScene]([ExtResource("2_e11ce"), ExtResource("3_6h17u"), ExtResource("4_6h17u"), ExtResource("5_m8d72")])
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=128440325]
 z_index = 1
