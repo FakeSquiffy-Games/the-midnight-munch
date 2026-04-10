@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dc4tcr5nkmj10"]
 
 [ext_resource type="PackedScene" uid="uid://bqqotvi7jha02" path="res://scenes/entities/player/Player.tscn" id="1_bi4w0"]
-[ext_resource type="PackedScene" uid="uid://de01qacsclnj3" path="res://resources/models/BlackSeadevilModel.tscn" id="2_cteo1"]
+[ext_resource type="PackedScene" uid="uid://de01qacsclnj3" path="res://resources/models/player/BlackSeadevilModel.tscn" id="2_cteo1"]
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_bi4w0")]
 character_name = "Black Seadevil"

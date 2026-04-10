@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bjrsphh2lyndc"]
 
 [ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_oanud"]
-[ext_resource type="PackedScene" uid="uid://c6nyhlpcq3cp0" path="res://resources/models/OarFishModel.tscn" id="2_1v6t8"]
+[ext_resource type="PackedScene" uid="uid://c6nyhlpcq3cp0" path="res://resources/models/npc/OarFishModel.tscn" id="2_1v6t8"]
 [ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_qjq7h"]
 [ext_resource type="PackedScene" uid="uid://bdgg407nnbcsk" path="res://components/AggroZone.tscn" id="3_qjq7h"]
 [ext_resource type="Script" uid="uid://b6pbye5y6vfnl" path="res://resources/behaviors/NPCBehavior.gd" id="4_ubd0c"]

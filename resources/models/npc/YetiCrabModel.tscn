@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://buiwdplgmysh"]
+
+[ext_resource type="PackedScene" uid="uid://bwenv8gtlqvo3" path="res://resources/models/EntityModel.tscn" id="1_2dcjy"]
+[ext_resource type="Texture2D" uid="uid://7qjiomrlk5ka" path="res://assets/npc/YetiCrab/idle/0.png" id="2_8fxrw"]
+[ext_resource type="Texture2D" uid="uid://bvrb0xawp2aqn" path="res://assets/npc/YetiCrab/idle/1.png" id="3_nh4hu"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_22uyv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_8fxrw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_nh4hu")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="EntityModel" unique_id=1730000128 instance=ExtResource("1_2dcjy")]
+
+[node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_22uyv")
+frame_progress = 0.15260595

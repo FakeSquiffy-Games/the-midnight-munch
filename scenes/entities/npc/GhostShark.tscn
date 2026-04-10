@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_vn70c"]
 [ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_tqe2g"]
-[ext_resource type="PackedScene" uid="uid://cn0ohnkifw7ts" path="res://resources/models/GhostSharkModel.tscn" id="2_veqn3"]
+[ext_resource type="PackedScene" uid="uid://cn0ohnkifw7ts" path="res://resources/models/npc/GhostSharkModel.tscn" id="2_veqn3"]
 [ext_resource type="PackedScene" uid="uid://bdgg407nnbcsk" path="res://components/AggroZone.tscn" id="3_tqe2g"]
 [ext_resource type="Script" uid="uid://b6pbye5y6vfnl" path="res://resources/behaviors/NPCBehavior.gd" id="4_7fhx6"]
 

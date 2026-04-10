@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c5ln4ixptye0p"]
 
 [ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_w4617"]
-[ext_resource type="PackedScene" uid="uid://cmyfqx3txmit4" path="res://resources/models/SeaAngelModel.tscn" id="2_2f1on"]
+[ext_resource type="PackedScene" uid="uid://cmyfqx3txmit4" path="res://resources/models/npc/SeaAngelModel.tscn" id="2_2f1on"]
 [ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_4m054"]
 [ext_resource type="Script" uid="uid://co6bf34obr1jf" path="res://resources/behaviors/SwimUpBehavior.gd" id="3_4m054"]
 [ext_resource type="Script" uid="uid://otxu8qtsgxyp" path="res://components/EffectComponent.gd" id="4_2f1on"]

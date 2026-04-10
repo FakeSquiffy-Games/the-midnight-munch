@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cguams3e6yb5p"]
+
+[ext_resource type="PackedScene" uid="uid://bwenv8gtlqvo3" path="res://resources/models/EntityModel.tscn" id="1_aqwrl"]
+[ext_resource type="Texture2D" uid="uid://cu1k067qws058" path="res://assets/npc/HatchetFish/idle/0.png" id="2_xu55j"]
+[ext_resource type="Texture2D" uid="uid://bj3tsd572tmo" path="res://assets/npc/HatchetFish/idle/1.png" id="3_4gmbg"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uuxo6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_xu55j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_4gmbg")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="EntityModel" unique_id=1730000128 instance=ExtResource("1_aqwrl")]
+
+[node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
+scale = Vector2(2.5, 2.5)
+sprite_frames = SubResource("SpriteFrames_uuxo6")
+frame_progress = 0.43810782
+flip_h = true

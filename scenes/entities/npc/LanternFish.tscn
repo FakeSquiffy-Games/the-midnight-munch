@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://4fbi7rsus0x7"]
 
 [ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_484xj"]
-[ext_resource type="PackedScene" uid="uid://cceulhs5rov7t" path="res://resources/models/LanternFishModel.tscn" id="2_htfe4"]
+[ext_resource type="PackedScene" uid="uid://cceulhs5rov7t" path="res://resources/models/npc/LanternFishModel.tscn" id="2_htfe4"]
 [ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_r8fh6"]
 [ext_resource type="Script" uid="uid://otxu8qtsgxyp" path="res://components/EffectComponent.gd" id="3_r8fh6"]
 [ext_resource type="Script" uid="uid://b6pbye5y6vfnl" path="res://resources/behaviors/NPCBehavior.gd" id="4_6iwe0"]

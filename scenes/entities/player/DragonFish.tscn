@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cxakbhvqguo5e"]
 
 [ext_resource type="PackedScene" uid="uid://bqqotvi7jha02" path="res://scenes/entities/player/Player.tscn" id="1_4xmdk"]
-[ext_resource type="PackedScene" uid="uid://dnktk8nbvdg8f" path="res://resources/models/DragonFishModel.tscn" id="2_8h41y"]
+[ext_resource type="PackedScene" uid="uid://dnktk8nbvdg8f" path="res://resources/models/player/DragonFishModel.tscn" id="2_8h41y"]
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_4xmdk")]
 character_name = "Dragon Fish"

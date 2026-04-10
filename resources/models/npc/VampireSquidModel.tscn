@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dpjxxqp0rydsm"]
+
+[ext_resource type="PackedScene" uid="uid://bwenv8gtlqvo3" path="res://resources/models/EntityModel.tscn" id="1_cqjvf"]
+[ext_resource type="Texture2D" uid="uid://dym306tfjskuf" path="res://assets/npc/VampireSquid/idle/0.png" id="2_sth2j"]
+[ext_resource type="Texture2D" uid="uid://fr4h4nccliy7" path="res://assets/npc/VampireSquid/idle/1.png" id="3_ibcjv"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kp0fc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_sth2j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ibcjv")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="EntityModel" unique_id=1730000128 instance=ExtResource("1_cqjvf")]
+
+[node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_kp0fc")

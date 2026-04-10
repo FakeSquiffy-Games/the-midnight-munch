@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://gka6ghi6yojc"]
 
 [ext_resource type="PackedScene" uid="uid://bqqotvi7jha02" path="res://scenes/entities/player/Player.tscn" id="1_5gjkw"]
-[ext_resource type="PackedScene" uid="uid://gqv76labxnxs" path="res://resources/models/BlobFishModel.tscn" id="2_g40fg"]
+[ext_resource type="PackedScene" uid="uid://gqv76labxnxs" path="res://resources/models/player/BlobFishModel.tscn" id="2_g40fg"]
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_5gjkw")]
 character_name = "Blob Fish"

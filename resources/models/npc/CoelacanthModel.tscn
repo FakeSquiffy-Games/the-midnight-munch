@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://dp1l186dyjhcg"]
+
+[ext_resource type="PackedScene" uid="uid://bwenv8gtlqvo3" path="res://resources/models/EntityModel.tscn" id="1_vqtcl"]
+[ext_resource type="Texture2D" uid="uid://cxs0vvmti8ctp" path="res://assets/npc/Coelacanth/idle/0.png" id="2_weoen"]
+[ext_resource type="Texture2D" uid="uid://babuggjt4cjfd" path="res://assets/npc/Coelacanth/idle/1.png" id="3_6yc1n"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_m0sej"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_weoen")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_6yc1n")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="EntityModel" unique_id=1730000128 instance=ExtResource("1_vqtcl")]
+
+[node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
+rotation = -0.29670596
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_m0sej")
+frame_progress = 0.14856778
