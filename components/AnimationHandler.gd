@@ -45,10 +45,11 @@ func _process(_delta: float) -> void:
 		if diff < 0:
 			_flash_red()
 			## Spawn "-XP" text in Red
-			FloatingText.spawn(_entity.get_parent(), _entity.global_position, str(round(diff)) + " XP", Color(1.0, 0.3, 0.3))
+			#FloatingText.spawn(_entity.get_parent(), _entity.global_position, str(round(diff)) + " XP", Color(1.0, 0.3, 0.3))
 		elif diff > 0:
 			## Spawn "+XP" text in Cyan
-			FloatingText.spawn(_entity.get_parent(), _entity.global_position, "+" + str(round(diff)) + " XP", Color(0.3, 1.0, 1.0))
+			#FloatingText.spawn(_entity.get_parent(), _entity.global_position, "+" + str(round(diff)) + " XP", Color(0.3, 1.0, 1.0))
+			pass
 			
 		_last_xp = current_xp
 		
@@ -130,7 +131,7 @@ func _on_global_boost_applied(target_path: String, stat: int, amount: float, _du
 		_: stat_name = "Boost"
 		
 	var text := "+%s %s!" % [str(amount), stat_name]
-	FloatingText.spawn(_entity.get_parent(), _entity.global_position, text, Color(0.3, 1.0, 0.3)) # Green
+	#FloatingText.spawn(_entity.get_parent(), _entity.global_position, text, Color(0.3, 1.0, 0.3)) # Green
 
 func play_death_animation() -> void:
 	if not is_instance_valid(_entity.model): return

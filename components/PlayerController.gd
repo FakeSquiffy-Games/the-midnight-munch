@@ -5,7 +5,6 @@
 class_name PlayerController
 extends Node
 
-
 # =========================================================
 # CONSTANTS
 # =========================================================
@@ -22,7 +21,7 @@ var _player:       CharacterBody2D
 var _stat_manager: StatManager
 var _mouth:        MouthArea
 var is_spectating: bool = false
-
+var _bubble_particles:  GPUParticles2D
 
 # =========================================================
 # LIFECYCLE
@@ -31,6 +30,8 @@ var is_spectating: bool = false
 func _ready() -> void:
 	_player       = owner as CharacterBody2D
 	_stat_manager = owner.get_node("StatManager") as StatManager
+	_bubble_particles = owner.get_node("GPUParticles2D") as GPUParticles2D
+	_bubble_particles.emitting = false
 	## _mouth is assigned by Player.load_model() after the model is instantiated.
 	## It is null here — do not access it in _ready().
 
@@ -72,7 +73,9 @@ func _physics_process(_delta: float) -> void:
 	var current_speed := _stat_manager.speed
 	if _stat_manager.is_boosting:
 		current_speed *= BOOST_MULTIPLIER
-
+		_bubble_particles.emitting = true
+	else:
+		_bubble_particles.emitting = false
 	_player.velocity = direction * current_speed
 	_player.move_and_slide()
 

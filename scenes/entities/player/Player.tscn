@@ -5,6 +5,34 @@
 [ext_resource type="Script" uid="uid://cbqcdl6yaa0wc" path="res://components/PlayerController.gd" id="2_n1xdv"]
 [ext_resource type="Shader" uid="uid://j81ehwyy84al" path="res://resources/shaders/Circle.gdshader" id="4_rqwkw"]
 [ext_resource type="Script" uid="uid://c4v4fof65gk3h" path="res://components/BioluminescentComponent.gd" id="5_hgjck"]
+[ext_resource type="Texture2D" uid="uid://bc10i2ttr0656" path="res://assets/effects/bubble.png" id="6_hgjck"]
+
+[sub_resource type="Gradient" id="Gradient_hgjck"]
+colors = PackedColorArray(1, 1, 1, 0.50980395, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ppr6r"]
+gradient = SubResource("Gradient_hgjck")
+
+[sub_resource type="Curve" id="Curve_rx1o7"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1e-05, 1), 0.0, 0.0, 0, 0, Vector2(0.99999, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_rqk8h"]
+curve = SubResource("Curve_rx1o7")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_20ow7"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 48.0
+initial_velocity_min = 0.5
+initial_velocity_max = 2.0
+gravity = Vector3(0, -40, 0)
+damping_min = 10.0
+damping_max = 10.0
+scale_min = 0.39999998
+scale_curve = SubResource("CurveTexture_rqk8h")
+color_ramp = SubResource("GradientTexture1D_ppr6r")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ppr6r"]
 shader = ExtResource("4_rqwkw")
@@ -14,6 +42,13 @@ script = ExtResource("2_30dhn")
 character_name = "Unnamed Fish"
 character_description = "A fish."
 reconcile_threshold = 50.0
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." index="0" unique_id=692906517]
+amount = 32
+texture = ExtResource("6_hgjck")
+lifetime = 3.0
+preprocess = 0.5
+process_material = SubResource("ParticleProcessMaterial_20ow7")
 
 [node name="Camera2D" type="Camera2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="0" unique_id=1891725811]
 zoom = Vector2(0.7, 0.7)
