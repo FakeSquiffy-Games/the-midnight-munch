@@ -23,5 +23,14 @@ animations = [{
 [node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
 scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_uuxo6")
-frame_progress = 0.43810782
+frame_progress = 0.06126041
 flip_h = true
+
+[node name="BodyPolygon" type="CollisionPolygon2D" parent="BodyArea" parent_id_path=PackedInt32Array(1257139104) index="0" unique_id=638778752]
+scale = Vector2(2.5, 2.5)
+polygon = PackedVector2Array(6.5999994, -11.999999, 0.39999998, -12.799999, -2.1999998, -12.199999, -4.7999997, -11.099999, -7.0999994, -8.9, -7.5999994, -6.7999997, -9.599999, -4.6, -13.799999, -5.5999994, -13.199999, -1.3999999, -10.599999, -2.6, -8.999999, -0.9, -8.099999, 3.8999999, -6.2999997, 6.7, -3.7999997, 9.599999, 1.6999999, 11.199999, 8.142857, 11.214285, 12.499999, 9.999999, 16.8, 3.6999998, 16.3, 0.99999994, 13.4, 2.3999999, 12.699999, -1.1999999, 13.9, -2.3999999, 13.999999, -3.7999997, 12.928571, -5.428571, 10.799999, -8.4)
+
+[node name="MouthPolygon" type="CollisionPolygon2D" parent="MouthArea" parent_id_path=PackedInt32Array(555163341) index="0" unique_id=1314852517]
+position = Vector2(65.24999, -5.2499995)
+scale = Vector2(2.5, 2.5)
+polygon = PackedVector2Array(-13.699995, -0.8000002, -15.099996, 0.39999974, -15.299995, 1.2999997, -15.599996, 6.299999, -13.099996, 10.799999, -10.299995, 8.999999, -8.499996, 3.7999997, -12.199995, -1.8000002)
