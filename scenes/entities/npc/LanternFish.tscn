@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_484xj"]
 [ext_resource type="PackedScene" uid="uid://cceulhs5rov7t" path="res://resources/models/npc/LanternFishModel.tscn" id="2_htfe4"]
 [ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_r8fh6"]
-[ext_resource type="Script" uid="uid://b6pbye5y6vfnl" path="res://resources/behaviors/NPCBehavior.gd" id="4_6iwe0"]
+[ext_resource type="Script" uid="uid://duxpjdk2crbg1" path="res://resources/behaviors/ScaredyBehavior.gd" id="5_f2rvu"]
 [ext_resource type="Script" uid="uid://otxu8qtsgxyp" path="res://components/EffectComponent.gd" id="5_tyhcb"]
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_484xj")]
@@ -15,13 +15,12 @@ disable_mouth = true
 
 [node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_htfe4")]
 
-[node name="NPCBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="0" unique_id=1714324165]
-script = ExtResource("4_6iwe0")
-is_inedible = true
-metadata/_custom_type_script = "uid://b6pbye5y6vfnl"
-
-[node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=1250324935]
+[node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=1250324935]
 script = ExtResource("5_tyhcb")
 boost_amount = 100.0
 duration = 15.0
 metadata/_custom_type_script = "uid://otxu8qtsgxyp"
+
+[node name="ScaredyBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=521947795]
+script = ExtResource("5_f2rvu")
+metadata/_custom_type_script = "uid://duxpjdk2crbg1"

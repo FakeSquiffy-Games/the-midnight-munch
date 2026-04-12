@@ -1,4 +1,4 @@
-class_name SwimUpBehavior
+class_name FloaterBehavior
 extends Node
 
 @export var float_speed: float = 75.0

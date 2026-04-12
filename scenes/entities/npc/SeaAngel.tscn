@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_w4617"]
 [ext_resource type="PackedScene" uid="uid://cmyfqx3txmit4" path="res://resources/models/npc/SeaAngelModel.tscn" id="2_2f1on"]
 [ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_4m054"]
-[ext_resource type="Script" uid="uid://co6bf34obr1jf" path="res://resources/behaviors/SwimUpBehavior.gd" id="3_4m054"]
+[ext_resource type="Script" uid="uid://co6bf34obr1jf" path="res://resources/behaviors/FloaterBehavior.gd" id="3_4m054"]
 [ext_resource type="Script" uid="uid://otxu8qtsgxyp" path="res://components/EffectComponent.gd" id="6_drxoi"]
 [ext_resource type="Script" uid="uid://c4v4fof65gk3h" path="res://components/BioluminescentComponent.gd" id="6_li440"]
 
@@ -16,17 +16,17 @@ disable_mouth = true
 
 [node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_2f1on")]
 
-[node name="SwimUpBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="0" unique_id=888993067]
-script = ExtResource("3_4m054")
-metadata/_custom_type_script = "uid://co6bf34obr1jf"
-
-[node name="BioluminescentComponent" type="Node2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=543839213]
+[node name="BioluminescentComponent" type="Node2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=543839213]
 script = ExtResource("6_li440")
 local_only = false
 metadata/_custom_type_script = "uid://c4v4fof65gk3h"
 
-[node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="3" unique_id=239993651]
+[node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=239993651]
 script = ExtResource("6_drxoi")
 stat = 6
 boost_amount = 100.0
 metadata/_custom_type_script = "uid://otxu8qtsgxyp"
+
+[node name="FloaterBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="3" unique_id=722525467]
+script = ExtResource("3_4m054")
+metadata/_custom_type_script = "uid://co6bf34obr1jf"

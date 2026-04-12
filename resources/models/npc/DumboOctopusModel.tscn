@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://wohtqe66d4kc"]
 
 [ext_resource type="PackedScene" uid="uid://bwenv8gtlqvo3" path="res://resources/models/EntityModel.tscn" id="1_xscdr"]
-[ext_resource type="Texture2D" uid="uid://bk630xe1o3tve" path="res://assets/npc/DumboOcto/idle/0.png" id="2_hcfx3"]
-[ext_resource type="Texture2D" uid="uid://cnb18iomn4fsh" path="res://assets/npc/DumboOcto/idle/1.png" id="3_n3cp3"]
+[ext_resource type="Texture2D" uid="uid://bk630xe1o3tve" path="res://assets/npc/DumboOctopus/idle/0.png" id="2_hcfx3"]
+[ext_resource type="Texture2D" uid="uid://cnb18iomn4fsh" path="res://assets/npc/DumboOctopus/idle/1.png" id="3_n3cp3"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8ov1l"]
 animations = [{

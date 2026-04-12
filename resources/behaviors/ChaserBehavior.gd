@@ -1,5 +1,4 @@
-## NPCBehavior.gd
-class_name NPCBehavior
+class_name ChaserBehavior
 extends Node
 
 enum State { WANDER, LUNGE, FLEE }

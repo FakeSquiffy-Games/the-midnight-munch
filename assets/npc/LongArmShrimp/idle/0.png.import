@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cnb18iomn4fsh"
-path="res://.godot/imported/1.png-cc3c281771807915f0dcc0f3e9b3a420.ctex"
+uid="uid://cmlipbc2fer38"
+path="res://.godot/imported/0.png-b7aad4d86d4cb4ca1c3975d9d4b5f3e3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/npc/DumboOcto/idle/1.png"
-dest_files=["res://.godot/imported/1.png-cc3c281771807915f0dcc0f3e9b3a420.ctex"]
+source_file="res://assets/npc/LongArmShrimp/idle/0.png"
+dest_files=["res://.godot/imported/0.png-b7aad4d86d4cb4ca1c3975d9d4b5f3e3.ctex"]
 
 [params]
 

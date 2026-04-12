@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c6nyhlpcq3cp0" path="res://resources/models/npc/OarFishModel.tscn" id="2_1v6t8"]
 [ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_qjq7h"]
 [ext_resource type="PackedScene" uid="uid://bdgg407nnbcsk" path="res://components/AggroZone.tscn" id="3_qjq7h"]
-[ext_resource type="Script" uid="uid://b6pbye5y6vfnl" path="res://resources/behaviors/NPCBehavior.gd" id="4_ubd0c"]
+[ext_resource type="Script" uid="uid://bi2nx7qcirey7" path="res://resources/behaviors/RammerBehavior.gd" id="5_1v6t8"]
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_oanud")]
 script = ExtResource("2_qjq7h")
@@ -23,8 +23,6 @@ max_energy = 200.0
 [node name="AggroZone" parent="components" parent_id_path=PackedInt32Array(1883867421) index="0" unique_id=1557422602 instance=ExtResource("3_qjq7h")]
 aggro_radius = 600.0
 
-[node name="NPCBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=438931573]
-script = ExtResource("4_ubd0c")
-is_inedible = true
-wander_speed_multiplier = 0.3
-metadata/_custom_type_script = "uid://b6pbye5y6vfnl"
+[node name="RammerBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=1138768451]
+script = ExtResource("5_1v6t8")
+metadata/_custom_type_script = "uid://bi2nx7qcirey7"

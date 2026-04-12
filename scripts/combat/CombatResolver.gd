@@ -207,8 +207,8 @@ static func _apply_bite_xp_drain(
 	SignalBus.emit_boost_applied.rpc(target_path, StatManager.StatType.SPEED, 150.0, 1.5)
 
 	## NEW: Trigger Aggro Cooldown on AI to prevent infinite lunge loops
-	var a_ai := attacker.get_node_or_null("components/NPCBehavior") as NPCBehavior
-	var d_ai := defender.get_node_or_null("components/NPCBehavior") as NPCBehavior
+	var a_ai := attacker.get_node_or_null("components/ChaserBehavior") as ChaserBehavior
+	var d_ai := defender.get_node_or_null("components/ChaserBehavior") as ChaserBehavior
 	if a_ai: a_ai.trigger_cooldown()
 	if d_ai: d_ai.trigger_cooldown()
 
