@@ -13,7 +13,7 @@ radius = 700.0
 script = ExtResource("2_qjq7h")
 counts_as_kill = true
 npc_invisible = false
-min_spawn_level = 5
+min_spawn_level = 0
 max_spawn_level = 10
 
 [node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("2_1v6t8")]

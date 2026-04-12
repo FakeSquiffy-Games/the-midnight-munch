@@ -3,23 +3,23 @@
 [ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_2r34x"]
 [ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_825kn"]
 [ext_resource type="PackedScene" uid="uid://dhqih64nqlyq6" path="res://resources/models/npc/CombJellyModel.tscn" id="3_4ja26"]
+[ext_resource type="Script" uid="uid://dgxr81srycktm" path="res://resources/behaviors/WandererBehavior.gd" id="4_nlcod"]
 [ext_resource type="Script" uid="uid://otxu8qtsgxyp" path="res://components/EffectComponent.gd" id="5_2r34x"]
-[ext_resource type="Script" uid="uid://b6pbye5y6vfnl" path="res://resources/behaviors/ChaserBehavior.gd" id="5_nlcod"]
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_2r34x")]
 script = ExtResource("2_825kn")
 counts_as_kill = true
 npc_invisible = false
-min_spawn_level = 1
+min_spawn_level = 0
 max_spawn_level = 10
 disable_mouth = true
 
 [node name="EntityModel2" parent="." index="0" unique_id=1730000128 instance=ExtResource("3_4ja26")]
 scale = Vector2(16, 16)
 
-[node name="ChaserBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=1057441089]
-script = ExtResource("5_nlcod")
-metadata/_custom_type_script = "uid://b6pbye5y6vfnl"
+[node name="WandererBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=1891727953]
+script = ExtResource("4_nlcod")
+metadata/_custom_type_script = "uid://dgxr81srycktm"
 
 [node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=1153869262]
 script = ExtResource("5_2r34x")
