@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://bmal6galscbtr"
-path="res://.godot/imported/intro.wav-f19fdc6fb5ff80eb5749a58765504764.sample"
+path="res://.godot/imported/lobby.wav-1f8b0ebd8c57f4caf7d401cb7cbfb443.sample"
 
 [deps]
 
-source_file="res://assets/audio/intro.wav"
-dest_files=["res://.godot/imported/intro.wav-f19fdc6fb5ff80eb5749a58765504764.sample"]
+source_file="res://assets/audio/lobby.wav"
+dest_files=["res://.godot/imported/lobby.wav-1f8b0ebd8c57f4caf7d401cb7cbfb443.sample"]
 
 [params]
 

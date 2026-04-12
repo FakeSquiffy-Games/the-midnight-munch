@@ -72,7 +72,7 @@ static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 	if def_effect and def_effect.apply_on_defend:
 		def_effect.apply_to(attacker)
 		if def_effect.destroy_on_consume:
-			AudioManager.play_spatial_sound("level_up", attacker.global_position)
+			AudioManager.play_spatial_sound("power_up", attacker.global_position)
 			#return # Stop combat, entity was consumed
 
 	var att_effect := attacker.get_node_or_null("components/EffectComponent") as EffectComponent
@@ -104,7 +104,7 @@ static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 				## RECORD THE KILL STAT
 				var counts := true
 				if not d_is_player and defender is NPC:
-					counts = defender.counts_as_kill_stat
+					counts = defender.counts_as_kill
 				if counts:
 					GameState.record_kill(attacker.get_multiplayer_authority(), d_is_player)
 				var d_stat: StatManager = defender.get_node("StatManager")

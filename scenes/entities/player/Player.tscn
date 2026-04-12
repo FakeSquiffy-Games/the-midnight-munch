@@ -43,12 +43,12 @@ character_name = "Unnamed Fish"
 character_description = "A fish."
 reconcile_threshold = 50.0
 
-[node name="Camera2D" type="Camera2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="0" unique_id=1891725811]
-zoom = Vector2(0.7, 0.7)
-
 [node name="PlayerController" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=2099270104]
 script = ExtResource("2_n1xdv")
 metadata/_custom_type_script = "uid://cbqcdl6yaa0wc"
+
+[node name="Camera2D" type="Camera2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=1891725811]
+zoom = Vector2(0.7, 0.7)
 
 [node name="BioluminescentComponent" type="Node2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="3" unique_id=829523201]
 material = SubResource("ShaderMaterial_ppr6r")
@@ -57,7 +57,7 @@ mode = 1
 max_radius = 1000.0
 metadata/_custom_type_script = "uid://c4v4fof65gk3h"
 
-[node name="BoostParticles" type="GPUParticles2D" parent="vfx" parent_id_path=PackedInt32Array(336823282) index="0" unique_id=692906517]
+[node name="BoostParticles" type="GPUParticles2D" parent="effects" parent_id_path=PackedInt32Array(336823282) index="0" unique_id=692906517]
 amount = 32
 texture = ExtResource("6_hgjck")
 lifetime = 3.0

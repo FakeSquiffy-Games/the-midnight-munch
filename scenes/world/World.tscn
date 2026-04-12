@@ -13,7 +13,6 @@
 
 [node name="World" type="Node2D" unique_id=1791530930]
 script = ExtResource("1_6eebf")
-PLAYER_MODELS = Array[String](["res://resources/models/BlackSeadevilModel.tscn", "res://resources/models/FangtoothModel.tscn", "res://resources/models/BlackSeadevilModel.tscn", "res://resources/models/BlackSeadevilModel.tscn"])
 
 [node name="Background" parent="." unique_id=680405929 instance=ExtResource("2_252at")]
 
@@ -28,11 +27,11 @@ spawn_path = NodePath("..")
 
 [node name="CollectibleSpawner" type="Node" parent="." unique_id=254830818]
 script = ExtResource("3_qxiha")
-max_floating_items = 8
 special_fish_interval = 8.0
+special_fish_scenes = Array[PackedScene]([ExtResource("8_l5ull")])
+max_floating_items = 8
 floating_item_interval = 4.0
 floating_item_scenes = Array[PackedScene]([ExtResource("7_yr1n6")])
-special_fish_scenes = Array[PackedScene]([ExtResource("8_l5ull")])
 
 [node name="CollectibleSynchronizer" type="MultiplayerSpawner" parent="CollectibleSpawner" unique_id=1241486364]
 spawn_path = NodePath("..")

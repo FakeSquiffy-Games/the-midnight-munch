@@ -19,16 +19,17 @@ animations = [{
 }]
 
 [node name="EntityModel" unique_id=1773224112 instance=ExtResource("1_kpwug")]
-species_name = "LanternFish"
+species_name = "Lantern Fish"
 
 [node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
-scale = Vector2(4, 4)
+scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_n24yy")
+frame_progress = 0.7650787
 
 [node name="BodyPolygon" type="CollisionPolygon2D" parent="BodyArea" parent_id_path=PackedInt32Array(1257139104) index="0" unique_id=1341678894]
-scale = Vector2(4, 4)
-polygon = PackedVector2Array(1.4375, -4.5625, 0.6875, -3.0625, -3.0625, -1.9375, -3.375, -1.1875, -7.9375, -1.1875, -9.625, -0.1875, -10.125, 0.875, -11.1875, 0.0625, -13.1875, -3.125, -13.875, -2.875, -13.9375, 1, -12.875, 1.375, -13.028128, 2.9573202, -13.9375, 2.9375, -14, 4.8125, -12.125, 5.25, -11.4375, 3.9375, -9, 4, -9.1875, 4.875, -8.0625, 5.875, -7.9375, 7, -6.9375, 7.875, -3.5625, 7.9375, -1.125, 7, -0.375, 5.9375, 3.25, 6, 2.9375, 7, 3.125, 7.875, 6.25, 8, 7, 7.125, 8.1875, 6.9375, 9.5, 6.0625, 12.25, 6.0625, 14.125, 5, 15.125, 3.75, 15.0625, 1.1875, 14.1875, -0.875, 13.0625, -1.875, 10.4375, -2.5, 9.4375, -3.25, 6.875, -3.375, 4.25, -6, 3.0625, -5.9375)
+scale = Vector2(2.5, 2.5)
+polygon = PackedVector2Array(-1, -2, -3, -2, -4, -1, -8, -1, -10, 0, -11, 0, -14, -3, -14, 5, -12, 5, -11, 4, -10, 4, -8, 6, -8, 7, -7, 8, -4, 8, -1, 7, 0, 6, 2, 6, 3, 7, 3, 8, 6, 8, 8, 7, 11, 6, 13, 4, 13, 1, 12, -1, 11, -2, 9, -3, 7, -3, 4, -6, 3, -6)
 
 [node name="MouthPolygon" type="CollisionPolygon2D" parent="MouthArea" parent_id_path=PackedInt32Array(555163341) index="0" unique_id=325969926]
-scale = Vector2(4, 4)
-polygon = PackedVector2Array(9.4375, 6.25, 12.0625, 6.0625, 14.75, 4.6875, 15.5, 3.75, 15.25, 1.875, 13.0625, 1, 11.4375, 2.1875, 10.4375, 4.125)
+scale = Vector2(2.5, 2.5)
+polygon = PackedVector2Array(10, 6, 12, 6, 14, 5, 15, 4, 15, 1, 14, -0.75, 13, -2, 10, -2)

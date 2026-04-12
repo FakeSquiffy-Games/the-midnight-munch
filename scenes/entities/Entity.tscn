@@ -11,12 +11,12 @@ collision_layer = 2
 script = ExtResource("1_o625d")
 metadata/_custom_type_script = "uid://n163r4g7n4it"
 
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1788138357]
+replication_config = SubResource("SceneReplicationConfig_4kuee")
+
 [node name="StatManager" type="Node" parent="." unique_id=400482168]
 script = ExtResource("2_n1dph")
 metadata/_custom_type_script = "uid://bqracccb3021n"
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1788138357]
-replication_config = SubResource("SceneReplicationConfig_4kuee")
 
 [node name="components" type="Node2D" parent="." unique_id=1883867421]
 
@@ -24,4 +24,4 @@ replication_config = SubResource("SceneReplicationConfig_4kuee")
 script = ExtResource("3_4h6cm")
 metadata/_custom_type_script = "uid://bpdic1ygsdeuy"
 
-[node name="vfx" type="Node2D" parent="." unique_id=336823282]
+[node name="effects" type="Node2D" parent="." unique_id=336823282]

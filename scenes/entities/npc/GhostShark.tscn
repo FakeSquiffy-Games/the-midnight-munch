@@ -3,19 +3,28 @@
 [ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_vn70c"]
 [ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_tqe2g"]
 [ext_resource type="PackedScene" uid="uid://cn0ohnkifw7ts" path="res://resources/models/npc/GhostSharkModel.tscn" id="2_veqn3"]
-[ext_resource type="PackedScene" uid="uid://bdgg407nnbcsk" path="res://components/AggroZone.tscn" id="3_tqe2g"]
+[ext_resource type="Script" uid="uid://b8k00b07ihdmi" path="res://components/AggroZone.gd" id="5_tqe2g"]
 [ext_resource type="Script" uid="uid://b6pbye5y6vfnl" path="res://resources/behaviors/ChaserBehavior.gd" id="5_veqn3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_veqn3"]
+radius = 550.0
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_vn70c")]
 script = ExtResource("2_tqe2g")
-counts_as_kill_stat = true
+counts_as_kill = true
+npc_invisible = false
 min_spawn_level = 0
 max_spawn_level = 10
 
 [node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_veqn3")]
 
-[node name="AggroZone" parent="components" parent_id_path=PackedInt32Array(1883867421) index="0" unique_id=1557422602 instance=ExtResource("3_tqe2g")]
-
-[node name="ChaserBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=2032022980]
+[node name="ChaserBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=2032022980]
 script = ExtResource("5_veqn3")
 metadata/_custom_type_script = "uid://b6pbye5y6vfnl"
+
+[node name="AggroZone" type="Area2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=409485737]
+script = ExtResource("5_tqe2g")
+metadata/_custom_type_script = "uid://b8k00b07ihdmi"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="components/AggroZone" index="0" unique_id=520151857]
+shape = SubResource("CircleShape2D_veqn3")

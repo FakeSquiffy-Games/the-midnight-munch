@@ -1,10 +1,11 @@
 class_name ChaserBehavior
 extends Node
 
-enum State { WANDER, LUNGE, FLEE }
+enum State { WANDER, CHASE, FLEE }
 
-@export var is_inedible: bool = false
 @export var wander_speed_multiplier: float = 0.4
+@export var chase_chance: float = 0.6
+@export var flee_chance: float = 0.4
 
 var _entity: CharacterBody2D
 var _stat_manager: StatManager
@@ -21,9 +22,6 @@ func _ready() -> void:
 	_entity = owner as CharacterBody2D
 	_stat_manager = _entity.get_node("StatManager")
 	_aggro_zone = _entity.get_node_or_null("components/AggroZone")
-	
-	if is_inedible:
-		_entity.add_to_group("npc_inedible")
 	
 	if multiplayer.is_server():
 		if _aggro_zone != null:
@@ -47,7 +45,7 @@ func _physics_process(delta: float) -> void:
 
 	match current_state:
 		State.WANDER: _process_wander(delta)
-		State.LUNGE:  _process_lunge()
+		State.CHASE:  _process_chase()
 		State.FLEE:   _process_flee()
 			
 	_entity.move_and_slide()
@@ -66,7 +64,7 @@ func _process_wander(delta: float) -> void:
 		
 	_entity.velocity = wander_direction * (_stat_manager.speed * wander_speed_multiplier)
 
-func _process_lunge() -> void:
+func _process_chase() -> void:
 	if not _is_target_valid(): return
 	var direction := _entity.global_position.direction_to(target.global_position)
 	_entity.velocity = direction * _stat_manager.speed
@@ -102,16 +100,16 @@ func _on_aggro_entered(area: Area2D) -> void:
 		
 	var potential_target := area.get_parent().get_parent() as CharacterBody2D
 	if potential_target == null or potential_target == _entity: return
-	if potential_target.is_in_group("npc_inedible"): return
+	if potential_target.is_in_group("npc_invisible"): return
 	
 	target = potential_target
 	var target_stat := target.get_node_or_null("StatManager") as StatManager
 	
 	if target_stat and target_stat.level > _stat_manager.level:
 		## Target is stronger. 60% chance to flee.
-		if randf() > 0.4:
+		if randf() <= chase_chance:
 			current_state = State.FLEE
 	else:
-		## Target is weaker. 40% chance to lunge.
-		if randf() > 0.6:
-			current_state = State.LUNGE
+		## Target is weaker. 40% chance to chase.
+		if randf() <= flee_chance:
+			current_state = State.CHASE

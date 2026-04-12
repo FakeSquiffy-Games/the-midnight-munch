@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://h4j0brb03jb2"]
+
+[ext_resource type="Script" uid="uid://dy385uiynqh81" path="res://scenes/ui/ResultsScreen.gd" id="1_ox4h0"]
+[ext_resource type="PackedScene" uid="uid://b8knamshdjt7g" path="res://scenes/ui/WinnerPage.tscn" id="2_aoofj"]
+[ext_resource type="PackedScene" uid="uid://bgl5q2btp6jgg" path="res://scenes/ui/StatsPage.tscn" id="3_2g5t0"]
+
+[node name="ResultsScreen" type="CanvasLayer" unique_id=1852703748]
+layer = 10
+script = ExtResource("1_ox4h0")
+
+[node name="DarkOverlay" type="ColorRect" parent="." unique_id=829880735]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.78431374)
+
+[node name="WinnerPage" parent="." unique_id=1110865350 instance=ExtResource("2_aoofj")]
+
+[node name="StatsPage" parent="." unique_id=877109516 instance=ExtResource("3_2g5t0")]
+visible = false

@@ -17,13 +17,13 @@ shape = SubResource("WorldBoundaryShape2D_gi5wf")
 one_way_collision = true
 
 [node name="LeftBoundary" type="CollisionShape2D" parent="." unique_id=532634002]
-position = Vector2(-1727, 0)
+position = Vector2(-1728, 0)
 rotation = 1.5707964
 shape = SubResource("WorldBoundaryShape2D_gi5wf")
 one_way_collision = true
 
 [node name="RightBoundary" type="CollisionShape2D" parent="." unique_id=1375041426]
-position = Vector2(1727, 0)
+position = Vector2(1728, 0)
 rotation = -1.5707964
 shape = SubResource("WorldBoundaryShape2D_gi5wf")
 one_way_collision = true

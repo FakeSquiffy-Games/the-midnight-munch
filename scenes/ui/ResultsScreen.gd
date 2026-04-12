@@ -1,16 +1,16 @@
 extends CanvasLayer
 
-@onready var page_1: Control = $Page1
-@onready var page_2: Control = $Page2
-@onready var winner_label: Label = $Page1/WinnerLabel
-@onready var next_button: Button = $Page1/NextButton
-@onready var stats_label: Label = $Page2/StatsLabel
-@onready var lobby_button: Button = $Page2/LobbyButton
-@onready var wait_label: Label = $Page2/WaitLabel
+@onready var winner_page: Control = $WinnerPage
+@onready var stats_page: Control = $StatsPage
+@onready var winner_label: Label = $WinnerPage/WinnerLabel
+@onready var next_button: Button = $WinnerPage/NextButton
+@onready var stats_label: Label = $StatsPage/StatsLabel
+@onready var lobby_button: Button = $StatsPage/LobbyButton
+@onready var wait_label: Label = $StatsPage/WaitLabel
 
 func _ready() -> void:
-	page_1.visible = true
-	page_2.visible = false
+	winner_page.visible = true
+	stats_page.visible = false
 	next_button.pressed.connect(_on_next_pressed)
 	lobby_button.pressed.connect(_on_lobby_pressed)
 	
@@ -33,8 +33,8 @@ func setup(winner_name: String) -> void:
 		winner_label.text = "%s Wins!" % winner_name
 
 func _on_next_pressed() -> void:
-	page_1.visible = false
-	page_2.visible = true
+	winner_page.visible = false
+	stats_page.visible = true
 
 func _on_stats_received(stats: Dictionary) -> void:
 	stats_label.text = "--- Personal Stats ---\n\n"

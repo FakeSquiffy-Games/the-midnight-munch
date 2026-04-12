@@ -22,13 +22,13 @@ animations = [{
 species_name = "Black Seadevil"
 
 [node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
-scale = Vector2(4, 4)
+scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_i874t")
 
 [node name="BodyPolygon" type="CollisionPolygon2D" parent="BodyArea" parent_id_path=PackedInt32Array(1257139104) index="0" unique_id=27234996]
-scale = Vector2(4, 4)
+scale = Vector2(3, 3)
 polygon = PackedVector2Array(3, -7, -2, -7, -5, -6, -6, -5, -7, -3, -8, -2, -9, 0, -10, 1, -11, 3, -11, 5, -14, 5, -14, 13, -10, 13, -8, 14, -5, 15, 7, 15, 11, 11, 12, 9, 12, 5, 11, 2, 10, -2, 9, -3, 9, -6, 8, -7, 6, -7)
 
 [node name="MouthPolygon" type="CollisionPolygon2D" parent="MouthArea" parent_id_path=PackedInt32Array(555163341) index="0" unique_id=531324285]
-scale = Vector2(4, 4)
+scale = Vector2(3, 3)
 polygon = PackedVector2Array(0, -2, -1, -1, -2, 0, -3, 2, -4, 4, -5, 7, -5, 17, 7, 17, 11, 13, 12, 11, 12, 3, 11, 0, 10, -2, 9, -3, 8, -4, 3, -4, 1, -3)

@@ -27,7 +27,7 @@ func _initialize() -> void:
 		return
 	
 	## Automatically find and cache ALL particle systems on the Entity and its Model
-	var vfx_container = _entity.get_node_or_null("vfx")
+	var vfx_container = _entity.get_node_or_null("effects")
 	var potential_vfx_nodes =[]
 	
 	if vfx_container:
@@ -51,7 +51,7 @@ func _process(delta: float) -> void:
 	
 	## NEW: Counter-flip the nametag so it never reads backwards
 	if is_instance_valid(_entity.model):
-		var label := _entity.model.get_node_or_null("Nametag") as Label
+		var label := _entity.model.get_node_or_null("NameTag") as Label
 		if label:
 			label.scale.x = -1.0 if _entity.sync_flip_h else 1.0
 	
@@ -154,7 +154,7 @@ func _calculate_scale_for_level(lvl: int) -> float:
 func _update_nametag() -> void:
 	if not is_instance_valid(_entity.model): return
 	
-	var label := _entity.model.get_node_or_null("Nametag") as Label
+	var label := _entity.model.get_node_or_null("NameTag") as Label
 	if label == null: return
 	
 	var tier_str := "B"
@@ -166,7 +166,9 @@ func _update_nametag() -> void:
 	if _entity.is_in_group("players"):
 		var peer_id = _entity.get_multiplayer_authority()
 		# Fallback to "Player ID" if the name dictionary isn't populated yet
-		display_name = GameState.player_names.get(peer_id, "Player %d" % peer_id)
+		var player_name = GameState.player_names.get(peer_id, "Player %d" % peer_id)
+		if player_name != "Enter username...":
+			display_name = player_name
 	
 	## (Phase 8 will replace entity_name with Username for players)
 	label.text = "(%s) Lvl %d | %s" % [tier_str, _stat_manager.level, display_name]

@@ -7,12 +7,12 @@ extends Node
 # =========================================================
 
 @export var max_special_fish:        int   = 4
-@export var max_floating_items:      int   = 6
 @export var special_fish_interval:   float = 18.0
-@export var floating_item_interval:  float = 12.0
-
-@export var floating_item_scenes: Array[PackedScene] = []
 @export var special_fish_scenes:  Array[PackedScene] = []
+
+@export var max_floating_items:      int   = 6
+@export var floating_item_interval:  float = 12.0
+@export var floating_item_scenes: Array[PackedScene] = []
 
 # =========================================================
 # STATE

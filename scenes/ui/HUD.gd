@@ -10,9 +10,9 @@ extends CanvasLayer
 # NODE REFERENCES
 # =========================================================
 
-@onready var level_label: Label       = $VBoxContainer/LevelLabel
-@onready var xp_bar:      TextureProgressBar = $VBoxContainer/XPBar
-@onready var energy_bar:  TextureProgressBar = $VBoxContainer/EnergyBar
+@onready var level_label: Label       = $StatBar/LevelLabel
+@onready var xp_bar:      TextureProgressBar = $StatBar/XPBar
+@onready var energy_bar:  TextureProgressBar = $StatBar/EnergyBar
 
 
 # =========================================================

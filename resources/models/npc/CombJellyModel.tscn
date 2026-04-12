@@ -19,18 +19,18 @@ animations = [{
 }]
 
 [node name="EntityModel" unique_id=1730000128 instance=ExtResource("1_djsec")]
+species_name = "Comb Jelly"
 
 [node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
-scale = Vector2(3.5, 3.5)
+scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_b87y5")
-frame_progress = 0.3672915
+frame = 1
 flip_h = true
 
 [node name="BodyPolygon" type="CollisionPolygon2D" parent="BodyArea" parent_id_path=PackedInt32Array(1257139104) index="0" unique_id=2093647029]
-scale = Vector2(3.5, 3.5)
-polygon = PackedVector2Array(10.357142, -14.142857, 6.7857137, -16.357141, 3.7142854, -17.071428, 0.8571428, -17.571428, -4.4999995, -16.714285, -7.9285707, -14.142857, -10.642857, -11.214285, -11.428571, -7.9285707, -12.142857, -5.7142854, -13.571427, -2.4285712, -14.285713, 3.4285712, -14.285713, 7.4999995, -13.071427, 3.7857141, -11.857142, 3.142857, -12.071428, 8.928571, -10.214285, 10.642857, -8.142857, 8.928571, -6.3571424, 10.714285, -2.4285712, 13.714285, -0.28571427, 13.642857, 4.785714, 10.857142, 9.428571, 6.9999995, 11.928571, 4.428571, 13.857142, 2.9999998, 15.785713, -1.5714285, 15.785713, -4.785714, 14.499999, -6.5714283, 13.857142, -9.499999, 12.785713, -11.999999, 11.642857, -12.857142)
+scale = Vector2(2, 2)
+polygon = PackedVector2Array(9, -16, 7, -17, 4, -18, -1, -18, -5, -17, -7, -16, -11, -12, -12, -8, -13, -5, -14, 1, -14, 7, -13, 9, -11, 11, -9, 11, -7, 11, -4, 14, -1, 14, 7, 10, 12, 5, 14, 3, 15, 1, 16, -2, 16, -5, 15, -7, 14, -10, 13, -12)
 
 [node name="MouthPolygon" type="CollisionPolygon2D" parent="MouthArea" parent_id_path=PackedInt32Array(555163341) index="0" unique_id=1272242677]
-position = Vector2(65.24999, -5.2499995)
-scale = Vector2(3.5, 3.5)
-polygon = PackedVector2Array(-21.749998, -2.5, -24.749998, -0.7500001, -23.499998, 3.75, -19.333332, 3.6666665, -18.249998, -0.5833336)
+scale = Vector2(2, 2)
+polygon = PackedVector2Array(1, -1, -1, -1, -1, 1, 1, 1)

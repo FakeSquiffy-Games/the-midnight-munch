@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://cesy3yp0ramj1"]
+
+[ext_resource type="Script" uid="uid://cjfleyadd0dtm" path="res://scenes/ui/Lobby.gd" id="1_ogb8n"]
+[ext_resource type="PackedScene" uid="uid://dc4tcr5nkmj10" path="res://scenes/entities/player/BlackSeadevil.tscn" id="2_6oto2"]
+[ext_resource type="PackedScene" uid="uid://d32jl470ov1aq" path="res://scenes/entities/player/Fangtooth.tscn" id="3_yihit"]
+[ext_resource type="PackedScene" uid="uid://gka6ghi6yojc" path="res://scenes/entities/player/Blobfish.tscn" id="4_yvmvr"]
+[ext_resource type="PackedScene" uid="uid://cxakbhvqguo5e" path="res://scenes/entities/player/DragonFish.tscn" id="5_8fxhr"]
+[ext_resource type="PackedScene" uid="uid://ca8hy4kqtdo11" path="res://scenes/entities/player/ViperFish.tscn" id="6_uaxr7"]
+[ext_resource type="PackedScene" uid="uid://c3q344i08v5vb" path="res://scenes/ui/LobbyMenu.tscn" id="7_urguc"]
+[ext_resource type="PackedScene" uid="uid://rrqd40rhp53y" path="res://scenes/ui/SplashBackground.tscn" id="8_8r2yg"]
+
+[node name="Lobby" type="Control" unique_id=1011279643]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ogb8n")
+available_characters = Array[PackedScene]([ExtResource("2_6oto2"), ExtResource("3_yihit"), ExtResource("4_yvmvr"), ExtResource("5_8fxhr"), ExtResource("6_uaxr7")])
+
+[node name="LobbyMenu" parent="." unique_id=1541764513 instance=ExtResource("7_urguc")]
+layout_mode = 1
+offset_left = -590.0
+offset_top = -310.0
+offset_right = 590.0
+offset_bottom = 310.0
+
+[node name="SplashBackground" parent="." unique_id=1273534731 instance=ExtResource("8_8r2yg")]
+z_index = 1
+layout_mode = 0

@@ -1,0 +1,125 @@
+[gd_scene format=3 uid="uid://c3q344i08v5vb"]
+
+[sub_resource type="FontVariation" id="FontVariation_e11ce"]
+
+[sub_resource type="Theme" id="Theme_6h17u"]
+default_font = SubResource("FontVariation_e11ce")
+
+[node name="LobbyMenu" type="VBoxContainer" unique_id=1541764513]
+z_index = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.5
+offset_top = -231.5
+offset_right = 190.5
+offset_bottom = 231.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_6h17u")
+
+[node name="SoloButton" type="Button" parent="." unique_id=1029245845]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Start Solo Mode"
+
+[node name="HostButton" type="Button" parent="." unique_id=2028997624]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Host Game"
+
+[node name="HSeparator" type="HSeparator" parent="." unique_id=1077383874]
+layout_mode = 2
+
+[node name="KeyLabel" type="Label" parent="." unique_id=201538706]
+layout_mode = 2
+text = "Session: Uninitialized"
+
+[node name="KeyInput" type="LineEdit" parent="." unique_id=355287229]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Enter session key..."
+
+[node name="JoinButton" type="Button" parent="." unique_id=2002965630]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Join Game"
+
+[node name="LeaveButton" type="Button" parent="." unique_id=8358119]
+visible = false
+layout_mode = 2
+text = "Leave Game"
+
+[node name="HSeparator2" type="HSeparator" parent="." unique_id=689570602]
+layout_mode = 2
+
+[node name="CharacterLabel" type="Label" parent="." unique_id=2063865539]
+layout_mode = 2
+text = "Character Selection"
+
+[node name="UsernameInput" type="LineEdit" parent="." unique_id=1161740397]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Enter username..."
+
+[node name="CarouselContainer" type="HBoxContainer" parent="." unique_id=707915665]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PrevButton" type="Button" parent="CarouselContainer" unique_id=558958512]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
+text = "<"
+
+[node name="CharacterDisplay" type="VBoxContainer" parent="CarouselContainer" unique_id=668025]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CharTexture" type="TextureRect" parent="CarouselContainer/CharacterDisplay" unique_id=502622567]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+stretch_mode = 5
+
+[node name="CharName" type="Label" parent="CarouselContainer/CharacterDisplay" unique_id=1904296935]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 1
+text = "Character Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CharDesc" type="Label" parent="CarouselContainer/CharacterDisplay" unique_id=1696534192]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Character Description"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="NextButton" type="Button" parent="CarouselContainer" unique_id=1530077490]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
+text = ">"
+
+[node name="ReadyButton" type="Button" parent="." unique_id=2091968728]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Ready"
+
+[node name="StartButton" type="Button" parent="." unique_id=855589472]
+visible = false
+layout_mode = 2
+disabled = true
+text = "Start Game"
+
+[node name="HSeparator3" type="HSeparator" parent="." unique_id=972190891]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="." unique_id=325949952]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Play solo, host a new game, or enter a key to join."

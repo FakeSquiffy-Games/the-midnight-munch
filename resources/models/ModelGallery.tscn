@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://dfg7lg1kjbxkw"]
+
+[ext_resource type="PackedScene" uid="uid://coaj7a223ah7c" path="res://resources/models/player/ViperFishModel.tscn" id="1_1h78a"]
+[ext_resource type="PackedScene" uid="uid://de01qacsclnj3" path="res://resources/models/player/BlackSeadevilModel.tscn" id="2_qjr3y"]
+[ext_resource type="PackedScene" uid="uid://gqv76labxnxs" path="res://resources/models/player/BlobFishModel.tscn" id="3_8ctgc"]
+[ext_resource type="PackedScene" uid="uid://dnktk8nbvdg8f" path="res://resources/models/player/DragonFishModel.tscn" id="4_plffn"]
+[ext_resource type="PackedScene" uid="uid://b6mlwj642u4oi" path="res://resources/models/player/FangtoothModel.tscn" id="5_1b3ph"]
+[ext_resource type="PackedScene" uid="uid://wohtqe66d4kc" path="res://resources/models/npc/DumboOctopusModel.tscn" id="6_f77qq"]
+[ext_resource type="PackedScene" uid="uid://cg64cdpldobs0" path="res://resources/models/npc/BristleMouthModel.tscn" id="7_jy6v4"]
+[ext_resource type="PackedScene" uid="uid://dp1l186dyjhcg" path="res://resources/models/npc/CoelacanthModel.tscn" id="8_utavq"]
+[ext_resource type="PackedScene" uid="uid://y2lt6oxdjqp8" path="res://resources/models/npc/CoffinFishModel.tscn" id="9_tx1q2"]
+[ext_resource type="PackedScene" uid="uid://dhqih64nqlyq6" path="res://resources/models/npc/CombJellyModel.tscn" id="10_x8s2y"]
+[ext_resource type="PackedScene" uid="uid://cn0ohnkifw7ts" path="res://resources/models/npc/GhostSharkModel.tscn" id="11_l7ohq"]
+[ext_resource type="PackedScene" uid="uid://cguams3e6yb5p" path="res://resources/models/npc/HatchetFishModel.tscn" id="12_4n587"]
+[ext_resource type="PackedScene" uid="uid://cceulhs5rov7t" path="res://resources/models/npc/LanternFishModel.tscn" id="13_qyrsc"]
+[ext_resource type="PackedScene" uid="uid://c6w45a5chnf86" path="res://resources/models/npc/LongArmShrimpModel.tscn" id="14_3mxuu"]
+[ext_resource type="PackedScene" uid="uid://c6nef31qm2uyb" path="res://resources/models/npc/NautilusModel.tscn" id="15_uv1yt"]
+[ext_resource type="PackedScene" uid="uid://b8n6opnqpafym" path="res://resources/models/npc/RifitaModel.tscn" id="16_q1r2y"]
+[ext_resource type="PackedScene" uid="uid://cmyfqx3txmit4" path="res://resources/models/npc/SeaAngelModel.tscn" id="17_7w5vp"]
+[ext_resource type="PackedScene" uid="uid://dpjxxqp0rydsm" path="res://resources/models/npc/VampireSquidModel.tscn" id="18_8ry3e"]
+[ext_resource type="PackedScene" uid="uid://buiwdplgmysh" path="res://resources/models/npc/YetiCrabModel.tscn" id="19_nqspw"]
+[ext_resource type="PackedScene" uid="uid://c6nyhlpcq3cp0" path="res://resources/models/npc/OarFishModel.tscn" id="20_7bwm4"]
+
+[node name="ModelGallery" type="Node2D" unique_id=514275529]
+
+[node name="ViperFish" parent="." unique_id=1730000128 instance=ExtResource("1_1h78a")]
+position = Vector2(332, -718)
+
+[node name="BlackSeadevil" parent="." unique_id=1773224112 instance=ExtResource("2_qjr3y")]
+position = Vector2(-325, -789)
+
+[node name="BlobFish" parent="." unique_id=1414472871 instance=ExtResource("3_8ctgc")]
+position = Vector2(-344, -253)
+
+[node name="DragonFish" parent="." unique_id=1149016225 instance=ExtResource("4_plffn")]
+position = Vector2(867, -679)
+
+[node name="Fangtooth" parent="." unique_id=236528497 instance=ExtResource("5_1b3ph")]
+position = Vector2(-868, -763)
+
+[node name="DumboOctopus" parent="." unique_id=1271055630 instance=ExtResource("6_f77qq")]
+position = Vector2(362, 371)
+
+[node name="BristleMouth" parent="." unique_id=1187752917 instance=ExtResource("7_jy6v4")]
+position = Vector2(877, -1105)
+
+[node name="Coelacanth" parent="." unique_id=299925267 instance=ExtResource("8_utavq")]
+position = Vector2(401, 1062)
+
+[node name="CoffinFish" parent="." unique_id=1505826518 instance=ExtResource("9_tx1q2")]
+position = Vector2(-841, -261)
+
+[node name="CombJelly" parent="." unique_id=2139689496 instance=ExtResource("10_x8s2y")]
+position = Vector2(-305, 228)
+
+[node name="GhostShark" parent="." unique_id=1729284541 instance=ExtResource("11_l7ohq")]
+position = Vector2(1326, 1071)
+
+[node name="HatchetFish" parent="." unique_id=380343715 instance=ExtResource("12_4n587")]
+position = Vector2(295, -212)
+
+[node name="LanternFish" parent="." unique_id=779029756 instance=ExtResource("13_qyrsc")]
+position = Vector2(314, -1107)
+
+[node name="LongArmShrimp" parent="." unique_id=2082883859 instance=ExtResource("14_3mxuu")]
+position = Vector2(-831, 229)
+
+[node name="Nautilus" parent="." unique_id=129251161 instance=ExtResource("15_uv1yt")]
+position = Vector2(832, -217)
+
+[node name="Riftia" parent="." unique_id=221050166 instance=ExtResource("16_q1r2y")]
+position = Vector2(1318, -220)
+
+[node name="SeaAngel" parent="." unique_id=1717408372 instance=ExtResource("17_7w5vp")]
+position = Vector2(-322, 607)
+
+[node name="VampireSquid" parent="." unique_id=601402223 instance=ExtResource("18_8ry3e")]
+position = Vector2(1219, 415)
+
+[node name="YetiCrab" parent="." unique_id=2074390822 instance=ExtResource("19_nqspw")]
+position = Vector2(-1398, -345)
+
+[node name="OarFish" parent="." unique_id=1788657999 instance=ExtResource("20_7bwm4")]
+position = Vector2(897, 2010)

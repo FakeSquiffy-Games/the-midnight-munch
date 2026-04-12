@@ -9,17 +9,17 @@
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_w4617")]
 script = ExtResource("2_4m054")
-counts_as_kill_stat = false
+counts_as_kill = false
+npc_invisible = true
 min_spawn_level = 0
 max_spawn_level = 10
 disable_mouth = true
 
 [node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_2f1on")]
 
-[node name="BioluminescentComponent" type="Node2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=543839213]
-script = ExtResource("6_li440")
-local_only = false
-metadata/_custom_type_script = "uid://c4v4fof65gk3h"
+[node name="FloaterBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=722525467]
+script = ExtResource("3_4m054")
+metadata/_custom_type_script = "uid://co6bf34obr1jf"
 
 [node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=239993651]
 script = ExtResource("6_drxoi")
@@ -27,6 +27,7 @@ stat = 6
 boost_amount = 100.0
 metadata/_custom_type_script = "uid://otxu8qtsgxyp"
 
-[node name="FloaterBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="3" unique_id=722525467]
-script = ExtResource("3_4m054")
-metadata/_custom_type_script = "uid://co6bf34obr1jf"
+[node name="BioluminescentComponent" type="Node2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="3" unique_id=543839213]
+script = ExtResource("6_li440")
+local_only = false
+metadata/_custom_type_script = "uid://c4v4fof65gk3h"

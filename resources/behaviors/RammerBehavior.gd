@@ -69,7 +69,7 @@ func _on_aggro_entered(area: Area2D) -> void:
 		
 	var potential_target := area.get_parent().get_parent() as CharacterBody2D
 	if potential_target == null or potential_target == _entity: return
-	if potential_target.is_in_group("npc_inedible"): return
+	if potential_target.is_in_group("npc_invisible"): return
 	
 	target = potential_target
 	var target_stat := target.get_node_or_null("StatManager") as StatManager

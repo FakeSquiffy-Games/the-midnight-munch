@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://cdeg5nyyj8ihi"
-path="res://.godot/imported/ambience.wav-c4e6e35e7a9e0e868516f43e62765e9c.sample"
+path="res://.godot/imported/in_game.wav-5e7c9c8e29c453b52a0d69ec8a789dae.sample"
 
 [deps]
 
-source_file="res://assets/audio/ambience.wav"
-dest_files=["res://.godot/imported/ambience.wav-c4e6e35e7a9e0e868516f43e62765e9c.sample"]
+source_file="res://assets/audio/in_game.wav"
+dest_files=["res://.godot/imported/in_game.wav-5e7c9c8e29c453b52a0d69ec8a789dae.sample"]
 
 [params]
 

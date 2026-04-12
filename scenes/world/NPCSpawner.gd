@@ -2,9 +2,9 @@
 class_name NPCSpawner
 extends Node
 
-@export var npc_soft_cap:       int   = 15
+@export var max_npc_count:       int   = 15
 @export var spawn_interval:     float = 3.0
-@export var fodder_floor_count: int   = 5
+@export var min_fodder_count: int   = 5
 @export var fodder_levels:      Array[int] = [0, 1]
 
 ## Models to spawn (e.g. FangtoothModel, BlackSeadevilModel)
@@ -41,7 +41,7 @@ func _ready() -> void:
 	add_child(timer)
 
 func _on_spawn_timer_timeout() -> void:
-	if active_npcs >= npc_soft_cap or npc_scenes.is_empty():
+	if active_npcs >= max_npc_count or npc_scenes.is_empty():
 		return
 		
 	var level := _pick_spawn_level()
@@ -87,7 +87,7 @@ func _spawn_custom(data: Dictionary) -> Node:
 func _pick_spawn_level() -> int:
 	## Ensure fodder floor is maintained first
 	var fodder_alive := _count_npcs_in_levels(fodder_levels)
-	if fodder_alive < fodder_floor_count:
+	if fodder_alive < min_fodder_count:
 		return fodder_levels.pick_random()
 		
 	## Dynamic range based on player population

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdqgbtn8hrs4j"
-path="res://.godot/imported/dash_pressed.png-c51d710580a55f9426ab26b8ddc906e5.ctex"
+uid="uid://bjdlr4icykuwu"
+path="res://.godot/imported/joystick_frame.png-e9c19dd42e5f83f998060d0fd4e68670.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/dash_pressed.png"
-dest_files=["res://.godot/imported/dash_pressed.png-c51d710580a55f9426ab26b8ddc906e5.ctex"]
+source_file="res://assets/ui/joystick_frame.png"
+dest_files=["res://.godot/imported/joystick_frame.png-e9c19dd42e5f83f998060d0fd4e68670.ctex"]
 
 [params]
 

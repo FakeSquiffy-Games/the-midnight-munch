@@ -8,7 +8,8 @@
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_2r34x")]
 script = ExtResource("2_825kn")
-counts_as_kill_stat = true
+counts_as_kill = true
+npc_invisible = false
 min_spawn_level = 1
 max_spawn_level = 10
 disable_mouth = true
@@ -16,12 +17,12 @@ disable_mouth = true
 [node name="EntityModel2" parent="." index="0" unique_id=1730000128 instance=ExtResource("3_4ja26")]
 scale = Vector2(16, 16)
 
-[node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=1153869262]
+[node name="ChaserBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=1057441089]
+script = ExtResource("5_nlcod")
+metadata/_custom_type_script = "uid://b6pbye5y6vfnl"
+
+[node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=1153869262]
 script = ExtResource("5_2r34x")
 boost_amount = -100.0
 duration = 3.0
 metadata/_custom_type_script = "uid://otxu8qtsgxyp"
-
-[node name="ChaserBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=1057441089]
-script = ExtResource("5_nlcod")
-metadata/_custom_type_script = "uid://b6pbye5y6vfnl"

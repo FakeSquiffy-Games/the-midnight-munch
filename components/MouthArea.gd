@@ -68,7 +68,7 @@ func _on_area_entered(area: Area2D) -> void:
 			_player.request_bite(attacker_peer_id, target_path)
 		else:
 			## NPC attacking — resolve immediately
-			if target.is_in_group("npc_inedible"):
+			if target.is_in_group("npc_invisible"):
 				return
 			CombatResolver.process_bite_request(_player, target)
 	else:

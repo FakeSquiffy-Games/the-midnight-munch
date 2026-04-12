@@ -1,4 +1,4 @@
-## LobbyUI.gd
+## Lobby.gd
 ## Entry point UI for hosting or joining a LAN session.
 ## Phase 2C: Start Game button, countdown display, and scene transition.
 extends Control
@@ -8,23 +8,23 @@ extends Control
 # NODE REFERENCES
 # =========================================================
 
-#@onready var title_label:  Label    = $VBoxContainer/TitleLabel
-@onready var host_button:  Button   = $VBoxContainer/HostButton
-@onready var key_label:    Label    = $VBoxContainer/KeyLabel
-@onready var key_input:    LineEdit = $VBoxContainer/KeyInput
-@onready var join_button:  Button   = $VBoxContainer/JoinButton
-@onready var leave_button: Button   = $VBoxContainer/LeaveButton
-@onready var status_label: Label    = $VBoxContainer/StatusLabel
-@onready var start_button: Button   = $VBoxContainer/StartButton
-@onready var single_player_button: Button = $VBoxContainer/SinglePlayerButton
+#@onready var title_label:  Label    = $LobbyMenu/TitleLabel
+@onready var host_button:  Button   = $LobbyMenu/HostButton
+@onready var key_label:    Label    = $LobbyMenu/KeyLabel
+@onready var key_input:    LineEdit = $LobbyMenu/KeyInput
+@onready var join_button:  Button   = $LobbyMenu/JoinButton
+@onready var leave_button: Button   = $LobbyMenu/LeaveButton
+@onready var status_label: Label    = $LobbyMenu/StatusLabel
+@onready var start_button: Button   = $LobbyMenu/StartButton
+@onready var single_player_button: Button = $LobbyMenu/SoloButton
 
-@onready var username_input: LineEdit = $VBoxContainer/UsernameInput
-@onready var prev_button:    Button   = $VBoxContainer/CarouselContainer/PrevButton
-@onready var next_button:    Button   = $VBoxContainer/CarouselContainer/NextButton
-@onready var char_texture:   TextureRect = $VBoxContainer/CarouselContainer/CharacterDisplay/CharTexture
-@onready var char_name:      Label    = $VBoxContainer/CarouselContainer/CharacterDisplay/CharName
-@onready var char_desc:      Label    = $VBoxContainer/CarouselContainer/CharacterDisplay/CharDesc
-@onready var ready_button:   Button   = $VBoxContainer/ReadyButton
+@onready var username_input: LineEdit = $LobbyMenu/UsernameInput
+@onready var prev_button:    Button   = $LobbyMenu/CarouselContainer/PrevButton
+@onready var next_button:    Button   = $LobbyMenu/CarouselContainer/NextButton
+@onready var char_texture:   TextureRect = $LobbyMenu/CarouselContainer/CharacterDisplay/CharTexture
+@onready var char_name:      Label    = $LobbyMenu/CarouselContainer/CharacterDisplay/CharName
+@onready var char_desc:      Label    = $LobbyMenu/CarouselContainer/CharacterDisplay/CharDesc
+@onready var ready_button:   Button   = $LobbyMenu/ReadyButton
 
 ## Drag your Player.tscn prefabs here in the Inspector!
 @export var available_characters: Array[PackedScene] =[]
@@ -67,8 +67,8 @@ func _ready() -> void:
 		## Fresh boot OR returning from Single Player: Reset to default state!
 		_reset_ui()
 	
-	AudioManager.stop_sound("ambience")
-	AudioManager.play_ui_sound("intro")
+	AudioManager.stop_sound("in-game")
+	AudioManager.play_ui_sound("lobby")
 
 
 # =========================================================

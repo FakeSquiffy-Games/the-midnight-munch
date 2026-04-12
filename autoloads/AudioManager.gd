@@ -5,10 +5,10 @@ extends Node
 ## (Update these paths when your partner imports the actual assets!)
 var sounds: Dictionary = {
 	"bite": preload("res://assets/audio/bite.wav"),
-	"level_up": preload("res://assets/audio/level_up.wav"),
+	"power_up": preload("res://assets/audio/power_up.wav"),
 	"death": preload("res://assets/audio/death.wav"),
-	"intro": preload("res://assets/audio/intro.wav"),
-	"ambience": preload("res://assets/audio/ambience.wav"),
+	"lobby": preload("res://assets/audio/lobby.wav"),
+	"in_game": preload("res://assets/audio/in_game.wav"),
 }
 
 ## Dictionary of active sounds for ambience and intro.

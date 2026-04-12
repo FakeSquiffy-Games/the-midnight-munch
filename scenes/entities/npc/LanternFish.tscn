@@ -8,19 +8,20 @@
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_484xj")]
 script = ExtResource("2_r8fh6")
-counts_as_kill_stat = true
+counts_as_kill = true
+npc_invisible = true
 min_spawn_level = 0
 max_spawn_level = 10
 disable_mouth = true
 
 [node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_htfe4")]
 
-[node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=1250324935]
+[node name="ScaredyBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=521947795]
+script = ExtResource("5_f2rvu")
+metadata/_custom_type_script = "uid://duxpjdk2crbg1"
+
+[node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=1250324935]
 script = ExtResource("5_tyhcb")
 boost_amount = 100.0
 duration = 15.0
 metadata/_custom_type_script = "uid://otxu8qtsgxyp"
-
-[node name="ScaredyBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=521947795]
-script = ExtResource("5_f2rvu")
-metadata/_custom_type_script = "uid://duxpjdk2crbg1"

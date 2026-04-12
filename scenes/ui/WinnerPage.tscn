@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://b8knamshdjt7g"]
+
+[node name="WinnerPage" type="VBoxContainer" unique_id=1110865350]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -53.5
+offset_top = -29.0
+offset_right = 53.5
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WinnerLabel" type="Label" parent="." unique_id=102624572]
+layout_mode = 2
+text = "Winner Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NextButton" type="Button" parent="." unique_id=160033939]
+layout_mode = 2
+text = "Next"

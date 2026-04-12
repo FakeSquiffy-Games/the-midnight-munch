@@ -19,17 +19,17 @@ animations = [{
 }]
 
 [node name="EntityModel" unique_id=1730000128 instance=ExtResource("1_cmrn0")]
+species_name = "Nautilus"
 
 [node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
-scale = Vector2(3.5, 3.5)
+scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_34bhx")
-frame_progress = 0.71802187
+frame_progress = 0.5267134
 
 [node name="BodyPolygon" type="CollisionPolygon2D" parent="BodyArea" parent_id_path=PackedInt32Array(1257139104) index="0" unique_id=441661912]
-scale = Vector2(3.5, 3.5)
-polygon = PackedVector2Array(5.7142854, -11.142857, 0.35714284, -10.999999, -8, -6.25, -17.999998, 0.8571428, -13.285713, 8.428571, -7.7857137, 9.428571, 2.0714285, 11.785713, 5.785714, 12.142857, 8.142857, 11.214285, 12.928571, 7.1428566, 13.999999, -1.7142856, 12.928571, -5.428571, 9.357142, -8.357142)
+scale = Vector2(2.5, 2.5)
+polygon = PackedVector2Array(7, -11, -1, -11, -3, -10, -5, -8, -7, -8, -13, -2, -15, -2, -17, -1, -18, 0, -18, 4, -17, 6, -14, 9, -11, 10, -10, 9, -8, 9, -7, 10, -4, 11, 1, 12, 7, 12, 9, 11, 13, 7, 14, 4, 14, -3, 13, -6, 9, -10)
 
 [node name="MouthPolygon" type="CollisionPolygon2D" parent="MouthArea" parent_id_path=PackedInt32Array(555163341) index="0" unique_id=562481755]
-position = Vector2(-2.25, 1)
-scale = Vector2(3.5, 3.5)
-polygon = PackedVector2Array(-18.214285, 0.3571428, -15.928572, 2.7857141, -16.928572, 4.142857, -14.571428, 3.642857, -14.8571415, 6.9999995, -13.785713, 6.2142854, -12.5, 9.571428, -11.3571415, 8.142857, -12.142857, 2.7142854)
+scale = Vector2(2.5, 2.5)
+polygon = PackedVector2Array(-18, -1, -19, 0, -20, -2, -21, -2, -21, 1, -20, 2, -18, 3, -20, 5, -20, 8, -19, 8, -18, 6, -17, 7, -17, 8, -15, 8, -14, 9, -15, 10, -16, 10, -16, 11, -12, 11, -11, 10, -8, 10, -8, 0, -10, -1, -12, -3, -15, -3, -17, -2)

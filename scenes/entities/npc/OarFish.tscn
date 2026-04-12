@@ -3,26 +3,34 @@
 [ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_oanud"]
 [ext_resource type="PackedScene" uid="uid://c6nyhlpcq3cp0" path="res://resources/models/npc/OarFishModel.tscn" id="2_1v6t8"]
 [ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_qjq7h"]
-[ext_resource type="PackedScene" uid="uid://bdgg407nnbcsk" path="res://components/AggroZone.tscn" id="3_qjq7h"]
 [ext_resource type="Script" uid="uid://bi2nx7qcirey7" path="res://resources/behaviors/RammerBehavior.gd" id="5_1v6t8"]
+[ext_resource type="Script" uid="uid://b8k00b07ihdmi" path="res://components/AggroZone.gd" id="5_qjq7h"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1v6t8"]
+radius = 700.0
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_oanud")]
 script = ExtResource("2_qjq7h")
-counts_as_kill_stat = true
+counts_as_kill = true
+npc_invisible = false
 min_spawn_level = 5
 max_spawn_level = 10
 
 [node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("2_1v6t8")]
 species_name = "OarFish"
 
-[node name="StatManager" parent="." index="1" unique_id=400482168]
+[node name="StatManager" parent="." index="2" unique_id=400482168]
 speed = 300.0
 bite_power = 4.0
 max_energy = 200.0
 
-[node name="AggroZone" parent="components" parent_id_path=PackedInt32Array(1883867421) index="0" unique_id=1557422602 instance=ExtResource("3_qjq7h")]
-aggro_radius = 600.0
-
-[node name="RammerBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=1138768451]
+[node name="RammerBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=1138768451]
 script = ExtResource("5_1v6t8")
 metadata/_custom_type_script = "uid://bi2nx7qcirey7"
+
+[node name="AggroZone" type="Area2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=128608235]
+script = ExtResource("5_qjq7h")
+metadata/_custom_type_script = "uid://b8k00b07ihdmi"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="components/AggroZone" index="0" unique_id=1557398545]
+shape = SubResource("CircleShape2D_1v6t8")

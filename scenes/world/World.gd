@@ -8,13 +8,6 @@ extends Node2D
 # CONSTANTS
 # =========================================================
 
-const PLAYER_COLORS: Array[Color] = [
-	Color(0.2, 0.6, 1.0),  ## Slot 0 — blue
-	Color(1.0, 0.3, 0.3),  ## Slot 1 — red
-	Color(0.2, 0.9, 0.2),  ## Slot 2 — green
-	Color(1.0, 0.8, 0.1),  ## Slot 3 — yellow
-]
-
 const SPAWN_POSITIONS: Array[Vector2] = [
 	Vector2(-640, -360),
 	Vector2(640, -360),
@@ -31,7 +24,6 @@ const SPAWN_POSITIONS: Array[Vector2] = [
 ## Slot 0 = host, slots 1-3 = clients in join order.
 ## Replace with a character selection screen in a future phase.
 ## Current assignment: [BlackSeadevil, Fangtooth, BlackSeadevil, BlackSeadevil]
-@export var PLAYER_MODELS: Array[String]
 
 
 # =========================================================
@@ -71,8 +63,8 @@ func _ready() -> void:
 	## Notify the server's Autoload that this specific peer has loaded the scene
 	GameState.notify_world_loaded.rpc_id(1)
 	
-	AudioManager.stop_sound("intro")
-	AudioManager.play_ui_sound("ambience")
+	AudioManager.stop_sound("lobby")
+	AudioManager.play_ui_sound("in-game")
 
 func _physics_process(_delta: float) -> void:
 	if not multiplayer.is_server(): return
@@ -127,7 +119,6 @@ func _spawn_all_players() -> void:
 		var peer_id: int = peer_ids[i]
 		var data := {
 			"peer_id":    peer_id,
-			"color":      PLAYER_COLORS[i % PLAYER_COLORS.size()],
 			"position":   SPAWN_POSITIONS[i % SPAWN_POSITIONS.size()],
 			"scene_path": GameState.player_characters[peer_id] # Grab locked prefab
 		}
@@ -178,7 +169,7 @@ func _trigger_end_match(winner_id: int, winner_name: String) -> void:
 
 @rpc("authority", "call_local", "reliable")
 func _show_results(_winner_id: int, winner_name: String) -> void:
-	var results_scene = preload("res://scenes/ui/ResultsUI.tscn")
+	var results_scene = preload("res://scenes/ui/ResultsScreen.tscn")
 	if results_scene:
 		var ui = results_scene.instantiate()
 		get_tree().root.add_child(ui)

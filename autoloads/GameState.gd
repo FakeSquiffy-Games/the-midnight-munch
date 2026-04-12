@@ -207,7 +207,7 @@ func _execute_return_to_lobby() -> void:
 		state.time_survived = 0.0
 
 	## 4. Remove any existing ResultsUI overlays
-	var results = get_tree().root.get_node_or_null("ResultsUI")
+	var results = get_tree().root.get_node_or_null("ResultsScreen")
 	if results: results.queue_free()
 
 	## 5. FIX: Await one engine frame. This gives the RPC queue time to finish 
@@ -215,4 +215,4 @@ func _execute_return_to_lobby() -> void:
 	await get_tree().process_frame
 
 	## 6. Transition scene
-	get_tree().change_scene_to_file("res://scenes/ui/LobbyUI.tscn")
+	get_tree().change_scene_to_file("res://scenes/ui/Lobby.tscn")

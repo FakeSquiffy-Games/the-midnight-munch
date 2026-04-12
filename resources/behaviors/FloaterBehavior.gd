@@ -6,7 +6,7 @@ var _entity: CharacterBody2D
 
 func _ready() -> void:
 	_entity = owner as CharacterBody2D
-	_entity.add_to_group("npc_inedible") # Flag to ignore NPC aggro
+	_entity.add_to_group("npc_invisible") # Flag to ignore NPC aggro
 	
 	## FIX: Disable collision with World Boundaries (Mask 1) 
 	## so the item can float seamlessly up and out of the arena.

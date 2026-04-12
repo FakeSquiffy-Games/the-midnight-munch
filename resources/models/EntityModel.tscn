@@ -32,7 +32,7 @@ monitorable = false
 script = ExtResource("5_lj3vk")
 metadata/_custom_type_script = "uid://cf8nqdkun8vl5"
 
-[node name="Nametag" type="Label" parent="." unique_id=637477405]
+[node name="NameTag" type="Label" parent="." unique_id=637477405]
 offset_left = -100.0
 offset_top = -80.0
 offset_right = 100.0

@@ -139,8 +139,8 @@ func _setup_local_player() -> void:
 	
 	## Clamp camera to world boundaries so it never pans outside.
 	## World spans -3840 to 3840 on X, -2160 to 2160 on Y.
-	camera.limit_left   = -1727
-	camera.limit_right  =  1727
+	camera.limit_left   = -1728
+	camera.limit_right  =  1728
 	camera.limit_top    = -972
 	camera.limit_bottom =  972
 
