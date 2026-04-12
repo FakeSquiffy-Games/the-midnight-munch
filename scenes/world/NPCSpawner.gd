@@ -13,13 +13,27 @@ extends Node
 var active_npcs: int = 0
 @onready var spawner: MultiplayerSpawner = $NPCSynchronizer
 
+## CACHE for fast performance
+var _scene_level_cache: Dictionary = {} # index -> {min, max}
+
 func _ready() -> void:
 	## Both Server and Client must register the spawn function!
 	spawner.spawn_function = _spawn_custom
 	
 	if not multiplayer.is_server():
 		return
-		
+	
+	## 1. Build the fast-access cache of level restrictions
+	for i in npc_scenes.size():
+		var scene = npc_scenes[i]
+		if scene:
+			var temp = scene.instantiate()
+			if temp is NPC:
+				_scene_level_cache[i] = {"min": temp.min_spawn_level, "max": temp.max_spawn_level}
+			else:
+				_scene_level_cache[i] = {"min": 0, "max": 10}
+			temp.free()
+	
 	var timer := Timer.new()
 	timer.wait_time = spawn_interval
 	timer.autostart = true
@@ -31,7 +45,18 @@ func _on_spawn_timer_timeout() -> void:
 		return
 		
 	var level := _pick_spawn_level()
-	var scene_index := randi() % npc_scenes.size()
+
+	## 3. Filter valid scenes based on the rolled level
+	var valid_indices =[]
+	for i in _scene_level_cache.keys():
+		var bounds = _scene_level_cache[i]
+		if level >= bounds["min"] and level <= bounds["max"]:
+			valid_indices.append(i)
+			
+	if valid_indices.is_empty():
+		return # No valid NPC for this level right now, skip spawn.
+		
+	var scene_index = valid_indices.pick_random()
 	
 	var is_left := randf() > 0.5
 	var start_x := -1800.0 if is_left else 1800.0

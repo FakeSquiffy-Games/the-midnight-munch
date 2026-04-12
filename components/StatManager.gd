@@ -33,16 +33,16 @@ const XP_THRESHOLDS: Array[float] = [
 # STAT ENUM
 # =========================================================
 
-## Used by EffectComponent (Phase 5) to identify which stat to boost.
+## Update the enum
 enum StatType {
 	SPEED,
-	TURN_RATE,
 	XP_GAIN_MULTIPLIER,
 	BITE_POWER,
 	MAX_ENERGY,
 	ENERGY_REGEN_RATE,
 	ENERGY_DRAIN_RATE,
-	LIGHT_ENERGY, 
+	LIGHT_ENERGY,
+	LIGHT_RADIUS_MULTIPLIER # NEW: For squid blindness
 }
 
 ## Emitted when is_boosting changes. Listened to by PlayerController
@@ -62,7 +62,7 @@ signal local_tier_changed(new_tier: int)
 @export var speed:               float = 200.0
 
 ## Not used for movement — reserved for future collectible effect.
-@export var turn_rate:           float = 1.0
+@export var light_radius_multiplier:     float = 1.0
 
 ## Multiplier applied to all XP gains.
 @export var xp_gain_multiplier:  float = 1.0
@@ -167,12 +167,21 @@ func _on_boost_applied(target_path: String, stat: int, amount: float, duration: 
 	_modify_stat(stat, amount)
 	
 	if duration > 0.0:
-		_active_boosts.append({
-			"stat": stat,
-			"amount": amount,
-			"time_left": duration
-		})
-		set_process(true)
+		## FIX: Prevent infinite stacking! Refresh the timer if the exact same buff/debuff is applied.
+		var found = false
+		for b in _active_boosts:
+			if b.stat == stat and b.amount == amount:
+				b.time_left = maxf(b.time_left, duration)
+				found = true
+				break
+				
+		if not found:
+			_active_boosts.append({
+				"stat": stat,
+				"amount": amount,
+				"time_left": duration
+			})
+			set_process(true)
 
 ## Ensures the local client player actually updates their XP variable
 func _on_network_xp_changed(peer_id: int, new_xp: float) -> void:
@@ -180,14 +189,15 @@ func _on_network_xp_changed(peer_id: int, new_xp: float) -> void:
 	if owner.is_in_group("players") and owner.get_multiplayer_authority() == peer_id:
 		current_xp = new_xp
 
+## Update _modify_stat
 func _modify_stat(stat: StatType, amount: float) -> void:
 	match stat:
-		StatType.SPEED:               speed += amount
-		StatType.TURN_RATE:           turn_rate += amount
-		StatType.XP_GAIN_MULTIPLIER:  xp_gain_multiplier += amount
-		StatType.BITE_POWER:          bite_power += amount
+		StatType.SPEED:                   speed += amount
+		StatType.XP_GAIN_MULTIPLIER:      xp_gain_multiplier += amount
+		StatType.BITE_POWER:              bite_power += amount
+		StatType.LIGHT_RADIUS_MULTIPLIER: light_radius_multiplier += amount
 		StatType.MAX_ENERGY:
 			max_energy += amount
 			current_energy = minf(current_energy, max_energy)
-		StatType.ENERGY_REGEN_RATE:   energy_regen_rate += amount
-		StatType.ENERGY_DRAIN_RATE:   energy_drain_rate += amount
+		StatType.ENERGY_REGEN_RATE:       energy_regen_rate += amount
+		StatType.ENERGY_DRAIN_RATE:       energy_drain_rate += amount

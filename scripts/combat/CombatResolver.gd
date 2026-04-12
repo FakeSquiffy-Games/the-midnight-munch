@@ -67,13 +67,19 @@ static func process_bite_request(
 ## Must only be called on the server.
 static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 	
-	## PHASE 5: INTERCEPT COLLECTIBLES
-	var effect := defender.get_node_or_null("components/EffectComponent") as EffectComponent
-	if effect:
-		effect.apply_to(attacker)
-		AudioManager.play_spatial_sound("level_up", attacker.global_position)
-		print("CombatResolver: %s collected a boost!" % attacker.name)
-		#return
+	## PHASE 8.5: INTERCEPT EFFECTS (Collectibles & Hazards)
+	var def_effect := defender.get_node_or_null("components/EffectComponent") as EffectComponent
+	if def_effect and def_effect.apply_on_defend:
+		def_effect.apply_to(attacker)
+		if def_effect.destroy_on_consume:
+			AudioManager.play_spatial_sound("level_up", attacker.global_position)
+			#return # Stop combat, entity was consumed
+
+	var att_effect := attacker.get_node_or_null("components/EffectComponent") as EffectComponent
+	if att_effect and att_effect.apply_on_attack:
+		att_effect.apply_to(defender)
+		#if att_effect.destroy_on_consume:
+			#return # Stop combat, entity was consumed
 
 	var result           := resolve(attacker, defender)
 	var defender_peer_id := defender.get_multiplayer_authority()

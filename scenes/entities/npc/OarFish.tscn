@@ -9,6 +9,8 @@
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_oanud")]
 script = ExtResource("2_qjq7h")
 counts_as_kill_stat = true
+min_spawn_level = 5
+max_spawn_level = 10
 
 [node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("2_1v6t8")]
 species_name = "OarFish"

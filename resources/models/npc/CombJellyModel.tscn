@@ -24,3 +24,9 @@ animations = [{
 sprite_frames = SubResource("SpriteFrames_b87y5")
 frame_progress = 0.78187585
 flip_h = true
+
+[node name="BodyPolygon" type="CollisionPolygon2D" parent="BodyArea" parent_id_path=PackedInt32Array(1257139104) index="0" unique_id=600309420]
+polygon = PackedVector2Array(-4.5, -15.25, -10, -10.25, -12.25, -3.25, -11.5, 6.25, -1, 11.75, 7, 9.5, 14.5, 0.75, 13.75, -7.5, 9.75, -14, 2.25, -17.5)
+
+[node name="MouthPolygon" type="CollisionPolygon2D" parent="MouthArea" parent_id_path=PackedInt32Array(555163341) index="0" unique_id=1953357109]
+polygon = PackedVector2Array(-3.75, -3, -4.5, 1, 1.5, 2.75, 4.5, -2.5, -1.25, -4.75)

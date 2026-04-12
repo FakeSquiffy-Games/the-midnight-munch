@@ -62,11 +62,17 @@ func _process_dormant_mode(delta: float) -> void:
 func _update_light() -> void:
 	if light == null: return
 	
-	if current_radius <= 1.0:
+	## Apply the StatManager's vision multiplier!
+	var stat_manager = owner.get_node_or_null("StatManager")
+	var mult = stat_manager.light_radius_multiplier if stat_manager else 1.0
+	
+	var final_radius = current_radius * mult
+	
+	if final_radius <= 1.0:
 		light.visible = false
 		return
 	light.visible = true
-	light.texture_scale = current_radius / 256.0
+	light.texture_scale = final_radius / 256.0
 	var pulse = 1.0 + sin(Time.get_ticks_msec() * 0.002) * 0.05
 	light.energy = 1.5 * pulse
 

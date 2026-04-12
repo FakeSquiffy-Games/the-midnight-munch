@@ -7,6 +7,10 @@ var spawn_level: int = 0
 ## PHASE 8: Toggle whether killing this NPC increments the player's stat
 @export var counts_as_kill_stat: bool = true
 
+## PHASE 8.5: Ecosystem Level Restrictions
+@export var min_spawn_level: int = 0
+@export var max_spawn_level: int = 10
+
 func _ready() -> void:
 	add_to_group("npcs")
 	
