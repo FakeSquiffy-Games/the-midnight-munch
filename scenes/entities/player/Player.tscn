@@ -7,6 +7,9 @@
 [ext_resource type="Script" uid="uid://c4v4fof65gk3h" path="res://components/BioluminescentComponent.gd" id="5_hgjck"]
 [ext_resource type="Texture2D" uid="uid://bc10i2ttr0656" path="res://assets/effects/bubble.png" id="6_hgjck"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ppr6r"]
+shader = ExtResource("4_rqwkw")
+
 [sub_resource type="Gradient" id="Gradient_hgjck"]
 colors = PackedColorArray(1, 1, 1, 0.50980395, 1, 1, 1, 0)
 
@@ -34,21 +37,11 @@ scale_min = 0.39999998
 scale_curve = SubResource("CurveTexture_rqk8h")
 color_ramp = SubResource("GradientTexture1D_ppr6r")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ppr6r"]
-shader = ExtResource("4_rqwkw")
-
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_afppm")]
 script = ExtResource("2_30dhn")
 character_name = "Unnamed Fish"
 character_description = "A fish."
 reconcile_threshold = 50.0
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="." index="0" unique_id=692906517]
-amount = 32
-texture = ExtResource("6_hgjck")
-lifetime = 3.0
-preprocess = 0.5
-process_material = SubResource("ParticleProcessMaterial_20ow7")
 
 [node name="Camera2D" type="Camera2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="0" unique_id=1891725811]
 zoom = Vector2(0.7, 0.7)
@@ -63,3 +56,10 @@ script = ExtResource("5_hgjck")
 mode = 1
 max_radius = 1000.0
 metadata/_custom_type_script = "uid://c4v4fof65gk3h"
+
+[node name="BoostParticles" type="GPUParticles2D" parent="vfx" parent_id_path=PackedInt32Array(336823282) index="0" unique_id=692906517]
+amount = 32
+texture = ExtResource("6_hgjck")
+lifetime = 3.0
+preprocess = 0.5
+process_material = SubResource("ParticleProcessMaterial_20ow7")

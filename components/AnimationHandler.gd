@@ -8,6 +8,11 @@ var _last_xp: float = 0.0
 var _last_level: int = 0
 var _current_scale_mult: float = 1.0
 
+## VFX Tracking
+var _last_boosting: bool = false
+var _vfx_nodes: Dictionary = {}   # Caches all particle systems found on the entity
+var _timed_vfx: Dictionary = {}   # Tracks how long powerup VFX should play
+
 func _ready() -> void:
 	_entity = owner as Entity
 	call_deferred("_initialize")
@@ -20,7 +25,19 @@ func _initialize() -> void:
 	if not _stat_manager:
 		set_process(false)
 		return
+	
+	## Automatically find and cache ALL particle systems on the Entity and its Model
+	var vfx_container = _entity.get_node_or_null("vfx")
+	var potential_vfx_nodes =[]
+	
+	if vfx_container:
+		potential_vfx_nodes += vfx_container.get_children()
 		
+	for node in potential_vfx_nodes:
+		if node is GPUParticles2D or node is CPUParticles2D:
+			_vfx_nodes[node.name] = node
+			node.emitting = false # Ensure they start turned off!
+	
 	## Set initial values
 	_last_xp = _stat_manager.current_xp
 	_last_level = _stat_manager.level
@@ -29,7 +46,7 @@ func _initialize() -> void:
 	_update_nametag() # Call once on startup to set the initial text
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if not is_instance_valid(_stat_manager): return
 	
 	## NEW: Counter-flip the nametag so it never reads backwards
@@ -38,6 +55,20 @@ func _process(_delta: float) -> void:
 		if label:
 			label.scale.x = -1.0 if _entity.sync_flip_h else 1.0
 	
+	## --- 1. HANDLE MANUAL BOOST VFX ---
+	var is_boosting = _stat_manager.is_boosting
+	if is_boosting != _last_boosting:
+		_last_boosting = is_boosting
+		_set_vfx_active("BoostParticles", is_boosting)
+	
+	## --- 2. HANDLE TIMED POWERUP VFX ---
+	for vfx_name in _timed_vfx.keys():
+		_timed_vfx[vfx_name] -= delta
+		if _timed_vfx[vfx_name] <= 0.0:
+			_set_vfx_active(vfx_name, false)
+			_timed_vfx.erase(vfx_name)
+	
+	## --- 3. HANDLE XP AND LEVELS ---
 	var current_xp = _stat_manager.current_xp
 	if current_xp != _last_xp:
 		var diff: float = current_xp - _last_xp
@@ -61,6 +92,28 @@ func _process(_delta: float) -> void:
 		if current_level != _last_level:
 			_on_level_changed(current_level)
 			_last_level = current_level
+
+## Safely turns a particle system on or off by name
+func _set_vfx_active(vfx_name: String, active: bool) -> void:
+	if _vfx_nodes.has(vfx_name):
+		_vfx_nodes[vfx_name].emitting = active
+
+## Triggers visual auras when picking up collectibles/powerups
+func _on_global_boost_applied(target_path: String, stat: int, amount: float, duration: float) -> void:
+	if str(_entity.get_path()) != target_path: return
+	
+	## Easily map future powerup stats to their respective Particle Node names!
+	var vfx_name := ""
+	match stat:
+		StatManager.StatType.SPEED: 
+			vfx_name = "BoostParticles" # Re-use the bubbles for the Speed powerup!
+		# StatManager.StatType.BITE_POWER: vfx_name = "BiteParticles"
+		# StatManager.StatType.MAX_ENERGY: vfx_name = "EnergyParticles"
+	
+	## Turn on the particle system and set a timer to turn it off
+	if vfx_name != "" and duration > 0.0:
+		_set_vfx_active(vfx_name, true)
+		_timed_vfx[vfx_name] = duration
 
 func _on_level_changed(new_level: int) -> void:
 	var target_mult := _calculate_scale_for_level(new_level)
@@ -118,20 +171,20 @@ func _update_nametag() -> void:
 	## (Phase 8 will replace entity_name with Username for players)
 	label.text = "(%s) Lvl %d | %s" % [tier_str, _stat_manager.level, display_name]
 
-## Listens to the global signal and spawns text if THIS entity was the one boosted
-func _on_global_boost_applied(target_path: String, stat: int, amount: float, _duration: float) -> void:
-	if str(_entity.get_path()) != target_path: 
-		return
-		
-	var stat_name := ""
-	match stat:
-		StatManager.StatType.SPEED: stat_name = "Speed"
-		StatManager.StatType.BITE_POWER: stat_name = "Bite"
-		StatManager.StatType.MAX_ENERGY: stat_name = "Energy"
-		_: stat_name = "Boost"
-		
-	var text := "+%s %s!" % [str(amount), stat_name]
-	#FloatingText.spawn(_entity.get_parent(), _entity.global_position, text, Color(0.3, 1.0, 0.3)) # Green
+### Listens to the global signal and spawns text if THIS entity was the one boosted
+#func _on_global_boost_applied(target_path: String, stat: int, amount: float, _duration: float) -> void:
+	#if str(_entity.get_path()) != target_path: 
+		#return
+		#
+	#var stat_name := ""
+	#match stat:
+		#StatManager.StatType.SPEED: stat_name = "Speed"
+		#StatManager.StatType.BITE_POWER: stat_name = "Bite"
+		#StatManager.StatType.MAX_ENERGY: stat_name = "Energy"
+		#_: stat_name = "Boost"
+		#
+	#var text := "+%s %s!" % [str(amount), stat_name]
+	##FloatingText.spawn(_entity.get_parent(), _entity.global_position, text, Color(0.3, 1.0, 0.3)) # Green
 
 func play_death_animation() -> void:
 	if not is_instance_valid(_entity.model): return

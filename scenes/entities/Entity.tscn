@@ -23,3 +23,5 @@ replication_config = SubResource("SceneReplicationConfig_4kuee")
 [node name="AnimationHandler" type="Node" parent="components" unique_id=390289515]
 script = ExtResource("3_4h6cm")
 metadata/_custom_type_script = "uid://bpdic1ygsdeuy"
+
+[node name="vfx" type="Node2D" parent="." unique_id=336823282]
