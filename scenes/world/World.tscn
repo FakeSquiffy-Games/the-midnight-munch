@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://c5ln4ixptye0p" path="res://scenes/entities/npc/SeaAngel.tscn" id="7_yr1n6"]
 [ext_resource type="PackedScene" uid="uid://chg6folvtumpw" path="res://scenes/entities/npc/YetiCrab.tscn" id="8_16fjv"]
 [ext_resource type="PackedScene" uid="uid://4fbi7rsus0x7" path="res://scenes/entities/npc/LanternFish.tscn" id="8_l5ull"]
+[ext_resource type="PackedScene" uid="uid://jiha1dsqlhba" path="res://scenes/entities/npc/VampireSquid.tscn" id="9_ckp8c"]
 
 [node name="World" type="Node2D" unique_id=1791530930]
 script = ExtResource("1_6eebf")
@@ -21,7 +22,7 @@ script = ExtResource("1_6eebf")
 
 [node name="NPCSpawner" type="Node" parent="." unique_id=904507801]
 script = ExtResource("2_gbddb")
-npc_scenes = Array[PackedScene]([ExtResource("5_qh0kd"), ExtResource("6_yr1n6"), ExtResource("7_l5ull"), ExtResource("8_16fjv")])
+npc_scenes = Array[PackedScene]([ExtResource("5_qh0kd"), ExtResource("6_yr1n6"), ExtResource("7_l5ull"), ExtResource("8_16fjv"), ExtResource("9_ckp8c")])
 
 [node name="NPCSynchronizer" type="MultiplayerSpawner" parent="NPCSpawner" unique_id=1174939102]
 spawn_path = NodePath("..")

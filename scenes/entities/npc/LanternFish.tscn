@@ -26,7 +26,7 @@ metadata/_custom_type_script = "uid://duxpjdk2crbg1"
 
 [node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=1250324935]
 script = ExtResource("5_tyhcb")
-boost_amount = 100.0
+boost_amount = 300.0
 duration = 15.0
 metadata/_custom_type_script = "uid://otxu8qtsgxyp"
 

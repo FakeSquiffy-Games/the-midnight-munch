@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://jiha1dsqlhba"]
+
+[ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_ljf4y"]
+[ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_mjh2c"]
+[ext_resource type="PackedScene" uid="uid://dpjxxqp0rydsm" path="res://resources/models/npc/VampireSquidModel.tscn" id="2_xip0x"]
+[ext_resource type="Script" uid="uid://dgxr81srycktm" path="res://resources/behaviors/WandererBehavior.gd" id="3_mjh2c"]
+[ext_resource type="Script" uid="uid://otxu8qtsgxyp" path="res://components/EffectComponent.gd" id="4_0ykhi"]
+
+[node name="Entity" unique_id=1905748098 instance=ExtResource("1_ljf4y")]
+script = ExtResource("2_mjh2c")
+counts_as_kill = true
+npc_invisible = false
+min_spawn_level = 0
+max_spawn_level = 10
+
+[node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("2_xip0x")]
+
+[node name="WandererBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=1257536768]
+script = ExtResource("3_mjh2c")
+metadata/_custom_type_script = "uid://dgxr81srycktm"
+
+[node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=1678413571]
+script = ExtResource("4_0ykhi")
+stat = 7
+boost_amount = -0.5
+duration = 5.0
+destroy_on_consume = false
+metadata/_custom_type_script = "uid://otxu8qtsgxyp"
