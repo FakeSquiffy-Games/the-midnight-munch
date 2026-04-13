@@ -1,8 +1,7 @@
 ## StatManager.gd
 ## Single source of truth for all fish stats.
-## Attached to every fish entity (players and NPCs).
-## Level and tier are derived from current_xp — never stored separately.
-## All writes to combat-relevant stats are server-authoritative.
+## Level and tier are derived from current_xp.
+## Features a Recalculation Pipeline to prevent float-drift and infinite stat stacking.
 class_name StatManager
 extends Node
 
@@ -11,10 +10,7 @@ extends Node
 # XP TABLE
 # =========================================================
 
-## XP required to reach each level. Index = level.
-## Level 0 threshold is 0 by definition.
-## Values are placeholders — tune during Phase 4 playtesting.
-const XP_THRESHOLDS: Array[float] = [
+const XP_THRESHOLDS: Array[float] =[
 	0.0,     ## Level 0
 	100.0,   ## Level 1
 	250.0,   ## Level 2
@@ -30,10 +26,9 @@ const XP_THRESHOLDS: Array[float] = [
 
 
 # =========================================================
-# STAT ENUM
+# STAT ENUM & SIGNALS
 # =========================================================
 
-## Update the enum
 enum StatType {
 	SPEED,
 	XP_GAIN_MULTIPLIER,
@@ -42,68 +37,58 @@ enum StatType {
 	ENERGY_REGEN_RATE,
 	ENERGY_DRAIN_RATE,
 	LIGHT_ENERGY,
-	LIGHT_RADIUS_MULTIPLIER # NEW: For squid blindness
+	LIGHT_RADIUS_MULTIPLIER,
+	DAMAGE_REDUCTION
 }
 
-## Emitted when is_boosting changes. Listened to by PlayerController
-## to update its local _boost_active cache without polling.
-signal changed_boosting(value: bool)
 
-signal local_xp_changed(old_value: float, new_value: float)
-signal local_level_changed(new_level: int)
-signal local_tier_changed(new_tier: int)
+# =========================================================
+# BASE STATS (Inspector Editable)
+# =========================================================
+
+@export var base_speed:                   float = 200.0
+@export var base_light_radius_multiplier: float = 1.0
+@export var base_xp_gain_multiplier:      float = 1.0
+@export var base_bite_power:              float = 1.0
+@export var base_damage_reduction:        float = 0.0
+
+@export var base_max_energy:              float = 100.0
+@export var base_energy_regen_rate:       float = 20.0
+@export var base_energy_drain_rate:       float = 30.0
 
 
 # =========================================================
-# BASE STATS
+# COMPUTED STATS (Accessed by external logic)
 # =========================================================
 
-## Movement speed in pixels per second.
-@export var speed:               float = 200.0
+var speed:                   float
+var light_radius_multiplier: float
+var xp_gain_multiplier:      float
+var bite_power:              float
+var damage_reduction:        float
 
-## Not used for movement — reserved for future collectible effect.
-@export var light_radius_multiplier:     float = 1.0
-
-## Multiplier applied to all XP gains.
-@export var xp_gain_multiplier:  float = 1.0
-
-## Multiplier applied to outgoing bite XP drain.
-@export var bite_power:          float = 1.0
-
-
-# =========================================================
-# ENERGY STATS
-# =========================================================
-
-@export var max_energy:          float = 100.0
-@export var energy_regen_rate:   float = 20.0   ## per second
-@export var energy_drain_rate:   float = 30.0   ## per second while boosting
+var max_energy:              float
+var energy_regen_rate:       float
+var energy_drain_rate:       float
 
 
 # =========================================================
 # RUNTIME STATE
-## Written only by the server. Replicated to clients via
-## MultiplayerSynchronizer (configured in Phase 3C).
 # =========================================================
-
-var _cached_level: int = 0
-var _cached_tier: int  = 0
 
 var current_xp:     float = 0.0
 var current_energy: float = 100.0
 var is_boosting:    bool  = false
 
-## Tracks active timed boosts: Array of Dictionary 
-## {"stat": StatType, "amount": float, "time_left": float}
-var _active_boosts: Array[Dictionary] =[]
+## Dictionary keyed by StatType. 
+## Value is a Dictionary: {"amount": float, "time_left": float}
+var _active_boosts: Dictionary = {}
 
 
 # =========================================================
 # DERIVED PROPERTIES
 # =========================================================
 
-## Derives level from current_xp by scanning XP_THRESHOLDS high to low.
-## Never stored — always computed fresh from XP.
 var level: int:
 	get:
 		for i in range(XP_THRESHOLDS.size() - 1, -1, -1):
@@ -111,16 +96,12 @@ var level: int:
 				return i
 		return 0
 
-## Derives tier from level.
-## 0 = Baby (Levels 0-4), 1 = Teen (Levels 5-7), 2 = Adult (Levels 8-10).
 var tier: int:
 	get:
 		if level >= 8: return 2
 		if level >= 5: return 1
 		return 0
 
-## Returns the XP gap between the current level and the one below it.
-## Used by CombatResolver for NPC KILL demotion calculation.
 func get_level_xp_gap() -> float:
 	var lv := level
 	if lv <= 0:
@@ -133,71 +114,117 @@ func get_level_xp_gap() -> float:
 # =========================================================
 
 func _ready() -> void:
-	## Disable process by default to save overhead. 
-	## Only enabled when active timed boosts exist.
+	## Compute initial runtime stats from base exports
+	_recalculate_stats()
+	current_energy = max_energy
+	
 	set_process(false)
 	SignalBus.boost_applied.connect(_on_boost_applied)
 	SignalBus.xp_changed.connect(_on_network_xp_changed)
 
 func _process(delta: float) -> void:
-	## Both Client and Server tick down the timer for smooth client prediction!
-	## Iterate backwards to safely remove items while looping
-	for i in range(_active_boosts.size() - 1, -1, -1):
-		var boost: Dictionary = _active_boosts[i]
+	var needs_recalc := false
+	
+	## Iterate safely through active boost keys
+	var keys = _active_boosts.keys()
+	for stat in keys:
+		var boost = _active_boosts[stat]
 		boost.time_left -= delta
 		
-		#print("Time left: ", boost.time_left)
-		
 		if boost.time_left <= 0.0:
-			_modify_stat(boost.stat, -boost.amount) # Reverse the boost
-			_active_boosts.remove_at(i)
+			_active_boosts.erase(stat)
+			needs_recalc = true
+	
+	if needs_recalc:
+		_recalculate_stats()
 	
 	if _active_boosts.is_empty():
 		set_process(false)
 
+
 # =========================================================
-# BOOST APPLICATION (Symmetric)
+# BOOST APPLICATION (The Pipeline)
 # =========================================================
 
 func _on_boost_applied(target_path: String, stat: int, amount: float, duration: float) -> void:
-	## Only apply if this StatManager belongs to the targeted specific Node
 	if str(owner.get_path()) != target_path:
 		return
 		
-	_modify_stat(stat, amount)
+	var stat_type = stat as StatType
 	
-	if duration > 0.0:
-		## FIX: Prevent infinite stacking! Refresh the timer if the exact same buff/debuff is applied.
-		var found = false
-		for b in _active_boosts:
-			if b.stat == stat and b.amount == amount:
-				b.time_left = maxf(b.time_left, duration)
-				found = true
-				break
-				
-		if not found:
-			_active_boosts.append({
-				"stat": stat,
-				"amount": amount,
-				"time_left": duration
-			})
-			set_process(true)
+	## Handle Non-Modifying Resources (e.g., instant heals)
+	if stat_type == StatType.LIGHT_ENERGY:
+		return # Handled locally by BioluminescentComponent
+
+	## Handle Permanent Stat Upgrades
+	if duration <= 0.0:
+		_modify_base_stat(stat_type, amount)
+		_recalculate_stats()
+		return
+
+	## Handle Timed Boosts (Strict 1-Buff-Per-Stat Policy)
+	if _active_boosts.has(stat_type):
+		var existing = _active_boosts[stat_type]
+		
+		## Overwrite if stronger magnitude
+		if abs(amount) > abs(existing.amount):
+			_active_boosts[stat_type] = { "amount": amount, "time_left": duration }
+		## Refresh timer if it's the exact same buff
+		elif amount == existing.amount:
+			existing.time_left = maxf(existing.time_left, duration)
+	else:
+		## Apply brand new buff
+		_active_boosts[stat_type] = { "amount": amount, "time_left": duration }
+		set_process(true)
+		
+	_recalculate_stats()
+
+
+func _modify_base_stat(stat: StatType, amount: float) -> void:
+	match stat:
+		StatType.SPEED:                   base_speed += amount
+		StatType.XP_GAIN_MULTIPLIER:      base_xp_gain_multiplier += amount
+		StatType.BITE_POWER:              base_bite_power += amount
+		StatType.DAMAGE_REDUCTION:        base_damage_reduction += amount
+		StatType.MAX_ENERGY:              base_max_energy += amount
+		StatType.ENERGY_REGEN_RATE:       base_energy_regen_rate += amount
+		StatType.ENERGY_DRAIN_RATE:       base_energy_drain_rate += amount
+		StatType.LIGHT_RADIUS_MULTIPLIER: base_light_radius_multiplier += amount
+
+
+func _recalculate_stats() -> void:
+	## 1. Reset all computed properties to their base values
+	speed                   = base_speed
+	xp_gain_multiplier      = base_xp_gain_multiplier
+	bite_power              = base_bite_power
+	damage_reduction        = base_damage_reduction
+	light_radius_multiplier = base_light_radius_multiplier
+	energy_regen_rate       = base_energy_regen_rate
+	energy_drain_rate       = base_energy_drain_rate
+	
+	var old_max_energy      = max_energy
+	max_energy              = base_max_energy
+	
+	## 2. Layer all active boosts cleanly on top
+	for stat in _active_boosts.keys():
+		var amt: float = _active_boosts[stat].amount
+		match stat:
+			StatType.SPEED:                   speed += amt
+			StatType.XP_GAIN_MULTIPLIER:      xp_gain_multiplier += amt
+			StatType.BITE_POWER:              bite_power += amt
+			StatType.DAMAGE_REDUCTION:        damage_reduction += amt
+			StatType.MAX_ENERGY:              max_energy += amt
+			StatType.ENERGY_REGEN_RATE:       energy_regen_rate += amt
+			StatType.ENERGY_DRAIN_RATE:       energy_drain_rate += amt
+			StatType.LIGHT_RADIUS_MULTIPLIER: light_radius_multiplier += amt
+			
+	## 3. Apply safe boundaries
+	damage_reduction = clampf(damage_reduction, 0.0, 1.0)
+	
+	if max_energy != old_max_energy:
+		current_energy = minf(current_energy, max_energy)
 
 ## Ensures the local client player actually updates their XP variable
 func _on_network_xp_changed(peer_id: int, new_xp: float) -> void:
-## NPCs sync via MultiplayerSynchronizer, so only "players" should listen here.
 	if owner.is_in_group("players") and owner.get_multiplayer_authority() == peer_id:
 		current_xp = new_xp
-
-## Update _modify_stat
-func _modify_stat(stat: StatType, amount: float) -> void:
-	match stat:
-		StatType.SPEED:                   speed += amount
-		StatType.XP_GAIN_MULTIPLIER:      xp_gain_multiplier += amount
-		StatType.BITE_POWER:              bite_power += amount
-		StatType.LIGHT_RADIUS_MULTIPLIER: light_radius_multiplier += amount
-		StatType.MAX_ENERGY:
-			max_energy += amount
-			current_energy = minf(current_energy, max_energy)
-		StatType.ENERGY_REGEN_RATE:       energy_regen_rate += amount
-		StatType.ENERGY_DRAIN_RATE:       energy_drain_rate += amount
