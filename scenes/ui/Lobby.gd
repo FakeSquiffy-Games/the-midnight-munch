@@ -9,22 +9,22 @@ extends Control
 # =========================================================
 
 #@onready var title_label:  Label    = $LobbyMenu/TitleLabel
-@onready var host_button:  Button   = $LobbyMenu/HostButton
-@onready var key_label:    Label    = $LobbyMenu/KeyLabel
-@onready var key_input:    LineEdit = $LobbyMenu/KeyInput
-@onready var join_button:  Button   = $LobbyMenu/JoinButton
-@onready var leave_button: Button   = $LobbyMenu/LeaveButton
-@onready var status_label: Label    = $LobbyMenu/StatusLabel
-@onready var start_button: Button   = $LobbyMenu/StartButton
-@onready var single_player_button: Button = $LobbyMenu/SoloButton
+@onready var host_button:  TextureButton   = $LobbyMenu/HostButton
+@onready var key_label:    Label    = $LobbyMenu/KeyLabelFrame/MarginContainer/KeyLabel
+@onready var key_input:    LineEdit = $LobbyMenu/KeyFrame/MarginContainer/KeyInput
+@onready var join_button:  TextureButton   = $LobbyMenu/JoinButton
+@onready var leave_button: TextureButton   = $LobbyMenu/LeaveButton
+@onready var status_label: Label    = $LobbyMenu/StatusFrame/MarginContainer/StatusLabel
+@onready var start_button: TextureButton   = $LobbyMenu/StartButton
+@onready var single_player_button: TextureButton = $LobbyMenu/SoloButton
 
-@onready var username_input: LineEdit = $LobbyMenu/UsernameInput
-@onready var prev_button:    Button   = $LobbyMenu/CarouselContainer/PrevButton
-@onready var next_button:    Button   = $LobbyMenu/CarouselContainer/NextButton
-@onready var char_texture:   TextureRect = $LobbyMenu/CarouselContainer/CharacterDisplay/CharTexture
-@onready var char_name:      Label    = $LobbyMenu/CarouselContainer/CharacterDisplay/CharName
-@onready var char_desc:      Label    = $LobbyMenu/CarouselContainer/CharacterDisplay/CharDesc
-@onready var ready_button:   Button   = $LobbyMenu/ReadyButton
+@onready var username_input: LineEdit = $LobbyMenu/UsernameFrame/MarginContainer/UsernameInput
+@onready var prev_button:    Button   = $LobbyMenu/CarouselFrame/MarginContainer/CarouselContainer/PrevButton
+@onready var next_button:    Button   = $LobbyMenu/CarouselFrame/MarginContainer/CarouselContainer/NextButton
+@onready var char_texture:   TextureRect = $LobbyMenu/CarouselFrame/MarginContainer/CarouselContainer/CharacterDisplay/CharTexture
+@onready var char_name:      Label    = $LobbyMenu/CarouselFrame/MarginContainer/CarouselContainer/CharacterDisplay/CharName
+@onready var char_desc:      Label    = $LobbyMenu/CarouselFrame/MarginContainer/CarouselContainer/CharacterDisplay/CharDesc
+@onready var ready_button:   TextureButton   = $LobbyMenu/ReadyButton
 
 ## Drag your Player.tscn prefabs here in the Inspector!
 @export var available_characters: Array[PackedScene] =[]
@@ -79,13 +79,13 @@ func _on_host_pressed() -> void:
 	NetworkManager.host_game()
 	key_label.text        = "Session key:  %s" % NetworkManager.session_key
 	status_label.text     = "Hosting — share the key with other players."
-	single_player_button.disabled = true
-	host_button.disabled  = true
-	join_button.disabled  = true
+	single_player_button.set_disabled_state(true)
+	host_button.set_disabled_state(true)
+	join_button.set_disabled_state(true)
 	key_input.editable    = false
 	## Show Start Game immediately so host can solo-test transition if needed.
 	start_button.visible  = true
-	start_button.disabled = true
+	start_button.set_disabled_state(true)
 	leave_button.visible = true
 
 
@@ -95,9 +95,9 @@ func _on_join_pressed() -> void:
 		status_label.text = "Key must be exactly %d characters." % NetworkManager.KEY_LENGTH
 		return
 	status_label.text     = "Searching for host with key '%s'..." % key
-	single_player_button.disabled = true
-	host_button.disabled  = true
-	join_button.disabled  = true
+	single_player_button.set_disabled_state(true)
+	host_button.set_disabled_state(true)
+	join_button.set_disabled_state(true)
 	key_input.editable    = false
 	NetworkManager.join_game(key)
 
@@ -114,7 +114,7 @@ func _on_leave_pressed() -> void:
 func _on_start_pressed() -> void:
 	if not multiplayer.is_server():
 		return
-	start_button.disabled = true
+	start_button.set_disabled_state(true)
 	NetworkManager.start_game()
 
 func _on_single_player_pressed() -> void:
@@ -153,7 +153,7 @@ func _check_start_condition() -> void:
 	if multiplayer.is_server():
 		var total_peers := GameState.player_states.size()
 		var is_everyone_ready := (locked_indices.size() == total_peers)
-		start_button.disabled = not (is_everyone_ready and total_peers >= 2)
+		start_button.set_disabled_state(not (is_everyone_ready and total_peers >= 2))
 
 func _on_player_disconnected(peer_id: int) -> void:
 	status_label.text = "Player disconnected — peer ID %d." % peer_id
@@ -216,7 +216,7 @@ func _update_carousel() -> void:
 		char_name.text = "Missing Scene"
 		char_desc.text = "Assign a Player Prefab in the LobbyUI Inspector!"
 		char_texture.texture = null
-		ready_button.disabled = true
+		ready_button.set_disabled_state(true)
 		return
 		
 	var temp := scene.instantiate()
@@ -252,12 +252,12 @@ func _update_carousel() -> void:
 	if is_taken_by_others:
 		char_name.text += " (Taken)"
 		char_texture.modulate = Color(0.3, 0.3, 0.3, 0.8)
-		ready_button.disabled = true
+		ready_button.set_disabled_state(true)
 	else:
 		char_texture.modulate = Color.WHITE
 		## FIX: If I am ready, the button must be enabled so I can click "Cancel"
 		## If I am not ready, the button is enabled only if the fish isn't taken.
-		ready_button.disabled = false if is_ready else false
+		ready_button.set_disabled_state(false if is_ready else false)
 		# Simplified: ready_button.disabled = false
 
 # =========================================================
@@ -293,9 +293,11 @@ func _confirm_lock(peer_id: int, index: int, username: String) -> void:
 	
 	if peer_id == multiplayer.get_unique_id():
 		is_ready = true
-		ready_button.text = "Cancel"
+		ready_button.get_node("Label").text = "Cancel"
 		prev_button.disabled = true
 		next_button.disabled = true
+		prev_button.self_modulate = Color("ffffffc8")
+		next_button.self_modulate = Color("#ffffffc8")
 		username_input.editable = false
 		
 	_update_carousel()
@@ -316,9 +318,11 @@ func _confirm_unlock(peer_id: int) -> void:
 	
 	if peer_id == multiplayer.get_unique_id():
 		is_ready = false
-		ready_button.text = "Ready"
+		ready_button.get_node("Label").text = "Ready"
 		prev_button.disabled = false
 		next_button.disabled = false
+		prev_button.self_modulate = Color("#ffffff")
+		next_button.self_modulate = Color("#ffffff")
 		username_input.editable = true
 		
 	_update_carousel()
@@ -331,9 +335,9 @@ func _confirm_unlock(peer_id: int) -> void:
 
 ## Restores the Lobby layout and selections after a match ends
 func _restore_active_connection() -> void:
-	host_button.disabled  = true
-	join_button.disabled  = true
-	single_player_button.disabled = true
+	host_button.set_disabled_state(true)
+	join_button.set_disabled_state(true)
+	single_player_button.set_disabled_state(true)
 	key_input.editable    = false
 	leave_button.visible  = true
 	
@@ -361,20 +365,19 @@ func _restore_active_connection() -> void:
 	## Reset locking states so everyone must click "Ready" again
 	locked_indices.clear()
 	is_ready = false
-	ready_button.text = "Ready"
-	ready_button.disabled = false
+	ready_button.get_node("Label").text = "Ready"
+	ready_button.set_disabled_state(false)
 	
 	_update_carousel()
 
 func _reset_ui() -> void:
-	host_button.disabled  = false
-	join_button.disabled  = false
+	host_button.set_disabled_state(false)
+	join_button.set_disabled_state(false)
 	key_input.editable    = true
-	key_input.text        = "Enter session key..."
 	start_button.visible  = false
-	start_button.disabled = true
+	start_button.set_disabled_state(false)
 	leave_button.visible  = false
-	single_player_button.disabled = false
+	single_player_button.set_disabled_state(false)
 	status_label.text     = "Play solo, host a new game, or enter a key to join."
 	locked_indices.clear()
 	_update_carousel()

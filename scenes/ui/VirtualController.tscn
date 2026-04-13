@@ -73,7 +73,7 @@ texture = ExtResource("4_wcbxj")
 
 [node name="BoostButton" type="TouchScreenButton" parent="." unique_id=1713448357]
 modulate = Color(1, 1, 1, 0.7058824)
-position = Vector2(978, 418)
+position = Vector2(978, 417)
 scale = Vector2(2, 2)
 texture_normal = ExtResource("8_m62p5")
 texture_pressed = ExtResource("6_wcbxj")

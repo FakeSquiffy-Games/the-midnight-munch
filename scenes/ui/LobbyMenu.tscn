@@ -1,125 +1,441 @@
 [gd_scene format=3 uid="uid://c3q344i08v5vb"]
 
+[ext_resource type="Texture2D" uid="uid://b86ukvfexe487" path="res://assets/ui/frame.png" id="1_2cj8s"]
+[ext_resource type="Texture2D" uid="uid://bis35wmrjd25q" path="res://assets/ui/chain.png" id="1_2uksp"]
+[ext_resource type="Texture2D" uid="uid://tcr68qrsaixt" path="res://assets/ui/chain_top.png" id="1_xfisk"]
+[ext_resource type="FontFile" uid="uid://btewobvua2jom" path="res://assets/fonts/Pixelosopher Bold.ttf" id="2_xfisk"]
+[ext_resource type="Script" uid="uid://cesn0xw0a8wh6" path="res://scenes/ui/ButtonHover.gd" id="3_n6g8v"]
+[ext_resource type="Texture2D" uid="uid://dri86lny8udps" path="res://assets/ui/frame_text.png" id="5_s08y3"]
+[ext_resource type="FontFile" uid="uid://b0v078v4yk5d2" path="res://assets/fonts/Pixelosopher.ttf" id="6_2uksp"]
+[ext_resource type="Texture2D" uid="uid://c702km4o81jov" path="res://assets/ui/frame_label.png" id="6_5g0nr"]
+[ext_resource type="Texture2D" uid="uid://dr6t23exug6hh" path="res://assets/ui/frame_character.png" id="9_iitkr"]
+[ext_resource type="Texture2D" uid="uid://dickid678ijwi" path="res://assets/ui/left_button.png" id="10_o2rm4"]
+[ext_resource type="Texture2D" uid="uid://wu180tmffwue" path="res://assets/ui/right_button.png" id="11_wpcp6"]
+
 [sub_resource type="FontVariation" id="FontVariation_e11ce"]
 
 [sub_resource type="Theme" id="Theme_6h17u"]
 default_font = SubResource("FontVariation_e11ce")
 
+[sub_resource type="LabelSettings" id="LabelSettings_n6g8v"]
+font = ExtResource("2_xfisk")
+font_size = 30
+
 [node name="LobbyMenu" type="VBoxContainer" unique_id=1541764513]
 z_index = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -439.0
+offset_right = 439.0
+offset_bottom = 599.0
+grow_horizontal = 2
+theme = SubResource("Theme_6h17u")
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1914276444]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("1_xfisk")
+stretch_mode = 5
+
+[node name="SoloButton" type="TextureButton" parent="." unique_id=1907094359]
+layout_mode = 2
+size_flags_vertical = 3
+texture_normal = ExtResource("1_2cj8s")
+stretch_mode = 5
+script = ExtResource("3_n6g8v")
+
+[node name="Label" type="Label" parent="SoloButton" unique_id=2014366815]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -190.5
-offset_top = -231.5
-offset_right = 190.5
-offset_bottom = 231.5
+offset_left = -68.0
+offset_top = -13.5
+offset_right = 68.0
+offset_bottom = 13.5
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_6h17u")
+text = "Play Solo"
+label_settings = SubResource("LabelSettings_n6g8v")
+horizontal_alignment = 1
 
-[node name="SoloButton" type="Button" parent="." unique_id=1029245845]
+[node name="HostButton" type="TextureButton" parent="." unique_id=1324954216]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Start Solo Mode"
+texture_normal = ExtResource("1_2cj8s")
+stretch_mode = 5
+script = ExtResource("3_n6g8v")
 
-[node name="HostButton" type="Button" parent="." unique_id=2028997624]
-layout_mode = 2
-size_flags_vertical = 3
+[node name="Label" type="Label" parent="HostButton" unique_id=479461526]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -82.0
+offset_top = -13.5
+offset_right = 82.0
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
 text = "Host Game"
+label_settings = SubResource("LabelSettings_n6g8v")
+horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="." unique_id=1077383874]
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=667145684]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("1_2uksp")
+stretch_mode = 5
+
+[node name="KeyLabelFrame" type="Control" parent="." unique_id=814463599]
+custom_minimum_size = Vector2(0, 23)
 layout_mode = 2
 
-[node name="KeyLabel" type="Label" parent="." unique_id=201538706]
+[node name="TextureRect" type="TextureRect" parent="KeyLabelFrame" unique_id=1600157777]
+clip_contents = true
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 0
+offset_right = 878.0
+offset_bottom = 23.0
+size_flags_vertical = 3
+texture = ExtResource("6_5g0nr")
+stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="KeyLabelFrame" unique_id=394326793]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="KeyLabel" type="Label" parent="KeyLabelFrame/MarginContainer" unique_id=201538706]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_xfisk")
 text = "Session: Uninitialized"
 
-[node name="KeyInput" type="LineEdit" parent="." unique_id=355287229]
+[node name="KeyFrame" type="Control" parent="." unique_id=1783060521]
+custom_minimum_size = Vector2(0, 63)
 layout_mode = 2
-size_flags_vertical = 3
-text = "Enter session key..."
+size_flags_stretch_ratio = 2.0
 
-[node name="JoinButton" type="Button" parent="." unique_id=2002965630]
+[node name="TextureRect" type="TextureRect" parent="KeyFrame" unique_id=426378663]
+clip_contents = true
+layout_mode = 0
+offset_right = 878.0
+offset_bottom = 63.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.8
+texture = ExtResource("5_s08y3")
+stretch_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="KeyFrame" unique_id=726928327]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="KeyInput" type="LineEdit" parent="KeyFrame/MarginContainer" unique_id=355287229]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("6_2uksp")
+placeholder_text = "Enter session key"
+
+[node name="JoinButton" type="TextureButton" parent="." unique_id=841378372]
+layout_mode = 2
+size_flags_vertical = 3
+texture_normal = ExtResource("1_2cj8s")
+stretch_mode = 5
+script = ExtResource("3_n6g8v")
+
+[node name="Label" type="Label" parent="JoinButton" unique_id=1979229828]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -76.0
+offset_top = -13.5
+offset_right = 76.0
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
 text = "Join Game"
+label_settings = SubResource("LabelSettings_n6g8v")
+horizontal_alignment = 1
 
-[node name="LeaveButton" type="Button" parent="." unique_id=8358119]
+[node name="LeaveButton" type="TextureButton" parent="." unique_id=1295154620]
 visible = false
 layout_mode = 2
+texture_normal = ExtResource("1_2cj8s")
+stretch_mode = 5
+script = ExtResource("3_n6g8v")
+
+[node name="Label" type="Label" parent="LeaveButton" unique_id=1942815326]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -92.5
+offset_top = -13.5
+offset_right = 92.5
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
 text = "Leave Game"
+label_settings = SubResource("LabelSettings_n6g8v")
+horizontal_alignment = 1
 
-[node name="HSeparator2" type="HSeparator" parent="." unique_id=689570602]
+[node name="TextureRect3" type="TextureRect" parent="." unique_id=1957113935]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("1_2uksp")
+stretch_mode = 5
+
+[node name="CharacterFrame" type="Control" parent="." unique_id=1750747436]
+custom_minimum_size = Vector2(0, 23)
 layout_mode = 2
 
-[node name="CharacterLabel" type="Label" parent="." unique_id=2063865539]
+[node name="TextureRect" type="TextureRect" parent="CharacterFrame" unique_id=1826148200]
+clip_contents = true
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 0
+offset_right = 878.0
+offset_bottom = 23.0
+size_flags_vertical = 3
+texture = ExtResource("6_5g0nr")
+stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="CharacterFrame" unique_id=251099789]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="CharacterLabel" type="Label" parent="CharacterFrame/MarginContainer" unique_id=2063865539]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_xfisk")
 text = "Character Selection"
 
-[node name="UsernameInput" type="LineEdit" parent="." unique_id=1161740397]
+[node name="UsernameFrame" type="Control" parent="." unique_id=303329917]
+custom_minimum_size = Vector2(0, 63)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UsernameFrame" unique_id=3246546]
+clip_contents = true
+layout_mode = 0
+offset_right = 878.0
+offset_bottom = 63.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.8
+texture = ExtResource("5_s08y3")
+stretch_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UsernameFrame" unique_id=412797094]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="UsernameInput" type="LineEdit" parent="UsernameFrame/MarginContainer" unique_id=1161740397]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Enter username..."
+theme_override_fonts/font = ExtResource("6_2uksp")
+placeholder_text = "Enter username"
 
-[node name="CarouselContainer" type="HBoxContainer" parent="." unique_id=707915665]
+[node name="CarouselFrame" type="Control" parent="." unique_id=1465890712]
+custom_minimum_size = Vector2(0, 148)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CarouselFrame" unique_id=1215424001]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_iitkr")
+
+[node name="MarginContainer" type="MarginContainer" parent="CarouselFrame" unique_id=571982832]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 24
+
+[node name="CarouselContainer" type="HBoxContainer" parent="CarouselFrame/MarginContainer" unique_id=707915665]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PrevButton" type="Button" parent="CarouselContainer" unique_id=558958512]
+[node name="PrevButton" type="Button" parent="CarouselFrame/MarginContainer/CarouselContainer" unique_id=558958512]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.2
-text = "<"
+theme_override_constants/h_separation = 0
+theme_override_constants/icon_max_width = 96
+icon = ExtResource("10_o2rm4")
+flat = true
+icon_alignment = 1
 
-[node name="CharacterDisplay" type="VBoxContainer" parent="CarouselContainer" unique_id=668025]
+[node name="CharacterDisplay" type="VBoxContainer" parent="CarouselFrame/MarginContainer/CarouselContainer" unique_id=668025]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 2
 
-[node name="CharTexture" type="TextureRect" parent="CarouselContainer/CharacterDisplay" unique_id=502622567]
+[node name="CharTexture" type="TextureRect" parent="CarouselFrame/MarginContainer/CarouselContainer/CharacterDisplay" unique_id=502622567]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 stretch_mode = 5
 
-[node name="CharName" type="Label" parent="CarouselContainer/CharacterDisplay" unique_id=1904296935]
+[node name="CharName" type="Label" parent="CarouselFrame/MarginContainer/CarouselContainer/CharacterDisplay" unique_id=1904296935]
 layout_mode = 2
+size_flags_vertical = 1
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 1
-text = "Character Name"
+theme_override_fonts/font = ExtResource("2_xfisk")
+theme_override_font_sizes/font_size = 20
+text = "Character"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CharDesc" type="Label" parent="CarouselContainer/CharacterDisplay" unique_id=1696534192]
+[node name="CharDesc" type="Label" parent="CarouselFrame/MarginContainer/CarouselContainer/CharacterDisplay" unique_id=1696534192]
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
+size_flags_vertical = 8
+theme_override_fonts/font = ExtResource("6_2uksp")
+theme_override_font_sizes/font_size = 16
 text = "Character Description"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="NextButton" type="Button" parent="CarouselContainer" unique_id=1530077490]
+[node name="NextButton" type="Button" parent="CarouselFrame/MarginContainer/CarouselContainer" unique_id=1530077490]
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.2
-text = ">"
+theme_override_constants/h_separation = 0
+theme_override_constants/icon_max_width = 96
+icon = ExtResource("11_wpcp6")
+flat = true
+icon_alignment = 1
 
-[node name="ReadyButton" type="Button" parent="." unique_id=2091968728]
+[node name="ReadyButton" type="TextureButton" parent="." unique_id=1771052139]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Ready"
+texture_normal = ExtResource("1_2cj8s")
+stretch_mode = 5
+script = ExtResource("3_n6g8v")
 
-[node name="StartButton" type="Button" parent="." unique_id=855589472]
+[node name="Label" type="Label" parent="ReadyButton" unique_id=1481008897]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -45.0
+offset_top = -13.5
+offset_right = 45.0
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Ready"
+label_settings = SubResource("LabelSettings_n6g8v")
+horizontal_alignment = 1
+
+[node name="StartButton" type="TextureButton" parent="." unique_id=1548175762]
 visible = false
 layout_mode = 2
 disabled = true
-text = "Start Game"
+texture_normal = ExtResource("1_2cj8s")
+stretch_mode = 5
+script = ExtResource("3_n6g8v")
 
-[node name="HSeparator3" type="HSeparator" parent="." unique_id=972190891]
+[node name="Label" type="Label" parent="StartButton" unique_id=550864687]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -92.5
+offset_top = -13.5
+offset_right = 92.5
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Start Game"
+label_settings = SubResource("LabelSettings_n6g8v")
+horizontal_alignment = 1
+
+[node name="StatusFrame" type="Control" parent="." unique_id=2092992582]
+custom_minimum_size = Vector2(0, 23)
 layout_mode = 2
 
-[node name="StatusLabel" type="Label" parent="." unique_id=325949952]
+[node name="TextureRect" type="TextureRect" parent="StatusFrame" unique_id=1529359871]
+clip_contents = true
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 0
+offset_right = 878.0
+offset_bottom = 23.0
+size_flags_vertical = 3
+texture = ExtResource("6_5g0nr")
+stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="StatusFrame" unique_id=1885235003]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="StatusLabel" type="Label" parent="StatusFrame/MarginContainer" unique_id=325949952]
 layout_mode = 2
 size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("2_xfisk")
 text = "Play solo, host a new game, or enter a key to join."
