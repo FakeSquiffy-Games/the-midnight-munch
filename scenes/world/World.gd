@@ -64,7 +64,7 @@ func _ready() -> void:
 	GameState.notify_world_loaded.rpc_id(1)
 	
 	AudioManager.stop_sound("lobby")
-	AudioManager.play_ui_sound("in-game")
+	AudioManager.play_ui_sound("in_game")
 
 func _physics_process(_delta: float) -> void:
 	if not multiplayer.is_server(): return

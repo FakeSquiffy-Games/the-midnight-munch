@@ -67,7 +67,7 @@ func _ready() -> void:
 		## Fresh boot OR returning from Single Player: Reset to default state!
 		_reset_ui()
 	
-	AudioManager.stop_sound("in-game")
+	AudioManager.stop_sound("in_game")
 	AudioManager.play_ui_sound("lobby")
 
 
