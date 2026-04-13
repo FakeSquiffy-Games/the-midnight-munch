@@ -5,6 +5,11 @@
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_bi4w0")]
 character_name = "Black Seadevil"
-character_description = "The deep-sea catfish who’ll light up the room just to eat it."
+character_description = "The deep-sea catfish who'll light up the room just to eat it."
 
 [node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_cteo1")]
+
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_xp_gain_multiplier = 2.0
+base_bite_power = 2.0
+base_damage_reduction = 0.5

@@ -25,4 +25,5 @@ metadata/_custom_type_script = "uid://dgxr81srycktm"
 script = ExtResource("5_2r34x")
 boost_amount = -100.0
 duration = 3.0
+destroy_on_consume = false
 metadata/_custom_type_script = "uid://otxu8qtsgxyp"
