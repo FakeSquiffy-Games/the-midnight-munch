@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://b8k00b07ihdmi" path="res://components/AggroZone.gd" id="5_qjq7h"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1v6t8"]
-radius = 700.0
+radius = 500.0
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_oanud")]
 script = ExtResource("2_qjq7h")
@@ -17,12 +17,11 @@ min_spawn_level = 0
 max_spawn_level = 10
 
 [node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("2_1v6t8")]
-species_name = "OarFish"
 
 [node name="StatManager" parent="." index="2" unique_id=400482168]
-speed = 300.0
-bite_power = 4.0
-max_energy = 200.0
+base_speed = 200.0
+base_bite_power = 5.0
+base_damage_reduction = 0.3
 
 [node name="RammerBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=1138768451]
 script = ExtResource("5_1v6t8")

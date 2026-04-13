@@ -10,6 +10,8 @@ character_description = "The deep-sea catfish who'll light up the room just to e
 [node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_cteo1")]
 
 [node name="StatManager" parent="." index="2" unique_id=400482168]
-base_xp_gain_multiplier = 2.0
-base_bite_power = 2.0
-base_damage_reduction = 0.5
+base_bite_power = 1.25
+
+[node name="BioluminescentComponent" parent="components" parent_id_path=PackedInt32Array(1883867421) index="3" unique_id=829523201]
+max_radius = 1000.0
+drain_rate = 15.0

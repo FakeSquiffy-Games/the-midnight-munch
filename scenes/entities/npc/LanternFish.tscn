@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://b8k00b07ihdmi" path="res://components/AggroZone.gd" id="6_f2rvu"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_conaa"]
-radius = 300.0
+radius = 100.0
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_484xj")]
 script = ExtResource("2_r8fh6")
@@ -20,6 +20,9 @@ disable_mouth = true
 
 [node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_htfe4")]
 
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_speed = 200.0
+
 [node name="ScaredyBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=521947795]
 script = ExtResource("5_f2rvu")
 metadata/_custom_type_script = "uid://duxpjdk2crbg1"
@@ -27,7 +30,7 @@ metadata/_custom_type_script = "uid://duxpjdk2crbg1"
 [node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=1250324935]
 script = ExtResource("5_tyhcb")
 boost_amount = 300.0
-duration = 15.0
+duration = 10.0
 metadata/_custom_type_script = "uid://otxu8qtsgxyp"
 
 [node name="AggroZone" type="Area2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="3" unique_id=1544117337]

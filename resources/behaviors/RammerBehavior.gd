@@ -3,8 +3,9 @@ extends Node
 
 enum State { WANDER, TELEGRAPH, DASH }
 
-@export var wander_speed_multiplier: float = 0.4
+@export var wander_speed_multiplier: float = 1.0
 @export var dash_speed_multiplier: float = 3.0
+@export var ram_chance: float = 0.5 ## Subphase 2.3: 50% chance to attack
 
 var _entity: CharacterBody2D
 var _stat_manager: StatManager
@@ -14,6 +15,7 @@ var current_state: State = State.WANDER
 var target: CharacterBody2D = null
 var move_direction: Vector2 = Vector2.RIGHT
 var state_timer: float = 0.0
+var aggro_cooldown: float = 0.0
 
 func _ready() -> void:
 	_entity = owner as CharacterBody2D
@@ -31,10 +33,14 @@ func trigger_cooldown(duration: float = 2.0) -> void:
 	target = null
 	current_state = State.WANDER
 	state_timer = duration
+	aggro_cooldown = duration
 	_pick_new_wander_direction()
 
 func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server() or not is_instance_valid(_entity): return
+
+	if aggro_cooldown > 0.0:
+		aggro_cooldown -= delta
 
 	match current_state:
 		State.WANDER:
@@ -47,6 +53,16 @@ func _physics_process(delta: float) -> void:
 		State.TELEGRAPH:
 			state_timer -= delta
 			_entity.velocity = Vector2.ZERO # Stop moving to "charge up"
+			
+			## Subphase 2.3: Safety check
+			if not _is_target_valid():
+				trigger_cooldown(1.0)
+				return
+				
+			## Keep tracking the target while charging
+			move_direction = _entity.global_position.direction_to(target.global_position)
+			_entity.update_facing(move_direction)
+			
 			if state_timer <= 0.0:
 				current_state = State.DASH
 				state_timer = 1.5 # Dash duration
@@ -63,8 +79,11 @@ func _pick_new_wander_direction() -> void:
 	move_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
 	state_timer = randf_range(2.0, 5.0)
 
+func _is_target_valid() -> bool:
+	return is_instance_valid(target) and not target.is_queued_for_deletion()
+
 func _on_aggro_entered(area: Area2D) -> void:
-	if current_state != State.WANDER: return
+	if current_state != State.WANDER or aggro_cooldown > 0.0: return
 	if not area is BodyArea: return
 		
 	var potential_target := area.get_parent().get_parent() as CharacterBody2D
@@ -76,7 +95,11 @@ func _on_aggro_entered(area: Area2D) -> void:
 	
 	## Only attack if the target is weaker or equal!
 	if target_stat and target_stat.level <= _stat_manager.level:
-		current_state = State.TELEGRAPH
-		state_timer = 1.0 # 1 second warning before charging
-		move_direction = _entity.global_position.direction_to(target.global_position)
-		_entity.update_facing(move_direction) # Face the target while charging up
+		if randf() <= ram_chance:
+			current_state = State.TELEGRAPH
+			state_timer = 1.0 # 1 second warning before charging
+			move_direction = _entity.global_position.direction_to(target.global_position)
+			_entity.update_facing(move_direction)
+		else:
+			## Decided not to ram. Ignore the target for a brief time to avoid spamming rolls.
+			aggro_cooldown = 3.0

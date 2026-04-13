@@ -1,8 +1,7 @@
 class_name ScuttlerBehavior
 extends Node
 
-@export var patrol_speed_multiplier: float = 0.3
-@export var floor_y_level: float = 900.0 ## The Y-coordinate to cling to
+@export var scuttle_speed_multiplier: float = 1.0
 @export var stop_chance: float = 0.25
 
 var _entity: CharacterBody2D
@@ -28,33 +27,41 @@ func trigger_cooldown(_duration: float = 2.0) -> void:
 func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server() or not is_instance_valid(_entity): return
 
-	## 1. Organic Randomness (Timers)
+	## 1. SINKING STATE
+	## Drop straight down until we physically touch the floor.
+	## (Godot tracks is_on_floor() automatically via move_and_slide).
+	if not _entity.is_on_floor():
+		_entity.velocity = Vector2(0.0, 300.0) # Fall heavily
+		_entity.move_and_slide()
+		return
+
+	## 2. Organic Randomness (Timers)
 	state_timer -= delta
 	if state_timer <= 0.0:
 		_pick_new_direction()
 
-	## 2. Smart Wall Bounce (Override Timer if we hit a wall)
-	if _entity.is_on_wall():
-		var wall_normal_x := _entity.get_wall_normal().x
-		if abs(wall_normal_x) > 0.5:
-			move_direction.x = sign(wall_normal_x)
-			state_timer = randf_range(3.0, 6.0) # Reset timer so it doesn't instantly turn back
-			
-	## 3. Hard Bounds Fallback (Prevents getting stuck on corners)
+	## 3. Entering the Arena & Hard Bounds Fallback
+	## If the crab spawns outside the arena, force it to move inward.
 	if _entity.global_position.x > 1700.0:
 		move_direction.x = -1.0
 		state_timer = randf_range(3.0, 6.0)
 	elif _entity.global_position.x < -1700.0:
 		move_direction.x = 1.0
 		state_timer = randf_range(3.0, 6.0)
-		
-	var target_velocity = move_direction * (_stat_manager.speed * patrol_speed_multiplier)
-	
-	## 4. Floor Clinging Logic
-	if _entity.global_position.y < floor_y_level:
-		target_velocity.y = 150.0 
 	else:
-		target_velocity.y = 0.0
+		## 4. Smart Wall Bounce
+		## ONLY process wall bounces if we are safely inside the arena!
+		if _entity.is_on_wall():
+			var wall_normal_x := _entity.get_wall_normal().x
+			if abs(wall_normal_x) > 0.5:
+				move_direction.x = sign(wall_normal_x)
+				state_timer = randf_range(3.0, 6.0) # Reset timer so it commits to the turn
+			
+	var target_velocity = move_direction * (_stat_manager.speed * scuttle_speed_multiplier)
+	
+	## 5. Floor Clinging Logic
+	## Always apply downward pressure so is_on_floor() accurately remains true!
+	target_velocity.y = 150.0 
 
 	_entity.velocity = target_velocity
 	_entity.move_and_slide()

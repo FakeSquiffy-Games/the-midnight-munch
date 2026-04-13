@@ -84,9 +84,6 @@ func _process(delta: float) -> void:
 			
 		_last_xp = current_xp
 		
-		if not _entity.is_in_group("players"):
-			return
-		
 		## Check for Level/Tier changes
 		var current_level = _stat_manager.level
 		if current_level != _last_level:

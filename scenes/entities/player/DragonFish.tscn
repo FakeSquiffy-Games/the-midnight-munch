@@ -8,3 +8,10 @@ character_name = "Dragon Fish"
 character_description = "The mid-water menace who brought a switchblade to a staring contest."
 
 [node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("2_8h41y")]
+
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_speed = 350.0
+base_energy_regen_rate = 25.0
+
+[node name="BioluminescentComponent" parent="components" parent_id_path=PackedInt32Array(1883867421) index="3" unique_id=829523201]
+drain_rate = 15.0

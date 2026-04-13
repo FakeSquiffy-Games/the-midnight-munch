@@ -8,3 +8,8 @@ character_name = "Fangtooth"
 character_description = "A tiny terror whose teeth are literally too big for his own skull."
 
 [node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_h3lri")]
+
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_xp_gain_multiplier = 1.25
+base_bite_power = 1.25
+base_max_energy = 120.0

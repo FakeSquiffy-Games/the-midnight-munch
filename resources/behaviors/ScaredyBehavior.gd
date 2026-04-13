@@ -3,7 +3,8 @@ extends Node
 
 enum State { WANDER, FLEE }
 
-@export var wander_speed_multiplier: float = 0.4
+@export var wander_speed_multiplier: float = 1.0
+@export var flee_speed_multiplier: float = 2.0
 
 var _entity: CharacterBody2D
 var _stat_manager: StatManager
@@ -48,7 +49,9 @@ func _physics_process(delta: float) -> void:
 			var away_dir = target.global_position.direction_to(_entity.global_position)
 			## Add slight noise to simulate panic
 			away_dir = away_dir.rotated(randf_range(-0.1, 0.1)).normalized()
-			_entity.velocity = away_dir * _stat_manager.speed
+			
+			## Apply the new flee speed multiplier here!
+			_entity.velocity = away_dir * (_stat_manager.speed * flee_speed_multiplier)
 
 	_entity.move_and_slide()
 	_entity.update_facing(_entity.velocity)

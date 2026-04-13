@@ -46,7 +46,7 @@ enum StatType {
 # BASE STATS (Inspector Editable)
 # =========================================================
 
-@export var base_speed:                   float = 200.0
+@export var base_speed:                   float = 300.0
 @export var base_light_radius_multiplier: float = 1.0
 @export var base_xp_gain_multiplier:      float = 1.0
 @export var base_bite_power:              float = 1.0

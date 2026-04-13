@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://b6pbye5y6vfnl" path="res://resources/behaviors/ChaserBehavior.gd" id="5_veqn3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_veqn3"]
-radius = 550.0
+radius = 250.0
 
 [node name="Entity" unique_id=1905748098 instance=ExtResource("1_vn70c")]
 script = ExtResource("2_tqe2g")
@@ -17,6 +17,11 @@ min_spawn_level = 0
 max_spawn_level = 10
 
 [node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_veqn3")]
+
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_speed = 250.0
+base_bite_power = 2.0
+base_damage_reduction = 0.2
 
 [node name="ChaserBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=2032022980]
 script = ExtResource("5_veqn3")

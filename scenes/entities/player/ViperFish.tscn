@@ -8,3 +8,8 @@ character_name = "ViperFish"
 character_description = "A high-speed needle-trap that's 90% teeth and 10% pure, unadulterated spite."
 
 [node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("2_xangn")]
+
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_speed = 350.0
+base_bite_power = 1.5
+base_energy_regen_rate = 25.0

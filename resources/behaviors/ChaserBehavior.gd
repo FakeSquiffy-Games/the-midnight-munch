@@ -4,8 +4,11 @@ extends Node
 enum State { WANDER, CHASE, FLEE }
 
 @export var wander_speed_multiplier: float = 0.4
+@export var chase_speed_multiplier: float = 1.5
+@export var flee_speed_multiplier: float = 1.5
 @export var chase_chance: float = 0.6
 @export var flee_chance: float = 0.4
+@export var max_chase_distance: float = 500.0
 
 var _entity: CharacterBody2D
 var _stat_manager: StatManager
@@ -28,6 +31,7 @@ func _ready() -> void:
 			_aggro_zone.set_collision_mask_value(1, false)
 			_aggro_zone.set_collision_mask_value(3, true)
 			_aggro_zone.area_entered.connect(_on_aggro_entered)
+			_aggro_zone.area_exited.connect(_on_aggro_exited)
 			
 		var dir_to_center := _entity.global_position.direction_to(Vector2.ZERO)
 		wander_direction = dir_to_center.rotated(randf_range(-0.5, 0.5)).normalized()
@@ -67,20 +71,24 @@ func _process_wander(delta: float) -> void:
 func _process_chase() -> void:
 	if not _is_target_valid(): return
 	var direction := _entity.global_position.direction_to(target.global_position)
-	_entity.velocity = direction * _stat_manager.speed
+	
+	## Apply the chase speed multiplier
+	_entity.velocity = direction * (_stat_manager.speed * chase_speed_multiplier)
 
 func _process_flee() -> void:
 	if not _is_target_valid(): return
 	## Swim away with slight noise so it feels like a panicked fish
 	var away_dir := target.global_position.direction_to(_entity.global_position)
 	away_dir = away_dir.rotated(randf_range(-0.2, 0.2)).normalized()
-	_entity.velocity = away_dir * _stat_manager.speed
+	
+	## Apply the flee speed multiplier
+	_entity.velocity = away_dir * (_stat_manager.speed * flee_speed_multiplier)
 
 func _is_target_valid() -> bool:
 	if not is_instance_valid(target) or target.is_queued_for_deletion():
 		_return_to_wander()
 		return false
-	if _entity.global_position.distance_to(target.global_position) > 750.0:
+	if _entity.global_position.distance_to(target.global_position) > max_chase_distance:
 		_return_to_wander()
 		return false
 	return true
@@ -106,10 +114,22 @@ func _on_aggro_entered(area: Area2D) -> void:
 	var target_stat := target.get_node_or_null("StatManager") as StatManager
 	
 	if target_stat and target_stat.level > _stat_manager.level:
-		## Target is stronger. 60% chance to flee.
-		if randf() <= chase_chance:
+		## Target is stronger. Chance to flee.
+		if randf() <= flee_chance:
 			current_state = State.FLEE
 	else:
-		## Target is weaker. 40% chance to chase.
-		if randf() <= flee_chance:
+		## Target is weaker. Chance to chase.
+		if randf() <= chase_chance:
 			current_state = State.CHASE
+
+func _on_aggro_exited(area: Area2D) -> void:
+	if current_state != State.CHASE: return
+	if not area is BodyArea: return
+	
+	var potential_target := area.get_parent().get_parent() as CharacterBody2D
+	
+	## If the target we are chasing left our aggro radius
+	if potential_target == target:
+		## Roll the chance again. If we fail the roll, we give up!
+		if randf() > chase_chance:
+			_return_to_wander()

@@ -14,6 +14,11 @@ max_spawn_level = 10
 
 [node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("3_uo37v")]
 
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_speed = 100.0
+base_bite_power = 3.0
+base_damage_reduction = 0.5
+
 [node name="ScuttlerBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=277041981]
 script = ExtResource("4_nqqwl")
 metadata/_custom_type_script = "uid://d1g0jlqvbtm18"

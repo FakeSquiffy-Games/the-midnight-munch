@@ -17,6 +17,9 @@ disable_mouth = true
 
 [node name="EntityModel" parent="." index="0" unique_id=1773224112 instance=ExtResource("2_2f1on")]
 
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_speed = 100.0
+
 [node name="FloaterBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=722525467]
 script = ExtResource("3_4m054")
 metadata/_custom_type_script = "uid://co6bf34obr1jf"

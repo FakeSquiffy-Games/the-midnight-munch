@@ -9,3 +9,9 @@ character_description = "The global icon for \"I wasn't ready to get out of bed 
 
 [node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("2_g40fg")]
 position = Vector2(3, -9)
+
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_speed = 200.0
+base_xp_gain_multiplier = 1.25
+base_damage_reduction = 0.5
+base_energy_drain_rate = 35.0

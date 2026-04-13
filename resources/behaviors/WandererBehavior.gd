@@ -3,8 +3,8 @@ extends Node
 
 enum State { WANDER, FLEE }
 
-@export var wander_speed_multiplier: float = 0.4
-@export var flee_speed_multiplier: float = 1.0
+@export var wander_speed_multiplier: float = 1.0
+@export var flee_speed_multiplier: float = 2.0
 
 var _entity: CharacterBody2D
 var _stat_manager: StatManager

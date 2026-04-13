@@ -14,8 +14,10 @@ min_spawn_level = 0
 max_spawn_level = 10
 disable_mouth = true
 
-[node name="EntityModel2" parent="." index="0" unique_id=1730000128 instance=ExtResource("3_4ja26")]
-scale = Vector2(16, 16)
+[node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("3_4ja26")]
+
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_speed = 50.0
 
 [node name="WandererBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=1891727953]
 script = ExtResource("4_nlcod")
