@@ -1,5 +1,14 @@
 [gd_scene format=3 uid="uid://bgl5q2btp6jgg"]
 
+[ext_resource type="FontFile" uid="uid://btewobvua2jom" path="res://assets/fonts/Pixelosopher Bold.ttf" id="1_x73nl"]
+[ext_resource type="FontFile" uid="uid://b0v078v4yk5d2" path="res://assets/fonts/Pixelosopher.ttf" id="2_e6j8e"]
+[ext_resource type="Texture2D" uid="uid://dlvi77km8kv5g" path="res://assets/ui/frame_button.png" id="2_lds7j"]
+[ext_resource type="Script" uid="uid://cesn0xw0a8wh6" path="res://scenes/ui/ButtonHover.gd" id="3_t6iu6"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vc7ls"]
+font = ExtResource("1_x73nl")
+font_size = 24
+
 [node name="StatsPage" type="VBoxContainer" unique_id=877109516]
 anchors_preset = 8
 anchor_left = 0.5
@@ -15,15 +24,40 @@ grow_vertical = 2
 
 [node name="StatsLabel" type="Label" parent="." unique_id=100961261]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("1_x73nl")
+theme_override_font_sizes/font_size = 24
 text = "Your Stats"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LobbyButton" type="Button" parent="." unique_id=85387602]
+[node name="LobbyButton" type="TextureButton" parent="." unique_id=1988137612]
 layout_mode = 2
+size_flags_vertical = 3
+texture_normal = ExtResource("2_lds7j")
+stretch_mode = 5
+script = ExtResource("3_t6iu6")
+
+[node name="Label" type="Label" parent="LobbyButton" unique_id=214897527]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -111.5
+offset_top = -11.0
+offset_right = 111.5
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 10
 text = "Return to Lobby"
+label_settings = SubResource("LabelSettings_vc7ls")
+horizontal_alignment = 1
 
 [node name="WaitLabel" type="Label" parent="." unique_id=841165493]
 visible = false
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_e6j8e")
+theme_override_font_sizes/font_size = 24
 text = "Waiting for host..."

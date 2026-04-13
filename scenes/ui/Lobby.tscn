@@ -9,6 +9,67 @@
 [ext_resource type="PackedScene" uid="uid://c3q344i08v5vb" path="res://scenes/ui/LobbyMenu.tscn" id="7_urguc"]
 [ext_resource type="PackedScene" uid="uid://rrqd40rhp53y" path="res://scenes/ui/SplashBackground.tscn" id="8_8r2yg"]
 
+[sub_resource type="Animation" id="Animation_ogb8n"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LobbyMenu:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(140, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LobbyMenu:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1000, 640)]
+}
+
+[sub_resource type="Animation" id="Animation_6oto2"]
+resource_name = "bobble"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LobbyMenu:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.96666664),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(203, 0), Vector2(201, 0), Vector2(199, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LobbyMenu:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(878, 599), Vector2(878, 599)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yihit"]
+_data = {
+&"RESET": SubResource("Animation_ogb8n"),
+&"bobble": SubResource("Animation_6oto2")
+}
+
 [node name="Lobby" type="Control" unique_id=1011279643]
 layout_mode = 3
 anchors_preset = 15
@@ -21,11 +82,15 @@ available_characters = Array[PackedScene]([ExtResource("2_6oto2"), ExtResource("
 
 [node name="LobbyMenu" parent="." unique_id=1541764513 instance=ExtResource("7_urguc")]
 layout_mode = 1
-offset_left = -590.0
-offset_top = -310.0
-offset_right = 590.0
-offset_bottom = 310.0
+offset_left = -500.0
+offset_right = 500.0
+offset_bottom = 640.0
+alignment = 1
 
 [node name="SplashBackground" parent="." unique_id=1273534731 instance=ExtResource("8_8r2yg")]
 z_index = 1
 layout_mode = 0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2029491061]
+libraries/ = SubResource("AnimationLibrary_yihit")
+autoplay = &"bobble"

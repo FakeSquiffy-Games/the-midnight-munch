@@ -40,6 +40,7 @@ position = Vector2(-868, -763)
 
 [node name="DumboOctopus" parent="." unique_id=1271055630 instance=ExtResource("6_f77qq")]
 position = Vector2(362, 371)
+scale = Vector2(3.5, 3.5)
 
 [node name="BristleMouth" parent="." unique_id=1187752917 instance=ExtResource("7_jy6v4")]
 position = Vector2(877, -1105)
@@ -52,6 +53,7 @@ position = Vector2(-841, -261)
 
 [node name="CombJelly" parent="." unique_id=2139689496 instance=ExtResource("10_x8s2y")]
 position = Vector2(-305, 228)
+scale = Vector2(6, 6)
 
 [node name="GhostShark" parent="." unique_id=1729284541 instance=ExtResource("11_l7ohq")]
 position = Vector2(1326, 1071)
@@ -67,6 +69,7 @@ position = Vector2(-831, 229)
 
 [node name="Nautilus" parent="." unique_id=129251161 instance=ExtResource("15_uv1yt")]
 position = Vector2(832, -217)
+scale = Vector2(5.5, 5.5)
 
 [node name="Riftia" parent="." unique_id=221050166 instance=ExtResource("16_q1r2y")]
 position = Vector2(1318, -220)
@@ -76,6 +79,7 @@ position = Vector2(-322, 607)
 
 [node name="VampireSquid" parent="." unique_id=601402223 instance=ExtResource("18_8ry3e")]
 position = Vector2(1219, 415)
+scale = Vector2(3.5, 3.5)
 
 [node name="YetiCrab" parent="." unique_id=2074390822 instance=ExtResource("19_nqspw")]
 position = Vector2(-1398, -345)

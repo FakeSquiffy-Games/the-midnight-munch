@@ -3,9 +3,9 @@ extends CanvasLayer
 @onready var winner_page: Control = $WinnerPage
 @onready var stats_page: Control = $StatsPage
 @onready var winner_label: Label = $WinnerPage/WinnerLabel
-@onready var next_button: Button = $WinnerPage/NextButton
+@onready var next_button: TextureButton = $WinnerPage/NextButton
 @onready var stats_label: Label = $StatsPage/StatsLabel
-@onready var lobby_button: Button = $StatsPage/LobbyButton
+@onready var lobby_button: TextureButton = $StatsPage/LobbyButton
 @onready var wait_label: Label = $StatsPage/WaitLabel
 
 func _ready() -> void:
