@@ -24,65 +24,61 @@
 [node name="ModelGallery" type="Node2D" unique_id=514275529]
 
 [node name="ViperFish" parent="." unique_id=1730000128 instance=ExtResource("1_1h78a")]
-position = Vector2(332, -718)
+position = Vector2(-175, -135)
 
 [node name="BlackSeadevil" parent="." unique_id=1773224112 instance=ExtResource("2_qjr3y")]
-position = Vector2(-325, -789)
+position = Vector2(198, -170)
 
 [node name="BlobFish" parent="." unique_id=1414472871 instance=ExtResource("3_8ctgc")]
-position = Vector2(-344, -253)
+position = Vector2(73, -60)
 
 [node name="DragonFish" parent="." unique_id=1149016225 instance=ExtResource("4_plffn")]
-position = Vector2(867, -679)
+position = Vector2(-57, -128)
 
 [node name="Fangtooth" parent="." unique_id=236528497 instance=ExtResource("5_1b3ph")]
-position = Vector2(-868, -763)
+position = Vector2(72, -165)
 
 [node name="DumboOctopus" parent="." unique_id=1271055630 instance=ExtResource("6_f77qq")]
-position = Vector2(362, 371)
-scale = Vector2(3.5, 3.5)
+position = Vector2(-73, 65)
 
 [node name="BristleMouth" parent="." unique_id=1187752917 instance=ExtResource("7_jy6v4")]
-position = Vector2(877, -1105)
+position = Vector2(-287, -131)
 
 [node name="Coelacanth" parent="." unique_id=299925267 instance=ExtResource("8_utavq")]
-position = Vector2(401, 1062)
+position = Vector2(103, 68)
 
 [node name="CoffinFish" parent="." unique_id=1505826518 instance=ExtResource("9_tx1q2")]
-position = Vector2(-841, -261)
+position = Vector2(200, -56)
 
 [node name="CombJelly" parent="." unique_id=2139689496 instance=ExtResource("10_x8s2y")]
-position = Vector2(-305, 228)
-scale = Vector2(6, 6)
+position = Vector2(-51, -45)
 
 [node name="GhostShark" parent="." unique_id=1729284541 instance=ExtResource("11_l7ohq")]
-position = Vector2(1326, 1071)
+position = Vector2(324, 57)
 
 [node name="HatchetFish" parent="." unique_id=380343715 instance=ExtResource("12_4n587")]
-position = Vector2(295, -212)
+position = Vector2(-151, -46)
 
 [node name="LanternFish" parent="." unique_id=779029756 instance=ExtResource("13_qyrsc")]
-position = Vector2(314, -1107)
+position = Vector2(-65, -205)
 
 [node name="LongArmShrimp" parent="." unique_id=2082883859 instance=ExtResource("14_3mxuu")]
-position = Vector2(-831, 229)
+position = Vector2(-179, -208)
 
 [node name="Nautilus" parent="." unique_id=129251161 instance=ExtResource("15_uv1yt")]
-position = Vector2(832, -217)
-scale = Vector2(5.5, 5.5)
+position = Vector2(-198, 52)
 
 [node name="Riftia" parent="." unique_id=221050166 instance=ExtResource("16_q1r2y")]
-position = Vector2(1318, -220)
+position = Vector2(-259, -53)
 
 [node name="SeaAngel" parent="." unique_id=1717408372 instance=ExtResource("17_7w5vp")]
-position = Vector2(-322, 607)
+position = Vector2(-272, -202)
 
 [node name="VampireSquid" parent="." unique_id=601402223 instance=ExtResource("18_8ry3e")]
-position = Vector2(1219, 415)
-scale = Vector2(3.5, 3.5)
+position = Vector2(-95, 201)
 
 [node name="YetiCrab" parent="." unique_id=2074390822 instance=ExtResource("19_nqspw")]
-position = Vector2(-1398, -345)
+position = Vector2(305, -76)
 
 [node name="OarFish" parent="." unique_id=1788657999 instance=ExtResource("20_7bwm4")]
-position = Vector2(897, 2010)
+position = Vector2(217, 263)

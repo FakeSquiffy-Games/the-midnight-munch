@@ -11,7 +11,6 @@ font_size = 64
 
 [node name="EntityModel" type="Node2D" unique_id=1730000128]
 z_index = 1
-scale = Vector2(4, 4)
 script = ExtResource("1_qjg0g")
 metadata/_custom_type_script = "uid://3kmxne7oiygm"
 

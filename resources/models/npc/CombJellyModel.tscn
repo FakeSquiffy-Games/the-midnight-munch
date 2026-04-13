@@ -22,15 +22,15 @@ animations = [{
 species_name = "Comb Jelly"
 
 [node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
-scale = Vector2(2, 2)
+scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_b87y5")
 frame = 1
 flip_h = true
 
 [node name="BodyPolygon" type="CollisionPolygon2D" parent="BodyArea" parent_id_path=PackedInt32Array(1257139104) index="0" unique_id=2093647029]
-scale = Vector2(2, 2)
+scale = Vector2(2.5, 2.5)
 polygon = PackedVector2Array(9, -16, 7, -17, 4, -18, -1, -18, -5, -17, -7, -16, -11, -12, -12, -8, -13, -5, -14, 1, -14, 7, -13, 9, -11, 11, -9, 11, -7, 11, -4, 14, -1, 14, 7, 10, 12, 5, 14, 3, 15, 1, 16, -2, 16, -5, 15, -7, 14, -10, 13, -12)
 
 [node name="MouthPolygon" type="CollisionPolygon2D" parent="MouthArea" parent_id_path=PackedInt32Array(555163341) index="0" unique_id=1272242677]
-scale = Vector2(2, 2)
+scale = Vector2(2.5, 2.5)
 polygon = PackedVector2Array(1, -1, -1, -1, -1, 1, 1, 1)
