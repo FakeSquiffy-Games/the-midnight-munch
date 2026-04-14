@@ -30,12 +30,21 @@ metadata/_custom_type_script = "uid://b6pbye5y6vfnl"
 [node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=1678413571]
 script = ExtResource("4_0ykhi")
 stat = 7
-boost_amount = -0.5
+boost_amount = -0.3
 duration = 5.0
 destroy_on_consume = false
 metadata/_custom_type_script = "uid://otxu8qtsgxyp"
 
-[node name="AggroZone" type="Area2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="3" unique_id=1934153088]
+[node name="EffectComponent2" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="3" unique_id=1392543566]
+script = ExtResource("4_0ykhi")
+boost_amount = -50.0
+duration = 3.0
+destroy_on_consume = false
+apply_on_attack = true
+apply_on_defend = false
+metadata/_custom_type_script = "uid://otxu8qtsgxyp"
+
+[node name="AggroZone" type="Area2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="4" unique_id=1934153088]
 script = ExtResource("6_mjh2c")
 metadata/_custom_type_script = "uid://b8k00b07ihdmi"
 

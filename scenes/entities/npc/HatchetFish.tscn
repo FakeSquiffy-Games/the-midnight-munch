@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://c2auxvxg86jbn"]
+
+[ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_sp2ja"]
+[ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_if81j"]
+[ext_resource type="PackedScene" uid="uid://cguams3e6yb5p" path="res://resources/models/npc/HatchetFishModel.tscn" id="3_o2xct"]
+[ext_resource type="Script" uid="uid://dgxr81srycktm" path="res://resources/behaviors/WandererBehavior.gd" id="4_xy3qx"]
+
+[node name="Entity" unique_id=1905748098 instance=ExtResource("1_sp2ja")]
+script = ExtResource("2_if81j")
+counts_as_kill = true
+npc_invisible = false
+min_spawn_level = 0
+max_spawn_level = 6
+
+[node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("3_o2xct")]
+
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_speed = 250.0
+
+[node name="WandererBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=635626066]
+script = ExtResource("4_xy3qx")
+metadata/_custom_type_script = "uid://dgxr81srycktm"

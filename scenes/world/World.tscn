@@ -13,6 +13,11 @@
 [ext_resource type="PackedScene" uid="uid://4fbi7rsus0x7" path="res://scenes/entities/npc/LanternFish.tscn" id="8_l5ull"]
 [ext_resource type="PackedScene" uid="uid://jiha1dsqlhba" path="res://scenes/entities/npc/VampireSquid.tscn" id="9_ckp8c"]
 [ext_resource type="PackedScene" uid="uid://mf36j1kg6mdn" path="res://scenes/entities/npc/Nautilus.tscn" id="11_ckp8c"]
+[ext_resource type="PackedScene" uid="uid://u7en6xx7gi3" path="res://scenes/entities/npc/DumboOctopus.tscn" id="11_wryly"]
+[ext_resource type="PackedScene" uid="uid://dtgfgomwqt23a" path="res://scenes/entities/npc/CoffinFish.tscn" id="12_400s5"]
+[ext_resource type="PackedScene" uid="uid://bf4a1pwkbiamo" path="res://scenes/entities/npc/BristleMouth.tscn" id="13_d0ueh"]
+[ext_resource type="PackedScene" uid="uid://c2auxvxg86jbn" path="res://scenes/entities/npc/HatchetFish.tscn" id="14_i08rc"]
+[ext_resource type="PackedScene" uid="uid://cifh4y0ynjx67" path="res://scenes/entities/npc/LongArmShrimp.tscn" id="17_o0dc1"]
 
 [node name="World" type="Node2D" unique_id=1791530930]
 script = ExtResource("1_6eebf")
@@ -23,7 +28,7 @@ script = ExtResource("1_6eebf")
 
 [node name="NPCSpawner" type="Node" parent="." unique_id=904507801]
 script = ExtResource("2_gbddb")
-npc_scenes = Array[PackedScene]([ExtResource("5_qh0kd"), ExtResource("6_yr1n6"), ExtResource("7_l5ull"), ExtResource("8_16fjv"), ExtResource("9_ckp8c"), ExtResource("11_ckp8c")])
+npc_scenes = Array[PackedScene]([ExtResource("5_qh0kd"), ExtResource("6_yr1n6"), ExtResource("7_l5ull"), ExtResource("8_16fjv"), ExtResource("9_ckp8c"), ExtResource("11_ckp8c"), ExtResource("11_wryly"), ExtResource("12_400s5"), ExtResource("13_d0ueh"), ExtResource("14_i08rc")])
 
 [node name="NPCSynchronizer" type="MultiplayerSpawner" parent="NPCSpawner" unique_id=1174939102]
 spawn_path = NodePath("..")
@@ -31,7 +36,7 @@ spawn_path = NodePath("..")
 [node name="CollectibleSpawner" type="Node" parent="." unique_id=254830818]
 script = ExtResource("3_qxiha")
 special_fish_interval = 8.0
-special_fish_scenes = Array[PackedScene]([ExtResource("8_l5ull")])
+special_fish_scenes = Array[PackedScene]([ExtResource("8_l5ull"), ExtResource("17_o0dc1")])
 max_floating_items = 8
 floating_item_interval = 4.0
 floating_item_scenes = Array[PackedScene]([ExtResource("7_yr1n6")])

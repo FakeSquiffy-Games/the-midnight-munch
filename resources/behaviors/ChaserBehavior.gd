@@ -3,7 +3,7 @@ extends Node
 
 enum State { WANDER, CHASE, FLEE }
 
-@export var wander_speed_multiplier: float = 0.4
+@export var wander_speed_multiplier: float = 1.0
 @export var chase_speed_multiplier: float = 1.5
 @export var flee_speed_multiplier: float = 1.5
 @export var chase_chance: float = 0.6

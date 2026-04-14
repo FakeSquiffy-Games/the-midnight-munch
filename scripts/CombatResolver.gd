@@ -43,17 +43,25 @@ static func process_bite_request(
 
 static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 	
-	var def_effect := defender.get_node_or_null("components/EffectComponent") as EffectComponent
-	if def_effect and def_effect.apply_on_defend:
-		def_effect.apply_to(attacker)
+	var defender_components = defender.get_node_or_null("components")
+	if defender_components:
+		var should_be_consumed := false
 		
-		if def_effect.destroy_on_consume:
+		for child in defender_components.get_children():
+			if child is EffectComponent and child.apply_on_defend:
+				child.apply_to(attacker)
+				if child.destroy_on_consume:
+					should_be_consumed = true
+		
+		if should_be_consumed:
 			var d_stat: StatManager = defender.get_node("StatManager")
 			d_stat.current_xp = 0.0
 
-	var att_effect := attacker.get_node_or_null("components/EffectComponent") as EffectComponent
-	if att_effect and att_effect.apply_on_attack:
-		att_effect.apply_to(defender)
+	var attacker_components = attacker.get_node_or_null("components")
+	if attacker_components:
+		for child in attacker_components.get_children():
+			if child is EffectComponent and child.apply_on_attack:
+				child.apply_to(defender)
 
 	var result           := resolve(attacker, defender)
 	var defender_peer_id := defender.get_multiplayer_authority()

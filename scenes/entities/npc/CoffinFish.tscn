@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dtgfgomwqt23a"]
+
+[ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_8yxju"]
+[ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_k5u4g"]
+[ext_resource type="PackedScene" uid="uid://y2lt6oxdjqp8" path="res://resources/models/npc/CoffinFishModel.tscn" id="3_j3a0u"]
+[ext_resource type="Script" uid="uid://dgxr81srycktm" path="res://resources/behaviors/WandererBehavior.gd" id="4_ipsak"]
+
+[node name="Entity" unique_id=1905748098 instance=ExtResource("1_8yxju")]
+script = ExtResource("2_k5u4g")
+counts_as_kill = true
+npc_invisible = false
+min_spawn_level = 0
+max_spawn_level = 5
+
+[node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("3_j3a0u")]
+
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_speed = 150.0
+base_bite_power = 0.5
+base_damage_reduction = 0.3
+
+[node name="WandererBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=586045514]
+script = ExtResource("4_ipsak")
+metadata/_custom_type_script = "uid://dgxr81srycktm"

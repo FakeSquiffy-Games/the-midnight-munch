@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://u7en6xx7gi3"]
+
+[ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_4prxb"]
+[ext_resource type="PackedScene" uid="uid://wohtqe66d4kc" path="res://resources/models/npc/DumboOctopusModel.tscn" id="2_3k6ei"]
+[ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_7wik2"]
+[ext_resource type="Script" uid="uid://dgxr81srycktm" path="res://resources/behaviors/WandererBehavior.gd" id="3_7wik2"]
+[ext_resource type="Script" uid="uid://otxu8qtsgxyp" path="res://components/EffectComponent.gd" id="4_2tphb"]
+
+[node name="Entity" unique_id=1905748098 instance=ExtResource("1_4prxb")]
+script = ExtResource("2_7wik2")
+counts_as_kill = true
+npc_invisible = false
+min_spawn_level = 2
+max_spawn_level = 6
+
+[node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("2_3k6ei")]
+
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_speed = 200.0
+base_bite_power = 0.5
+
+[node name="WandererBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=696516328]
+script = ExtResource("3_7wik2")
+metadata/_custom_type_script = "uid://dgxr81srycktm"
+
+[node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=1263419328]
+script = ExtResource("4_2tphb")
+stat = 7
+boost_amount = -0.5
+duration = 5.0
+destroy_on_consume = false
+metadata/_custom_type_script = "uid://otxu8qtsgxyp"

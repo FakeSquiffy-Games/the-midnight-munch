@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://bf4a1pwkbiamo"]
+
+[ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_b01u7"]
+[ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_7sp0d"]
+[ext_resource type="PackedScene" uid="uid://cg64cdpldobs0" path="res://resources/models/npc/BristleMouthModel.tscn" id="3_fpm15"]
+[ext_resource type="Script" uid="uid://b6pbye5y6vfnl" path="res://resources/behaviors/ChaserBehavior.gd" id="4_rl42l"]
+[ext_resource type="Script" uid="uid://b8k00b07ihdmi" path="res://components/AggroZone.gd" id="5_0xevb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_c5u22"]
+radius = 70.0
+
+[node name="Entity" unique_id=1905748098 instance=ExtResource("1_b01u7")]
+script = ExtResource("2_7sp0d")
+counts_as_kill = true
+npc_invisible = false
+min_spawn_level = 2
+max_spawn_level = 6
+
+[node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("3_fpm15")]
+
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_speed = 350.0
+base_bite_power = 0.5
+
+[node name="ChaserBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=1887279662]
+script = ExtResource("4_rl42l")
+flee_speed_multiplier = 2.0
+chase_chance = 0.4
+flee_chance = 0.6
+metadata/_custom_type_script = "uid://b6pbye5y6vfnl"
+
+[node name="AggroZone" type="Area2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=587167220]
+script = ExtResource("5_0xevb")
+metadata/_custom_type_script = "uid://b8k00b07ihdmi"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="components/AggroZone" index="0" unique_id=118452737]
+shape = SubResource("CircleShape2D_c5u22")

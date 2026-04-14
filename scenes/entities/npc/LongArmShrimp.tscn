@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://cifh4y0ynjx67"]
+
+[ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_tv6mw"]
+[ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_ae1fo"]
+[ext_resource type="PackedScene" uid="uid://c6w45a5chnf86" path="res://resources/models/npc/LongArmShrimpModel.tscn" id="3_2bjkh"]
+[ext_resource type="Script" uid="uid://duxpjdk2crbg1" path="res://resources/behaviors/ScaredyBehavior.gd" id="4_ae1fo"]
+[ext_resource type="Script" uid="uid://otxu8qtsgxyp" path="res://components/EffectComponent.gd" id="5_xejgb"]
+[ext_resource type="Script" uid="uid://b8k00b07ihdmi" path="res://components/AggroZone.gd" id="6_2bjkh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_22gj0"]
+radius = 100.0
+
+[node name="Entity" unique_id=1905748098 instance=ExtResource("1_tv6mw")]
+script = ExtResource("2_ae1fo")
+counts_as_kill = true
+npc_invisible = true
+min_spawn_level = 0
+max_spawn_level = 0
+disable_mouth = true
+
+[node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("3_2bjkh")]
+
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_speed = 200.0
+
+[node name="ScaredyBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=1701603959]
+script = ExtResource("4_ae1fo")
+metadata/_custom_type_script = "uid://duxpjdk2crbg1"
+
+[node name="EffectComponent" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=447481597]
+script = ExtResource("5_xejgb")
+stat = 4
+boost_amount = 10.0
+duration = 5.0
+metadata/_custom_type_script = "uid://otxu8qtsgxyp"
+
+[node name="AggroZone" type="Area2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="3" unique_id=1442177406]
+script = ExtResource("6_2bjkh")
+metadata/_custom_type_script = "uid://b8k00b07ihdmi"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="components/AggroZone" index="0" unique_id=569892643]
+shape = SubResource("CircleShape2D_22gj0")

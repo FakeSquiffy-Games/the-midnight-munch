@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://rdml6u5onspu"]
+
+[ext_resource type="PackedScene" uid="uid://bn6gm81ktqm6v" path="res://scenes/entities/Entity.tscn" id="1_tylmr"]
+[ext_resource type="Script" uid="uid://icf21depbrjy" path="res://scenes/entities/npc/NPC.gd" id="2_et4kb"]
+[ext_resource type="PackedScene" uid="uid://dp1l186dyjhcg" path="res://resources/models/npc/CoelacanthModel.tscn" id="3_600hb"]
+[ext_resource type="Script" uid="uid://bi2nx7qcirey7" path="res://resources/behaviors/RammerBehavior.gd" id="4_k7let"]
+[ext_resource type="Script" uid="uid://b8k00b07ihdmi" path="res://components/AggroZone.gd" id="5_gb4x4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h5jsr"]
+radius = 200.0
+
+[node name="Entity" unique_id=1905748098 instance=ExtResource("1_tylmr")]
+script = ExtResource("2_et4kb")
+counts_as_kill = true
+npc_invisible = false
+min_spawn_level = 4
+max_spawn_level = 8
+
+[node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("3_600hb")]
+
+[node name="StatManager" parent="." index="2" unique_id=400482168]
+base_speed = 180.0
+base_damage_reduction = 0.5
+
+[node name="RammerBehavior" type="Node" parent="components" parent_id_path=PackedInt32Array(1883867421) index="1" unique_id=1905801558]
+script = ExtResource("4_k7let")
+ram_chance = 0.3
+metadata/_custom_type_script = "uid://bi2nx7qcirey7"
+
+[node name="AggroZone" type="Area2D" parent="components" parent_id_path=PackedInt32Array(1883867421) index="2" unique_id=510625724]
+script = ExtResource("5_gb4x4")
+metadata/_custom_type_script = "uid://b8k00b07ihdmi"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="components/AggroZone" index="0" unique_id=727612861]
+shape = SubResource("CircleShape2D_h5jsr")
