@@ -9,17 +9,17 @@ extends Node
 # =========================================================
 
 const NETWORK_MARGIN: float         = 80.0
-const BASE_BITE_XP: float           = 8.0
-const BITE_SCALE_PER_LEVEL: float   = 0.15
+const BASE_BITE_XP: float           = 10.0
+const BITE_SCALE_PER_LEVEL: float   = 0.5
 const BITE_XP_ATTACKER_SHARE: float = 0.50
 const KILL_XP_ATTACKER_SHARE: float = 0.25
-const ELIMINATION_MIN_XP: float     = 25.0
+const ELIMINATION_MIN_XP: float     = 20.0
 
 # =========================================================
 # RESULT ENUM
 # =========================================================
 
-enum Result { ELIMINATION, KILL, BITE, IGNORE }
+enum Result { KILL, BITE, IGNORE }
 
 # =========================================================
 # PUBLIC API
@@ -43,12 +43,13 @@ static func process_bite_request(
 
 static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 	
-	## PHASE 8.5: INTERCEPT EFFECTS (Collectibles & Hazards)
 	var def_effect := defender.get_node_or_null("components/EffectComponent") as EffectComponent
 	if def_effect and def_effect.apply_on_defend:
 		def_effect.apply_to(attacker)
+		
 		if def_effect.destroy_on_consume:
-			AudioManager.play_spatial_sound("power_up", attacker.global_position)
+			var d_stat: StatManager = defender.get_node("StatManager")
+			d_stat.current_xp = 0.0
 
 	var att_effect := attacker.get_node_or_null("components/EffectComponent") as EffectComponent
 	if att_effect and att_effect.apply_on_attack:
@@ -63,13 +64,7 @@ static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 	
 	AudioManager.play_spatial_sound("bite", defender.global_position)
 	match result:
-		Result.ELIMINATION, Result.KILL:
-			
-			if result == Result.KILL and not a_is_player and d_is_player:
-				print("CombatResolver: NPC KILL — peer %d demoted by NPC." % defender_peer_id)
-				_apply_npc_demotion(defender)
-				return
-			
+		Result.KILL:
 			if a_is_player:
 				var counts := true
 				if not d_is_player and defender is NPC:
@@ -80,15 +75,12 @@ static func apply(attacker: CharacterBody2D, defender: CharacterBody2D) -> void:
 				var d_stat: StatManager = defender.get_node("StatManager")
 				var reward := maxf(d_stat.current_xp * KILL_XP_ATTACKER_SHARE, ELIMINATION_MIN_XP)
 				_apply_xp_gain(attacker, reward)
-				print("CombatResolver: %s gained %.1f XP from killing %s." \
-					% [attacker.name, reward, defender.name])
 
 			if defender.has_method("play_elimination"):
 				defender.play_elimination.rpc()
 
 			if d_is_player:
-				print("CombatResolver: Player %d eliminated by %s." \
-					%[defender_peer_id, attacker.name])
+				print("CombatResolver: Player %d eliminated by %s." %[defender_peer_id, attacker.name])
 				GameState.eliminate_player(defender_peer_id)
 				SignalBus.emit_player_eliminated.rpc(defender_peer_id)
 			else:
@@ -108,9 +100,6 @@ static func resolve(
 	var a_stat: StatManager = attacker.get_node("StatManager")
 	var a_is_player         := attacker.is_in_group("players")
 	var d_is_player         := defender.is_in_group("players")
-
-	if d_stat.level == 0 and d_stat.current_xp <= 0.0:
-		return Result.ELIMINATION
 
 	var a_tier  := a_stat.tier
 	var a_level := a_stat.level
@@ -143,45 +132,50 @@ static func _apply_bite_xp_drain(
 	var d_stat: StatManager  = defender.get_node("StatManager")
 	var defender_peer_id     := defender.get_multiplayer_authority()
 
-	## Subphase 1.3: Apply Attacker's Bite Power
 	var base_drain := _calculate_bite_xp(a_stat.level)
 	base_drain *= maxf(a_stat.bite_power, 0.0) 
 
-	## Subphase 1.3: Apply Defender's Damage Reduction
-	## (damage_reduction is already clamped 0.0 - 1.0 in StatManager)
 	var effective_drain := base_drain * (1.0 - d_stat.damage_reduction)
-
 	var actual_drain := minf(effective_drain, d_stat.current_xp)
 
+	## 1. Apply the primary XP drain
 	_apply_xp_loss(defender, actual_drain)
 
-	var attacker_gain := 0.0
+	## 2. Attacker gains standard share from the bite
 	if attacker.is_in_group("players"):
-		attacker_gain = actual_drain * BITE_XP_ATTACKER_SHARE
-		_apply_xp_gain(attacker, attacker_gain)
+		var bite_gain := actual_drain * BITE_XP_ATTACKER_SHARE
+		_apply_xp_gain(attacker, bite_gain)
 
-	var target_path := str(defender.get_path())
-	SignalBus.emit_boost_applied.rpc(target_path, StatManager.StatType.SPEED, 150.0, 1.5)
+	# var target_path := str(defender.get_path())
+	# SignalBus.emit_boost_applied.rpc(target_path, StatManager.StatType.SPEED, 150.0, 1.5)
 
-	var a_ai := attacker.get_node_or_null("components/ChaserBehavior") as ChaserBehavior
-	var d_ai := defender.get_node_or_null("components/ChaserBehavior") as ChaserBehavior
-	if a_ai: a_ai.trigger_cooldown()
-	if d_ai: d_ai.trigger_cooldown()
+	_trigger_all_behavior_cooldowns(attacker)
+	_trigger_all_behavior_cooldowns(defender)
 
-	print("CombatResolver: BITE — peer %d lost %.1f XP, peer %d gained %.1f XP." \
-		%[defender_peer_id, actual_drain,
-		   attacker.get_multiplayer_authority(), attacker_gain])
-
-
-static func _apply_npc_demotion(defender: CharacterBody2D) -> void:
-	var d_stat: StatManager = defender.get_node("StatManager")
-	var xp_gap              := d_stat.get_level_xp_gap()
-	
-	## Demotion acts as True Damage, bypassing Damage Reduction.
-	_apply_xp_loss(defender, xp_gap)
-
-	print("CombatResolver: NPC demotion — peer %d lost %.1f XP. New XP: %.1f." \
-		%[defender.get_multiplayer_authority(), xp_gap, d_stat.current_xp])
+	## 3. Post-Bite Elimination Reward (REVISED)
+	if d_stat.level == 0 and d_stat.current_xp <= 0.0:
+		print("CombatResolver: BITE resulted in ELIMINATION for %s." % defender.name)
+		
+		## Award full elimination reward to the attacker
+		if attacker.is_in_group("players"):
+			_apply_xp_gain(attacker, ELIMINATION_MIN_XP)
+			
+			var d_is_player := defender.is_in_group("players")
+			var counts := true
+			if not d_is_player and defender is NPC:
+				counts = defender.counts_as_kill
+			if counts:
+				GameState.record_kill(attacker.get_multiplayer_authority(), d_is_player)
+		
+		if defender.has_method("play_elimination"):
+			defender.play_elimination.rpc()
+		
+		if defender.is_in_group("players"):
+			GameState.eliminate_player(defender_peer_id)
+			SignalBus.emit_player_eliminated.rpc(defender_peer_id)
+		else:
+			var tree = defender.get_tree()
+			if tree: tree.create_timer(1.0).timeout.connect(defender.queue_free)
 
 
 # =========================================================
@@ -207,14 +201,9 @@ static func _apply_xp_gain(target: CharacterBody2D, amount: float) -> void:
 	var old_level         := stat.level
 	var old_tier          := stat.tier
 
-	## Subphase 1.3: Apply XP Gain Multiplier (Cannot be negative)
 	var effective_amount := amount * maxf(stat.xp_gain_multiplier, 0.0)
-
 	var max_xp := StatManager.XP_THRESHOLDS[StatManager.XP_THRESHOLDS.size() - 1]
 	stat.current_xp = minf(stat.current_xp + effective_amount, max_xp)
-
-	print("CombatResolver: XP gain — peer %d gained %.1f XP. New XP: %.1f." \
-		%[peer_id, effective_amount, stat.current_xp])
 
 	GameState.record_xp_gained(peer_id, effective_amount, stat.level)
 	_broadcast_xp_changes(target, peer_id, old_level, old_tier)
@@ -244,6 +233,14 @@ static func _broadcast_xp_changes(
 # =========================================================
 # HELPERS
 # =========================================================
+
+static func _trigger_all_behavior_cooldowns(entity: CharacterBody2D) -> void:
+	var components = entity.get_node_or_null("components")
+	if not components: return
+	
+	for child in components.get_children():
+		if child.has_method("trigger_cooldown"):
+			child.trigger_cooldown()
 
 static func _calculate_bite_xp(attacker_level: int) -> float:
 	return BASE_BITE_XP * (1.0 + attacker_level * BITE_SCALE_PER_LEVEL)

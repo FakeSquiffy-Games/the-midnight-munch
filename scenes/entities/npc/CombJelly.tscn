@@ -11,7 +11,7 @@ script = ExtResource("2_825kn")
 counts_as_kill = true
 npc_invisible = false
 min_spawn_level = 0
-max_spawn_level = 10
+max_spawn_level = 4
 disable_mouth = true
 
 [node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("3_4ja26")]

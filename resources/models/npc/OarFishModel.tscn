@@ -24,13 +24,14 @@ species_name = "Oar Fish"
 [node name="AnimatedSprite2D" parent="." index="0" unique_id=832216548]
 scale = Vector2(6, 6)
 sprite_frames = SubResource("SpriteFrames_emhn6")
-frame_progress = 0.9631116
+frame = 1
 flip_h = true
 
 [node name="BodyPolygon" type="CollisionPolygon2D" parent="BodyArea" parent_id_path=PackedInt32Array(1257139104) index="0" unique_id=1640726574]
+visible = false
 scale = Vector2(6, 6)
 polygon = PackedVector2Array(10, -9, 5, -10, 2, -11, -1, -10, -4, -9, -5, -8, -5, -5, -7, -3, -10, -4, -15, -5, -17, -4, -20, -3, -21, -2, -21, 6, -23, 8, -25, 9, -26, 10, -28, 11, -26, 11, -25, 12, -22, 13, -18, 12, -17, 11, -6, 11, -6, 10, -5, 9, -4, 7, 7, 7, 9, 6, 10, 5, 10, 3, 11, 2, 12, 3, 14, 4, 26, 4, 28, 2, 28, -1, 27, -2, 26, -4, 26, -6, 24, -8, 21, -8, 19, -10, 17, -10, 16, -9, 14, -9, 13, -8, 11, -8)
 
 [node name="MouthPolygon" type="CollisionPolygon2D" parent="MouthArea" parent_id_path=PackedInt32Array(555163341) index="0" unique_id=1029490855]
 scale = Vector2(6, 6)
-polygon = PackedVector2Array(17, 4, 22, 4, 23, 5, 26, 5, 28, 3, 28, -2, 27, -3, 27, -6, 25, -7, 24, -8, 20, -8, 17, -7)
+polygon = PackedVector2Array(22, 4, 23, 5, 26, 5, 28, 3, 28, -2, 27, -3, 27, -6, 25, -7, 24, -8, 21, -8, 19, -10, 17, -10, 16, -9, 15, -9, 13, -11, 11, -12, 3, -12, 2, -11, -3, -11, -4, -10, -5, -8, -5, 9, 0, 9, 1, 10, 7, 10, 9, 9, 10, 8, 10, 4)

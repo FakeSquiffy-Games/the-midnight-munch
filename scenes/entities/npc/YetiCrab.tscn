@@ -10,7 +10,7 @@ script = ExtResource("2_v6dro")
 counts_as_kill = true
 npc_invisible = true
 min_spawn_level = 0
-max_spawn_level = 10
+max_spawn_level = 6
 
 [node name="EntityModel" parent="." index="0" unique_id=1730000128 instance=ExtResource("3_uo37v")]
 
